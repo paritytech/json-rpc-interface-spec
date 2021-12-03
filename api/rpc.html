@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../api/introduction.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="../api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="../api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="../api/rpc.html" class="active"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="../api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../why-json-rpc.html"><strong aria-hidden="true">1.1.</strong> Why JSON-RPC?</a></li></ol></li><li class="chapter-item expanded "><a href="../api/introduction.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="../api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="../api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="../api/rpc.html" class="active"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="../api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,7 +134,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="rpc_methods"><a class="header" href="#rpc_methods">rpc_methods</a></h1>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>The <code>rpc_methods</code> function is the only one without a version number. It can be used by JSON-RPC clients in order to determine which functions the JSON-RPC server supports.</p>
+<h1 id="rpc_methods"><a class="header" href="#rpc_methods">rpc_methods</a></h1>
 <p><strong>Parameters</strong>: <em>none</em>
 <strong>Return value</strong>: an array of strings indicating the names of all the JSON-RPC functions supported by the JSON-RPC server.</p>
 

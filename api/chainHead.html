@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../api/introduction.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="../api/chainHead.html" class="active"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="../api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="../api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="../api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../why-json-rpc.html"><strong aria-hidden="true">1.1.</strong> Why JSON-RPC?</a></li></ol></li><li class="chapter-item expanded "><a href="../api/introduction.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="../api/chainHead.html" class="active"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="../api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="../api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="../api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,7 +134,11 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="chainhead_v1_body"><a class="header" href="#chainhead_v1_body">chainHead_v1_body</a></h1>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>Functions with the <code>chainHead</code> prefix allow tracking the head of the chain (in other words, the latest new and finalized blocks) and their storage.</p>
+<p>The most important function in this category is <code>chainHead_v1_follow</code>. It is the first function that is the user is expected to call, before (almost) any other. <code>chainHead_v1_follow</code> returns the current list of blocks that are near the head of the chain, and generates notifications about new blocks. The <code>chainHead_v1_body</code>, <code>chainHead_v1_call</code>, <code>chainHead_v1_header</code> and <code>chainHead_v1_storage</code> functions can be used to obtain more details about the blocks that have been reported by <code>chainHead_v1_follow</code>.</p>
+<p>These functions are the functions most of the JSON-RPC clients will most commonly use. A JSON-RPC server implementation is encouraged to prioritize serving these functions over other functions, and to put pinned blocks in a quickly-accessible cache.</p>
+<h1 id="chainhead_v1_body"><a class="header" href="#chainhead_v1_body">chainHead_v1_body</a></h1>
 <p><strong>Parameters</strong>:
 - <code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_v1_follow</code>.
 - <code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose body to fetch.

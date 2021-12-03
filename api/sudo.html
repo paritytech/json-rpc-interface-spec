@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../api/introduction.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="../api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="../api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="../api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="../api/sudo.html" class="active"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../why-json-rpc.html"><strong aria-hidden="true">1.1.</strong> Why JSON-RPC?</a></li></ol></li><li class="chapter-item expanded "><a href="../api/introduction.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="../api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="../api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="../api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="../api/sudo.html" class="active"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,7 +134,10 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="sudo_v1_addreservedpeer"><a class="header" href="#sudo_v1_addreservedpeer">sudo_v1_addReservedPeer</a></h1>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>The functions with the <code>sudo</code> prefix are targeted at blockchain node operators who want to inspect the state of their blockchain node.</p>
+<p>Contrary to functions with other prefixes, functions with the <code>sudo</code> prefix are meant to be called on a specific JSON-RPC server, and not for example on a load balancer. When implementing a load balancer in front of multiple JSON-RPC servers, functions with the <code>sudo</code> prefix should be forbidden.</p>
+<h1 id="sudo_v1_addreservedpeer"><a class="header" href="#sudo_v1_addreservedpeer">sudo_v1_addReservedPeer</a></h1>
 <p><strong>TODO</strong>: same as <code>system_addReservedPeer</code> but properly defined</p>
 <p><strong>TODO</strong>: is this function actually necessary?</p>
 <h1 id="sudo_v1_pendingextrinsics"><a class="header" href="#sudo_v1_pendingextrinsics">sudo_v1_pendingExtrinsics</a></h1>

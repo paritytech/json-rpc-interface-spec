@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="api/introduction.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="why-json-rpc.html"><strong aria-hidden="true">1.1.</strong> Why JSON-RPC?</a></li></ol></li><li class="chapter-item expanded "><a href="api/introduction.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -166,18 +166,17 @@ It is completely fine to leave functions as unstable forever and never try to st
 <li>It is <strong>not</strong> an objective to optimize the bandwidth usage of JSON-RPC client &lt;-&gt; server communication, as all the idiomatic usages of this API involve communicating through <code>localhost</code>. However it should still be realistic to use TCP/IP as a quick solution. Similarly, it is not an objective to minimize the number of round-trips necessary between the JSON-RPC client and server.</li>
 <li>The objective of this interface is to give clear, explicit, and direct access to a node's internal state, and <strong>not</strong> to be convenient to use. Functions that require, for example, some post-processing on the data should be avoided, and caches should preferably be found on the client side rather than the server side. High-level developers are not expected to directly use the client side of this interface, but instead to use an intermediary layer on top of this client side.</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="why-json-rpc"><a class="header" href="#why-json-rpc">Why JSON-RPC?</a></h1>
+<p>The JSON-RPC protocol has been chosen over other protocols such as gRPC due to its simplicity.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api-specification"><a class="header" href="#api-specification">API specification</a></h1>
 <p>Note that all parameters are mandatory unless specified otherwise. All functions support two ways of calling them: either by passing an array with an ordered list of parameters, or by passing an object where parameters are named.</p>
 <p>Any missing parameter, or parameter with an invalid format, should result in a JSON-RPC error being returned, as described in the JSON-RPC specification.</p>
-<p>List of prefixes:</p>
+<h2 id="glossary"><a class="header" href="#glossary">Glossary</a></h2>
 <ul>
-<li><code>archive_v1</code>: Functions that allow examining the history of the chain, in other words the latest finalized block and its ancestors.</li>
-<li><code>chainHead_v1</code>: Functions that allow tracking the head of the chain (in other words the latest new and finalized blocks) and their storage.</li>
-<li><code>chainSpec_v1</code>: Functions that return information found or calculated from the chain specification.</li>
-<li><code>extrinsic_v1</code>: Functions that allow submitting a transaction to the chain. <strong>TODO</strong>: what about <code>transaction</code> instead?</li>
-<li><code>sudo_v1</code>: Functions that manage the node client itself and should only ever be called by the owner of the node. These functions are expected to be called on a specific node, and not on a load-balanced endpoint.</li>
+<li>&quot;Hex-encoded&quot; designates a binary value encoded as hexadecimal. The value must start with <code>&quot;0x&quot;</code> and contain an even number of characters.</li>
+<li>&quot;SCALE-encoded&quot; designates a value encoded using <a href="https://docs.substrate.io/v3/advanced/scale-codec/">the SCALE codec</a>.</li>
 </ul>
-<h1 id="the-networkconfig-parameter"><a class="header" href="#the-networkconfig-parameter">The <code>networkConfig</code> parameter</a></h1>
+<h2 id="the-networkconfig-parameter"><a class="header" href="#the-networkconfig-parameter">The <code>networkConfig</code> parameter</a></h2>
 <p>Many functions below have an optional parameter named <code>networkConfig</code>. This parameter is used when a function needs to request an information from its peers.</p>
 <p>Requesting an information from a peer involves sending a request to this peer. This request can fail for various reasons: the peer is non responsive, the peer is overwhelmed, the peer is malicious, the peer has a bug in its implementation, etc. Because the request can fail, multiple requests should be attempted towards different peers before the information retrieval fails altogether.</p>
 <p>The passed passed for the <code>networkConfig</code> parameter is a struct defined as:</p>
@@ -195,7 +194,11 @@ It is completely fine to leave functions as unstable forever and never try to st
 <p>These values can be tweaked depending on the urgency of the JSON-RPC function call. An important information should be queried with a low timeout and high number of <code>maxParallel</code>, while a low priority information should be queried with <code>maxParallel</code> equal to 1.
 A JSON-RPC function call that is passed a <code>networkConfig</code> can take, in the worst case scenario, a bit more than <code>timeoutMs * totalAttempts / maxParallel</code> milliseconds.</p>
 <p>The JSON-RPC server implementation is allowed and strongly encouraged to put hard a limit on the values in the <code>networkConfig</code>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="archive_v1_body"><a class="header" href="#archive_v1_body">archive_v1_body</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h1>
+<p>Functions with the <code>archive</code> prefix allow obtaining the state of the chain at any point in the past.</p>
+<p>These functions are meant to be used to inspect the history of a chain, and not recent information.</p>
+<p>These functions are typically expensive for a JSON-RPC server, because they likely have to perform some disk access. Consequently, JSON-RPC servers are encouraged to put a global limit on the number of concurrent calls to <code>archive</code>-prefixed functions.</p>
+<h1 id="archive_v1_body"><a class="header" href="#archive_v1_body">archive_v1_body</a></h1>
 <p><strong>TODO</strong></p>
 <h1 id="archive_v1_genesishash"><a class="header" href="#archive_v1_genesishash">archive_v1_genesisHash</a></h1>
 <p><strong>Parameters</strong>: <em>none</em>
@@ -299,7 +302,11 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
 <p>This function works the same way as <code>chainHead_v1_storage</code>, except that it is not connected to a chain head follow, and no <code>disjoint</code> event can be generated.</p>
 <p>Note that <code>chainHead_v1_storage</code> and <code>archive_v1_storage</code> should be treated as two completely separate functions. It is forbidden to call <code>archive_v1_stopStorage</code> with a storage fetch started with <code>chainHead_v1_storage</code>, and vice versa. Some JSON-RPC servers might support only one of these functions.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_v1_body"><a class="header" href="#chainhead_v1_body">chainHead_v1_body</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-2"><a class="header" href="#introduction-2">Introduction</a></h1>
+<p>Functions with the <code>chainHead</code> prefix allow tracking the head of the chain (in other words, the latest new and finalized blocks) and their storage.</p>
+<p>The most important function in this category is <code>chainHead_v1_follow</code>. It is the first function that is the user is expected to call, before (almost) any other. <code>chainHead_v1_follow</code> returns the current list of blocks that are near the head of the chain, and generates notifications about new blocks. The <code>chainHead_v1_body</code>, <code>chainHead_v1_call</code>, <code>chainHead_v1_header</code> and <code>chainHead_v1_storage</code> functions can be used to obtain more details about the blocks that have been reported by <code>chainHead_v1_follow</code>.</p>
+<p>These functions are the functions most of the JSON-RPC clients will most commonly use. A JSON-RPC server implementation is encouraged to prioritize serving these functions over other functions, and to put pinned blocks in a quickly-accessible cache.</p>
+<h1 id="chainhead_v1_body"><a class="header" href="#chainhead_v1_body">chainHead_v1_body</a></h1>
 <p><strong>Parameters</strong>:
 - <code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_v1_follow</code>.
 - <code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose body to fetch.
@@ -691,7 +698,10 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <strong>Return value</strong>: String containing a human-readable name and version of the implementation of the JSON-RPC server.</p>
 <p>The return value shouldn't be parsed by a program. It is purely meant to be shown to a human.</p>
 <p><strong>Note</strong>: Example return values: &quot;polkadot 0.9.12-ec34cf7e0-x86_64-linux-gnu&quot;, &quot;smoldot-light 0.5.4&quot;</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="chainspec_v1_chainname-1"><a class="header" href="#chainspec_v1_chainname-1">chainSpec_v1_chainName</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-3"><a class="header" href="#introduction-3">Introduction</a></h1>
+<p>The functions with the <code>chainSpec</code> prefix allow inspecting the content of the specification of the chain a JSON-RPC server is targeting.</p>
+<p>Because the chain specification never changes while a JSON-RPC server is running, the return value of all these functions must never change and can be cached by the JSON-RPC client.</p>
+<h1 id="chainspec_v1_chainname-1"><a class="header" href="#chainspec_v1_chainname-1">chainSpec_v1_chainName</a></h1>
 <p><strong>Parameters</strong>: <em>none</em>
 <strong>Return value</strong>: String containing the human-readable name of the chain.</p>
 <p>The value returned by this function must never change.</p>
@@ -733,10 +743,15 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p><strong>Note</strong>: This function does not remove the extrinsic from the pool. In other words, the node will still try to include the extrinsic in the chain. Having a function that removes the extrinsic from the pool would be almost useless, as the node might have already gossiped it to the rest of the network.</p>
 <h2 id="possible-errors-11"><a class="header" href="#possible-errors-11">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>subscriptionId</code> doesn't correspond to any active subscription.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="rpc_methods-1"><a class="header" href="#rpc_methods-1">rpc_methods</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h1>
+<p>The <code>rpc_methods</code> function is the only one without a version number. It can be used by JSON-RPC clients in order to determine which functions the JSON-RPC server supports.</p>
+<h1 id="rpc_methods-1"><a class="header" href="#rpc_methods-1">rpc_methods</a></h1>
 <p><strong>Parameters</strong>: <em>none</em>
 <strong>Return value</strong>: an array of strings indicating the names of all the JSON-RPC functions supported by the JSON-RPC server.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="sudo_v1_addreservedpeer-1"><a class="header" href="#sudo_v1_addreservedpeer-1">sudo_v1_addReservedPeer</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-5"><a class="header" href="#introduction-5">Introduction</a></h1>
+<p>The functions with the <code>sudo</code> prefix are targeted at blockchain node operators who want to inspect the state of their blockchain node.</p>
+<p>Contrary to functions with other prefixes, functions with the <code>sudo</code> prefix are meant to be called on a specific JSON-RPC server, and not for example on a load balancer. When implementing a load balancer in front of multiple JSON-RPC servers, functions with the <code>sudo</code> prefix should be forbidden.</p>
+<h1 id="sudo_v1_addreservedpeer-1"><a class="header" href="#sudo_v1_addreservedpeer-1">sudo_v1_addReservedPeer</a></h1>
 <p><strong>TODO</strong>: same as <code>system_addReservedPeer</code> but properly defined</p>
 <p><strong>TODO</strong>: is this function actually necessary?</p>
 <h1 id="sudo_v1_pendingextrinsics-1"><a class="header" href="#sudo_v1_pendingextrinsics-1">sudo_v1_pendingExtrinsics</a></h1>

@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../api/introduction.html" class="active"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="../api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="../api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="../api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="../api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../why-json-rpc.html"><strong aria-hidden="true">1.1.</strong> Why JSON-RPC?</a></li></ol></li><li class="chapter-item expanded "><a href="../api/introduction.html" class="active"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="../api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="../api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="../api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="../api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -137,15 +137,12 @@
                         <h1 id="api-specification"><a class="header" href="#api-specification">API specification</a></h1>
 <p>Note that all parameters are mandatory unless specified otherwise. All functions support two ways of calling them: either by passing an array with an ordered list of parameters, or by passing an object where parameters are named.</p>
 <p>Any missing parameter, or parameter with an invalid format, should result in a JSON-RPC error being returned, as described in the JSON-RPC specification.</p>
-<p>List of prefixes:</p>
+<h2 id="glossary"><a class="header" href="#glossary">Glossary</a></h2>
 <ul>
-<li><code>archive_v1</code>: Functions that allow examining the history of the chain, in other words the latest finalized block and its ancestors.</li>
-<li><code>chainHead_v1</code>: Functions that allow tracking the head of the chain (in other words the latest new and finalized blocks) and their storage.</li>
-<li><code>chainSpec_v1</code>: Functions that return information found or calculated from the chain specification.</li>
-<li><code>extrinsic_v1</code>: Functions that allow submitting a transaction to the chain. <strong>TODO</strong>: what about <code>transaction</code> instead?</li>
-<li><code>sudo_v1</code>: Functions that manage the node client itself and should only ever be called by the owner of the node. These functions are expected to be called on a specific node, and not on a load-balanced endpoint.</li>
+<li>&quot;Hex-encoded&quot; designates a binary value encoded as hexadecimal. The value must start with <code>&quot;0x&quot;</code> and contain an even number of characters.</li>
+<li>&quot;SCALE-encoded&quot; designates a value encoded using <a href="https://docs.substrate.io/v3/advanced/scale-codec/">the SCALE codec</a>.</li>
 </ul>
-<h1 id="the-networkconfig-parameter"><a class="header" href="#the-networkconfig-parameter">The <code>networkConfig</code> parameter</a></h1>
+<h2 id="the-networkconfig-parameter"><a class="header" href="#the-networkconfig-parameter">The <code>networkConfig</code> parameter</a></h2>
 <p>Many functions below have an optional parameter named <code>networkConfig</code>. This parameter is used when a function needs to request an information from its peers.</p>
 <p>Requesting an information from a peer involves sending a request to this peer. This request can fail for various reasons: the peer is non responsive, the peer is overwhelmed, the peer is malicious, the peer has a bug in its implementation, etc. Because the request can fail, multiple requests should be attempted towards different peers before the information retrieval fails altogether.</p>
 <p>The passed passed for the <code>networkConfig</code> parameter is a struct defined as:</p>
@@ -168,7 +165,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../why-json-rpc.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                             <a rel="next" href="../api/archive.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
@@ -180,7 +177,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../why-json-rpc.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                     <a rel="next" href="../api/archive.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
