@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="api/introduction.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li class="chapter-item expanded "><a href="api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li class="chapter-item expanded "><a href="api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li class="chapter-item expanded "><a href="api/extrinsic.html"><strong aria-hidden="true">2.4.</strong> extrinsic</a></li><li class="chapter-item expanded "><a href="api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li class="chapter-item expanded "><a href="api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<h2 id="grouping-functions-and-node-capabilities"><a class="header" href="#grouping-functions-and-node-capabilities">Grouping functions and node capabilities</a></h2>
+<p>Before going further, let's examine <em>why</em> we're building a JSON-RPC interface at all:</p>
+<ul>
+<li>For end-user-facing applications to be able to read and interact with a blockchain.</li>
+<li>For node operators to make sure that their node is operating correctly, and perform some operations such as rotating keys.</li>
+<li>For core/parachain developers to manually look at the state of the blockchain and figure out what is on the chain.</li>
+</ul>
+<p>These three audiences have different needs, and it doesn't make sense for example for a light client to support a function that rotates keys.</p>
+<p>It is already the case today that light clients only support a subset of all JSON-RPC functions, and publicly-accessible JSON-RPC full nodes also only support a subset of all JSON-RPC functions.</p>
+<p>In order to do this properly, we suggest to distribute all JSON-RPC functions between groups, and nodes are allowed to support only a certain subset of groups. However, each group, if it is supported, must be supported entirely. The group a JSON-RPC function belongs to is indicated by a <code>prefix_</code> in its name.</p>
+<p>The groups must also include a version number. For example, each function prefixed with <code>foo_v1_</code> belong to version 1 of the group <code>foo</code>. Multiple versions of the same group name might co-exist in the future. Remember that some servers might support <code>foo_v2_</code> and not <code>foo_v1_</code>, or vice versa. As such, each group+version must be &quot;self-contained&quot;.
+Functions from multiple different group+version should never be mixed. For example, <code>foo_v1_start</code> can only be stopped with <code>foo_v1_stop</code> and <code>foo_v2_start</code> can only be stopped with <code>foo_v2_stop</code>. <code>foo_v1_stop</code> must not be able to stop <code>foo_v2_start</code> and vice versa.
+Functions that are unstable should always use version <code>unstable</code> of a group. For instance, <code>foo_unstable_</code>. Functions must be stable only if we are forever ready to commit to their stability. Unstable functions can break at any time, and thus more freedom is given to them.
+We understand that developers want to be able to add RPC functions for various reasons, such as debugging. When doing so, they are strongly encouraged to assign functions to a group with the <code>_unstable</code> prefix.
+It is completely fine to leave functions as unstable forever and never try to stabilize them. In particular, there is no drawback in leaving as unstable functions that aren't meant to be called programmatically.</p>
+<p>JSON-RPC server should always support the <code>rpc_methods</code> function, and clients should use this function to determine which other functions are supported.</p>
+<p><strong>Note</strong>: Protocol specification formats such as https://open-rpc.org/ have been considered, but are unfortunately lacking the capabilities to describe subscriptions, and their interest is therefore limited.</p>
+<h2 id="guiding-principles-for-new-functions"><a class="header" href="#guiding-principles-for-new-functions">Guiding principles for new functions</a></h2>
+<p>All the functions in the new API should conform to the following:</p>
+<ul>
+<li>camelCase and not snake_case, as this is the norm in JavaScript.</li>
+<li>Function names must start with a prefix indicating the category the function belongs to.</li>
+<li>Functions should keep in mind the fact that they might be called on a load balancer, and that requests could be distributed between multiple nodes. For example, after submitting a transaction, retrieving the list of pending transactions might return an empty list, because the submission was sent to a different node than the one the list was retrieved from.</li>
+<li>Functions should only generate errors in case of a communication issue between the client and server (e.g. missing parameter, unknown function), or in case of a problem with the node (e.g. processing the request triggers a panic, or the node detected that it wasn't compatible with the chain it is supposed to connect to). Functions shouldn't generate JSON-RPC errors in circumstances that can happen normally, for example the impossibility to access a storage item due to lack of connectivity. This lets a JSON-RPC client implementation treat all JSON-RPC errors as critical problems, rather than having to interpret these errors.</li>
+<li>Functions that produce notifications should keep in mind that it must be possible for a JSON-RPC server to drop notifications in case the client isn't processing them quickly enough. Example: let's take the <code>chain_subscribeNewHeads</code> function that reports updates about the new best block. A server can implement this by detecting when a new best block happens then trying to send a notification. After the notification has been sent, the server then checks whether the best block is still the same as the one that was notified, and if not sends a notification again. This implementation uses a fixed amount of memory, which is a good thing, but might lead to some best block updates being missed (e.g. if the best block changes multiple times while trying to send the notification). If it was mandatory for the server to report every single best block update, it would have no choice but to buffer all the updates that happen while sending a notification, which could lead to an infinite amount of memory being used. For this reason, it must not be mandatory to report every single best block update.</li>
+<li>No JSON-RPC function should use up a disproportionate amount of CPU power in order to be answered compared to the other functions, in order to avoid a situation where a few expensive calls in front of the queue are blocking cheap callers behind them.</li>
+<li>Implementations of this API should enforce a limit to the number of simultaneous subscriptions, meaning that all active subscriptions should have roughly the same CPU/memory cost for the implementation.</li>
+<li>It is <strong>not</strong> an objective to optimize the bandwidth usage of JSON-RPC client &lt;-&gt; server communication, as all the idiomatic usages of this API involve communicating through <code>localhost</code>. However it should still be realistic to use TCP/IP as a quick solution. Similarly, it is not an objective to minimize the number of round-trips necessary between the JSON-RPC client and server.</li>
+<li>The objective of this interface is to give clear, explicit, and direct access to a node's internal state, and <strong>not</strong> to be convenient to use. Functions that require, for example, some post-processing on the data should be avoided, and caches should preferably be found on the client side rather than the server side. High-level developers are not expected to directly use the client side of this interface, but instead to use an intermediary layer on top of this client side.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="next" href="api/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="next" href="api/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
