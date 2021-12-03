@@ -135,14 +135,16 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="chainhead_v1_storage"><a class="header" href="#chainhead_v1_storage">chainHead_v1_storage</a></h1>
-<p><strong>Parameters</strong>:
-- <code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_v1_follow</code>.
-- <code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose storage to fetch.
-- <code>key</code>: String containing the hexadecimal-encoded key to fetch in the storage.
-- <code>childKey</code>: <code>null</code> for main storage look-ups, or a string containing the hexadecimal-encoded key of the trie key of the trie that <code>key</code> refers to. <strong>TODO</strong>: I don't know enough about child tries to design this properly
-- <code>type</code>: String that must be equal to one of: <code>value</code>, <code>hash</code>, or <code>size</code>.
-- <code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See above for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.
-<strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_v1_follow</code>.</li>
+<li><code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose storage to fetch.</li>
+<li><code>key</code>: String containing the hexadecimal-encoded key to fetch in the storage.</li>
+<li><code>childKey</code>: <code>null</code> for main storage look-ups, or a string containing the hexadecimal-encoded key of the trie key of the trie that <code>key</code> refers to. <strong>TODO</strong>: I don't know enough about child tries to design this properly</li>
+<li><code>type</code>: String that must be equal to one of: <code>value</code>, <code>hash</code>, or <code>size</code>.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See above for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+</ul>
+<p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
 <p>The JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> (and possibly <code>childKey</code>) from the storage.</p>
 <p>For optimization purposes, the JSON-RPC server is allowed to wait a little bit (e.g. up to 100ms) before starting to try fulfill the storage request, in order to batch multiple storage requests together.</p>
 <p>This function will later generate notifications looking like this:</p>

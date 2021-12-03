@@ -135,9 +135,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="archive_v1_stopheader"><a class="header" href="#archive_v1_stopheader">archive_v1_stopHeader</a></h1>
-<p><strong>Parameters</strong>:
-- <code>subscriptionId</code>: An opaque string that was returned by <code>archive_v1_header</code>.
-<strong>Return value</strong>: <em>null</em></p>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>subscriptionId</code>: An opaque string that was returned by <code>archive_v1_header</code>.</li>
+</ul>
+<p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops a query started with <code>archive_v1_header</code>. If the query was still in progress, this interrupts it. If the query was already finished, this call has no effect.</p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive a notification about this call, for example because this notification was already in the process of being sent back by the JSON-RPC server.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
