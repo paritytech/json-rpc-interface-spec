@@ -173,7 +173,7 @@ It is completely fine to leave functions as unstable forever and never try to st
 <p>Any missing parameter, or parameter with an invalid format, should result in a JSON-RPC error being returned, as described in the JSON-RPC specification.</p>
 <h2 id="glossary"><a class="header" href="#glossary">Glossary</a></h2>
 <ul>
-<li>&quot;Hex-encoded&quot; designates a binary value encoded as hexadecimal. The value must start with <code>&quot;0x&quot;</code> and contain an even number of characters.</li>
+<li>&quot;hexadecimal-encoded&quot; designates a binary value encoded as hexadecimal. The value must start with <code>&quot;0x&quot;</code> and contain an even number of characters.</li>
 <li>&quot;SCALE-encoded&quot; designates a value encoded using <a href="https://docs.substrate.io/v3/advanced/scale-codec/">the SCALE codec</a>.</li>
 </ul>
 <h2 id="the-networkconfig-parameter"><a class="header" href="#the-networkconfig-parameter">The <code>networkConfig</code> parameter</a></h2>
@@ -202,7 +202,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p><strong>TODO</strong></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_v1_genesishash"><a class="header" href="#archive_v1_genesishash">archive_v1_genesisHash</a></h1>
 <p><strong>Parameters</strong>: <em>none</em>
-<strong>Return value</strong>: String containing the hex-encoded hash of the genesis block of the chain.</p>
+<strong>Return value</strong>: String containing the hexadecimal-encoded hash of the genesis block of the chain.</p>
 <p>This function is a simple getter. The JSON-RPC server is expected to keep in its memory the hash of the genesis block.</p>
 <p>The value returned by this function must never change.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_v1_hashbyheight"><a class="header" href="#archive_v1_hashbyheight">archive_v1_hashByHeight</a></h1>
@@ -329,7 +329,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
     &quot;value&quot;: [...]
 }
 </code></pre>
-<p>Where <code>value</code> is an array of strings containing the hex-encoded SCALE-encoded extrinsics found in this block.</p>
+<p>Where <code>value</code> is an array of strings containing the hexadecimal-encoded SCALE-encoded extrinsics found in this block.</p>
 <p>Alternatively, <code>result</code> can also be:</p>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;failed&quot;
@@ -376,7 +376,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
     &quot;output&quot;: &quot;0x0000000...&quot;
 }
 </code></pre>
-<p>Where <code>output</code> is the hex-encoded output of the runtime function call.</p>
+<p>Where <code>output</code> is the hexadecimal-encoded output of the runtime function call.</p>
 <p>Alternatively, <code>result</code> can also be:</p>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;failed&quot;,
@@ -521,7 +521,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p><strong>Note</strong>: The typical situation where a node could consider the runtime as invalid is a light client after a warp syncing. The light client knows that it's its fault for considering the runtime as invalid, but it has no better way to handle this situation than to return an error through the JSON-RPC interface for the error to get shown to the user.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_v1_genesishash"><a class="header" href="#chainhead_v1_genesishash">chainHead_v1_genesisHash</a></h1>
 <p><strong>Parameters</strong>: <em>none</em>
-<strong>Return value</strong>: String containing the hex-encoded hash of the genesis block of the chain.</p>
+<strong>Return value</strong>: String containing the hexadecimal-encoded hash of the genesis block of the chain.</p>
 <p>This function is a simple getter. The JSON-RPC server is expected to keep in its memory the hash of the genesis block.</p>
 <p>The value returned by this function must never change.</p>
 <h1 id="chainhead_v1_header"><a class="header" href="#chainhead_v1_header">chainHead_v1_header</a></h1>
@@ -589,8 +589,8 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 </code></pre>
 <p>Where <code>value</code> is:</p>
 <ul>
-<li>If <code>type</code> was <code>value</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hex-encoded value of the storage entry.</li>
-<li>If <code>type</code> was <code>hash</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hex-encoded hash of the value of the storage item. The hashing algorithm is the same as the one used by the trie of the chain.</li>
+<li>If <code>type</code> was <code>value</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded value of the storage entry.</li>
+<li>If <code>type</code> was <code>hash</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded hash of the value of the storage item. The hashing algorithm is the same as the one used by the trie of the chain.</li>
 <li>If <code>type</code> was <code>size</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the number of bytes of the storage entry. Note that a string is used rather than a number in order to prevent JavaScript clients from accidentally rounding the value.</li>
 </ul>
 <p>Alternatively, if  <code>result</code> can also be:</p>
@@ -701,8 +701,8 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 </code></pre>
 <p>Where <code>value</code> is:</p>
 <ul>
-<li>If <code>type</code> was <code>value</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hex-encoded value of the storage entry.</li>
-<li>If <code>type</code> was <code>hash</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hex-encoded hash of the value of the storage item. The hashing algorithm is the same as the one used by the trie of the chain.</li>
+<li>If <code>type</code> was <code>value</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded value of the storage entry.</li>
+<li>If <code>type</code> was <code>hash</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded hash of the value of the storage item. The hashing algorithm is the same as the one used by the trie of the chain.</li>
 <li>If <code>type</code> was <code>size</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the number of bytes of the storage entry. Note that a string is used rather than a number in order to prevent JavaScript clients from accidentally rounding the value.</li>
 </ul>
 <p>Alternatively, if  <code>result</code> can also be:</p>
@@ -757,7 +757,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p>The value returned by this function must never change.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainspec_v1_genesishash"><a class="header" href="#chainspec_v1_genesishash">chainSpec_v1_genesisHash</a></h1>
 <p><strong>Parameters</strong>: <em>none</em>
-<strong>Return value</strong>: String containing the hex-encoded hash of the genesis block of the chain.</p>
+<strong>Return value</strong>: String containing the hexadecimal-encoded hash of the genesis block of the chain.</p>
 <p>This function is a simple getter. The JSON-RPC server is expected to keep in its memory the hash of the genesis block.</p>
 <p>The value returned by this function must never change.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainspec_v1_properties"><a class="header" href="#chainspec_v1_properties">chainSpec_v1_properties</a></h1>
@@ -767,9 +767,11 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p>The value returned by this function must never change.</p>
 <p><strong>TODO</strong>: is that bad? stronger guarantees?</p>
 <div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="extrinsic_v1_submitandwatch"><a class="header" href="#extrinsic_v1_submitandwatch">extrinsic_v1_submitAndWatch</a></h1>
-<p><strong>Parameters</strong>:
-- <code>extrinsic</code>: A hexadecimal-encoded SCALE-encoded extrinsic to try to include in a block.
-<strong>Return value</strong>: An opaque string representing the subscription.</p>
+<p><strong>Parameters</strong>:</p>
+<pre><code>- `extrinsic`: String containing the hexadecimal-encoded SCALE-encoded extrinsic to try to include in a block.
+</code></pre>
+<p><strong>Return value</strong>: String representing the subscription.</p>
+<p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be potentially passed to <code>extrinsic_v1_unwatch</code>.</p>
 <p>This function is similar to the current <code>author_submitAndWatchExtrinsic</code>. Note that <code>author_submitExtrinsic</code> is gone because it seems not useful.</p>
 <p>Notifications format:</p>
 <pre><code class="language-json">{
@@ -796,8 +798,8 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h1>
 <p>The <code>rpc_methods</code> function is the only one without a version number. It can be used by JSON-RPC clients in order to determine which functions the JSON-RPC server supports.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="rpc_methods"><a class="header" href="#rpc_methods">rpc_methods</a></h1>
-<p><strong>Parameters</strong>: <em>none</em>
-<strong>Return value</strong>: an array of strings indicating the names of all the JSON-RPC functions supported by the JSON-RPC server.</p>
+<p><strong>Parameters</strong>: <em>none</em></p>
+<p><strong>Return value</strong>: Array of strings indicating the names of all the JSON-RPC functions supported by the JSON-RPC server.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-5"><a class="header" href="#introduction-5">Introduction</a></h1>
 <p>The functions with the <code>sudo</code> prefix are targeted at blockchain node operators who want to inspect the state of their blockchain node.</p>
 <p>Contrary to functions with other prefixes, functions with the <code>sudo</code> prefix are meant to be called on a specific JSON-RPC server, and not for example on a load balancer. When implementing a load balancer in front of multiple JSON-RPC servers, functions with the <code>sudo</code> prefix should be forbidden.</p>

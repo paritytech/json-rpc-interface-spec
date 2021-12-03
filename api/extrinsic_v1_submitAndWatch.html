@@ -135,9 +135,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="extrinsic_v1_submitandwatch"><a class="header" href="#extrinsic_v1_submitandwatch">extrinsic_v1_submitAndWatch</a></h1>
-<p><strong>Parameters</strong>:
-- <code>extrinsic</code>: A hexadecimal-encoded SCALE-encoded extrinsic to try to include in a block.
-<strong>Return value</strong>: An opaque string representing the subscription.</p>
+<p><strong>Parameters</strong>:</p>
+<pre><code>- `extrinsic`: String containing the hexadecimal-encoded SCALE-encoded extrinsic to try to include in a block.
+</code></pre>
+<p><strong>Return value</strong>: String representing the subscription.</p>
+<p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be potentially passed to <code>extrinsic_v1_unwatch</code>.</p>
 <p>This function is similar to the current <code>author_submitAndWatchExtrinsic</code>. Note that <code>author_submitExtrinsic</code> is gone because it seems not useful.</p>
 <p>Notifications format:</p>
 <pre><code class="language-json">{
