@@ -138,6 +138,37 @@
 <p>Functions with the <code>chainHead</code> prefix allow tracking the head of the chain (in other words, the latest new and finalized blocks) and their storage.</p>
 <p>The most important function in this category is <code>chainHead_unstable_follow</code>. It is the first function that is the user is expected to call, before (almost) any other. <code>chainHead_unstable_follow</code> returns the current list of blocks that are near the head of the chain, and generates notifications about new blocks. The <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code>, <code>chainHead_unstable_header</code> and <code>chainHead_unstable_storage</code> functions can be used to obtain more details about the blocks that have been reported by <code>chainHead_unstable_follow</code>.</p>
 <p>These functions are the functions most of the JSON-RPC clients will most commonly use. A JSON-RPC server implementation is encouraged to prioritize serving these functions over other functions, and to put pinned blocks in a quickly-accessible cache.</p>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p><em>This section contains a small guide destined for JSON-RPC client users.</em></p>
+<p>This high-level guide shows how to use the <code>chainHead</code> functions in order to know the value of a certain storage item.</p>
+<ol>
+<li>
+<p>Call <code>chainHead_unstable_follow</code> with <code>runtimeUpdates: true</code> to obtain a <code>followSubscriptionId</code>. This <code>followSubscriptionId</code> will need to be passed when calling most of the other <code>chainHead</code>-prefixed functions. If at any point in the future the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;stop&quot;}</code> notification, jump back to step 1.</p>
+</li>
+<li>
+<p>When the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;initialized&quot;}</code> notification with <code>subscriptionId</code> equal to your <code>followSubscriptionId</code>, store the value of <code>finalizedBlockHash</code> in that notification. <strong>TODO</strong> must check metadata api version</p>
+</li>
+<li>
+<p>Call <code>chainHead_unstable_call</code> with <code>hash</code> equal to the <code>finalizedBlockHash</code> you've just retrieved, <code>function</code> equal to <code>Metadata_metadata</code>, and an empty <code>callParameters</code>.</p>
+</li>
+<li>
+<p>If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification, jump back to step 3. If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;error&quot;}</code> notification, enter panic mode. If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification, jump back to step 1. If the JSON-RPC server instead sends back a <code>{&quot;event&quot;: &quot;done&quot;}</code> notification, save the return value.</p>
+</li>
+<li>
+<p>The return value you've just saved is called the metadata, prefixed with its SCALE-compact-encoded length. You must decode and parse this metadata. How to do this is out of scope of this small guide. The metadata contains information about the layout of the storage of the chain. Inspect it to determine how to find the storage item you're looking for.</p>
+</li>
+<li>
+<p>In order to obtain a value in the storage, call <code>chainHead_unstable_storage</code> with <code>hash</code> equal to <code>finalizedBlockHash</code>, <code>key</code> the desired key, and <code>type</code> equal to <code>value</code>. If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification, jump back to step 1. If the JSON-RPC server instead sends back a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification, the value you're looking for is unfortunately inaccessible. If the JSON-RPC server instead sends back a <code>{&quot;event&quot;: &quot;done&quot;}</code> notification, you can find the desired value inside.</p>
+</li>
+<li>
+<p>You are strongly encouraged to maintain <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Set">a <code>Set</code></a> of the blocks where the runtime changes. Whenever a <code>{&quot;event&quot;: &quot;newBlock&quot;}</code> notification is received with <code>subscriptionId</code> equal to your <code>followSubcriptionId</code>, and <code>newRuntime</code> is non-null, store the provided <code>blockHash</code> in this set.</p>
+</li>
+<li>
+<p>Whenever a <code>{&quot;event&quot;: &quot;finalized&quot;}</code> notification is received with <code>subscriptionId</code> equal to your <code>followSubcriptionId</code>, call <code>chainHead_unstable_unpin</code> once with your current <code>finalizedBlockHash</code> and once for each value in <code>finalizedBlocksHashes</code> except for the last one. The last value in <code>finalizedBlocksHashes</code> becomes your new <code>finalizedBlockHash</code>. If one or more entries of <code>finalizedBlockHashes</code> is found in your <code>Set</code> (see step 6), remove them from the set and jump to step 3 as the metadata has likely been modified. Otherwise, jump to step 6.</p>
+</li>
+</ol>
+<p>Note that these steps are a bit complicated. Any serious user of the JSON-RPC interface is expected to implement high-level wrappers around the various functionalities.</p>
+<p>For example, if multiple storage values are desired, only step 6 should be repeated once per storage item. All other steps are application-wide.</p>
 
                     </main>
 
