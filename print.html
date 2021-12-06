@@ -707,13 +707,6 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 }
 </code></pre>
 <p>Where <code>result</code> can be one of:</p>
-<h3 id="queued"><a class="header" href="#queued">queued</a></h3>
-<pre><code class="language-json">{
-    &quot;event&quot;: &quot;queued&quot;
-}
-</code></pre>
-<p>The <code>queued</code> event indicates that this extrinsic has been received by the JSON-RPC server and is now queued for processing.</p>
-<p>This event is only ever generated once per extrinsic, and if so is always the first event. It is illegal for a JSON-RPC server to send it if any other event has already been generated. However, this event is optional and the JSON-RPC server might not send it as any other event also implicitly implies <code>queued</code>.</p>
 <h3 id="validated"><a class="header" href="#validated">validated</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;validated&quot;
@@ -722,9 +715,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p>The <code>validated</code> event indicates that this extrinsic has been checked and is considered as valid by the runtime.</p>
 <p>This extrinsic might still become invalid in the future, for example because a conflicting extrinsic is included in the chain in-between.</p>
 <p>Multiple <code>validated</code> events can be generated during the lifetime of an extrinsic. If multiple <code>validated</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last one.</p>
-<blockquote>
 <p><strong>Note</strong>: In theory, this event could include a field indicating the block against which this extrinsic was validated. It has been decided to not include this field for pragmatic reasons: implementing it might be complicated, and it is not very useful for a JSON-RPC client to know this information.</p>
-</blockquote>
 <h3 id="broadcasted"><a class="header" href="#broadcasted">broadcasted</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;broadcasted&quot;,
@@ -734,9 +725,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p>The ̀<code>broadcasted</code> event indicates the number of other peers this extrinsic has been broadcasted to.</p>
 <p><code>numPeers</code> is the total number of individual peers this extrinsic has been broadcasted to.</p>
 <p>The JSON-RPC server doesn't (and can't) offer any guarantee that these peers have received the extrinsic or have saved it in their own transactions pool. In other words, no matter how large the value in <code>numPeers</code> is, no guarantee is offered that shutting down the local node will lead to the extrinsic being included.</p>
-<blockquote>
 <p><strong>Note</strong>: In principle, a value of <code>numPeers</code> equal to 0 guarantees that shutting down the local node will lead to the extrinsic <em>not</em> being included, assuming that no other node has submitted the same extrinsic. However, because JSON-RPC servers are allowed to delay or skip events, the JSON-RPC client can never be sure that <code>numPeers</code> was still equal to 0 when shutting down the node.</p>
-</blockquote>
 <p>If multiple <code>broadcasted</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last.</p>
 <h3 id="bestchainblockincluded"><a class="header" href="#bestchainblockincluded">bestChainBlockIncluded</a></h3>
 <pre><code class="language-json">{
