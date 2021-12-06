@@ -188,7 +188,7 @@
     &quot;block&quot;: null
 }
 </code></pre>
-<p>The ̀<code>bestChainBlockIncluded</code> event indicates which block of the best chain the extrinsic is included in.</p>
+<p>The <code>bestChainBlockIncluded</code> event indicates which block of the best chain the extrinsic is included in.</p>
 <p><code>null</code> can be sent back in case the block is no longer in any block of the best chain. This is the state an extrinsic starts in.</p>
 <p><code>hash</code> is a string containing the hex-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
 <p>If multiple <code>bestChainBlockIncluded</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last.</p>
@@ -211,7 +211,7 @@
 }
 </code></pre>
 <p>The <code>error</code> event indicates that an internal error within the client has happened.</p>
-<p>Examples include: the runtime crashes, the runtime is missing the function to validate a extrinsic, the format of the value returned by the runtime is invalid, etc.</p>
+<p>Examples include: the runtime crashes, the runtime is missing the function to validate an extrinsic, the format of the value returned by the runtime is invalid, etc.</p>
 <p>This typically indicates a bug in the runtime of the chain or an incompatibility between the client and the runtime of the chain, and there is nothing the end user can do to fix the problem.</p>
 <p>The extrinsic that has been submitted will not be included in the chain by the local node, but it could be included by sending it via a different client implementation.</p>
 <p><code>error</code> is a human-readable error message indicating what happened. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
@@ -234,15 +234,15 @@
 }
 </code></pre>
 <p>The <code>dropped</code> event indicates that the client wasn't capable of keeping track of this extrinsic.</p>
-<p>If the <code>broadcasted</code> field is <code>true</code>, then this extrinsic has been sent to other peers and might still be included in the chain in the future. No guarantee is offered that the extrinsic will be included in the chain even if <code>broadcasted</code> is ̀<code>true</code>. However, if <code>broadcasted</code> is <code>false</code>, then it is guaranteed that this extrinsic will not be included, unless it has been sent in parallel on a different node.</p>
+<p>If the <code>broadcasted</code> field is <code>true</code>, then this extrinsic has been sent to other peers and might still be included in the chain in the future. No guarantee is offered that the extrinsic will be included in the chain even if <code>broadcasted</code> is <code>true</code>. However, if <code>broadcasted</code> is <code>false</code>, then it is guaranteed that this extrinsic will not be included, unless it has been submitted in parallel on a different node.</p>
 <p>This can happen for example if the JSON-RPC server's extrinsics pool is full, if the JSON-RPC server's resources have reached their limit, if the block the extrinsic is included in takes too long to be finalized, or the syncing requires a gap in the chain that prevents the JSON-RPC server from knowing whether the extrinsic has been included and/or finalized.</p>
 <p><code>error</code> is a human-readable error message indicating why the extrinsic is invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p>No more event will be generated about this extrinsic.</p>
 <h2 id="extrinsic-state"><a class="header" href="#extrinsic-state">Extrinsic state</a></h2>
-<p>While an extrinsic is being watched, it has the following properties:</p>
+<p>One can build a mental model in order to understand which events can be generated. While an extrinsic is being watched, it has the following properties:</p>
 <ul>
 <li>
-<p><code>isValidated</code>: <code>yes</code> or <code>not-yet</code>. An extrinsic is initially <code>not-yet</code> validated. A <code>validated</code> event indicates that the extrinsic has now been validated. After a certain number of blocks, an extrinsic will automatically become <code>not-yet</code> validated again and needs to be validated again. No event is generated to indicate that an extrinsic is no longer validated, however a <code>validated</code> event will be generated again when an extrinsic is validated again.</p>
+<p><code>isValidated</code>: <code>yes</code> or <code>not-yet</code>. An extrinsic is initially <code>not-yet</code> validated. A <code>validated</code> event indicates that the extrinsic has now been validated. After a certain number of blocks or in case of retractation, an extrinsic automatically becomes <code>not-yet</code> validated and needs to be validated again. No event is generated to indicate that an extrinsic is no longer validated, however a <code>validated</code> event will be generated again when an extrinsic is validated again.</p>
 </li>
 <li>
 <p><code>bestChainBlockIncluded</code>: an optional block hash and index. An extrinsic is initially included in no block. It can automatically become included in a block of the best chain. A <code>bestChainBlockIncluded</code> event reports updates to this property.</p>
