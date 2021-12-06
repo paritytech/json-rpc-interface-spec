@@ -236,7 +236,7 @@
 <p>The <code>dropped</code> event indicates that the client wasn't capable of keeping track of this extrinsic.</p>
 <p>If the <code>broadcasted</code> field is <code>true</code>, then this extrinsic has been sent to other peers and might still be included in the chain in the future. No guarantee is offered that the extrinsic will be included in the chain even if <code>broadcasted</code> is <code>true</code>. However, if <code>broadcasted</code> is <code>false</code>, then it is guaranteed that this extrinsic will not be included, unless it has been submitted in parallel on a different node.</p>
 <p>This can happen for example if the JSON-RPC server's extrinsics pool is full, if the JSON-RPC server's resources have reached their limit, if the block the extrinsic is included in takes too long to be finalized, or the syncing requires a gap in the chain that prevents the JSON-RPC server from knowing whether the extrinsic has been included and/or finalized.</p>
-<p><code>error</code> is a human-readable error message indicating why the extrinsic is invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
+<p><code>error</code> is a human-readable error message indicating why the extrinsic has been dropped. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p>No more event will be generated about this extrinsic.</p>
 <h2 id="extrinsic-state"><a class="header" href="#extrinsic-state">Extrinsic state</a></h2>
 <p>One can build a mental model in order to understand which events can be generated. While an extrinsic is being watched, it has the following properties:</p>
