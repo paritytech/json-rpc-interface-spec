@@ -422,7 +422,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </ul>
 <p><strong>Return value</strong>: String containing an opaque value representing the subscription.</p>
 <p>This functions lets the JSON-RPC client track the state of the head of the chain: the finalized, non-finalized, and best blocks.</p>
-<p>## Usage</p>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <p>This function works as follows:</p>
 <ul>
 <li>
@@ -760,7 +760,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p><strong>Return value</strong>: <em>any</em></p>
 <p>Returns the JSON payload found in the chain specification under the key <code>properties</code>. No guarantee is offered about the content of this object.</p>
 <p>The value returned by this function must never change for the lifetime of the connection between the JSON-RPC client and server.</p>
-<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
 <p>Because no guarantee is offered about the nature of the returned value, this JSON-RPC function should preferably be used in a context where the JSON-RPC client knows what the <code>properties</code> field contains.</p>
 <p>The <code>properties</code> field is a useful way for a chain developer to store important information about their chain, such as the name of the token or the number of decimals. Without this field, important constants would need to be copy-pasted across all UIs that connect to said chain, potentially leading to mistakes.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h1>
