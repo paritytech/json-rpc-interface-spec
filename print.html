@@ -325,6 +325,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the body fetch in progress.</p>
 <p>The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.</p>
+<p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_body</code> if instead you want to retrieve the body of an arbitrary block.</p>
 <p>This function will later generate notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
@@ -373,6 +374,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the call in progress.</p>
+<p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_call</code> if instead you want to call the runtime of an arbitrary block.</p>
 <p><strong>TODO</strong>: in order to perform the runtime call, the implementation of this function will simply concatenate all the parameters (without any separator), so does it make sense for the JSON-RPC function to require to split them into an array?</p>
 <p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
@@ -620,7 +622,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li>If the <code>followSubscriptionId</code> is dead, <em>null</em>.</li>
 </ul>
 <p>Retrieves the header of a pinned block.</p>
-<p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_header_v1</code> if instead you want to retrieve the header of an arbitrary block.</p>
+<p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_header</code> if instead you want to retrieve the header of an arbitrary block.</p>
 <p><strong>Note</strong>: As explained in the documentation of <code>chainHead_unstable_follow</code>, the JSON-RPC server reserves the right to kill an existing subscription and unpin all its blocks at any moment in case it is overloaded or incapable of following the chain. If that happens, <code>chainHead_unstable_header</code> will return <code>null</code>.</p>
 <h2 id="possible-errors-6"><a class="header" href="#possible-errors-6">Possible errors</a></h2>
 <ul>
@@ -670,6 +672,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
 <p>The JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> (and possibly <code>childKey</code>) from the storage.</p>
+<p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_storage</code> if instead you want to retrieve the storage of an arbitrary block.</p>
 <p>For optimization purposes, the JSON-RPC server is allowed to wait a little bit (e.g. up to 100ms) before starting to try fulfill the storage request, in order to batch multiple storage requests together.</p>
 <h2 id="notifications-format-1"><a class="header" href="#notifications-format-1">Notifications format</a></h2>
 <p>This function will later generate notifications in the following format:</p>
