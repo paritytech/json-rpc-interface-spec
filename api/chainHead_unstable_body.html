@@ -141,10 +141,11 @@
 <li><code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose body to fetch.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the body fetch in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_body</code> if instead you want to retrieve the body of an arbitrary block.</p>
-<p>This function will later generate notifications in the following format:</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_bodyEvent&quot;,
@@ -154,26 +155,32 @@
     }
 }
 </code></pre>
-<p>If everything is successful, <code>result</code> will be:</p>
+<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<h3 id="done"><a class="header" href="#done">done</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
     &quot;value&quot;: [...]
 }
 </code></pre>
-<p>Where <code>value</code> is an array of strings containing the hexadecimal-encoded SCALE-encoded extrinsics found in this block.</p>
-<p>Alternatively, <code>result</code> can also be:</p>
+<p>The <code>done</code> event indicates that everything was successful.</p>
+<p><code>value</code> is an array of strings containing the hexadecimal-encoded SCALE-encoded extrinsics found in this block.</p>
+<p><strong>Note</strong>: Note that the order of extrinsics is important. Extrinsics in the chain are uniquely identified by a <code>(blockHash, index)</code> tuple.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<h3 id="inaccessible"><a class="header" href="#inaccessible">inaccessible</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;inaccessible&quot;
 }
 </code></pre>
-<p>Which indicates that the body has failed to be retrieved from the network.</p>
-<p>Alternatively, if the <code>followSubscriptionId</code> is dead, then <code>result</code> can also be:</p>
+<p>The <code>inaccessible</code> event indicates that the body has failed to be retrieved from the network.</p>
+<p>Trying again later might succeed.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>### disjoint</p>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
 }
 </code></pre>
-<p>After an <code>&quot;event&quot;: &quot;done&quot;</code>, <code>&quot;event&quot;: &quot;inaccessible&quot;</code>, or <code>&quot;event&quot;: &quot;disjoint&quot;</code> is received, no more notification will be generated.</p>
-<p><strong>Note</strong>: Other events might be added in the future, such as reports on the progress of the fetch.</p>
+<p>The <code>disjoint</code> event indicates that the <code>followSubscriptionId</code> is dead.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>
 <li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</li>

@@ -144,7 +144,7 @@
 <li><code>type</code>: String that must be equal to one of: <code>value</code>, <code>hash</code>, or <code>size</code>.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>The JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> (and possibly <code>childKey</code>) from the storage.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_storage</code> if instead you want to retrieve the storage of an arbitrary block.</p>
 <p>For optimization purposes, the JSON-RPC server is allowed to wait a little bit (e.g. up to 100ms) before starting to try fulfill the storage request, in order to batch multiple storage requests together.</p>

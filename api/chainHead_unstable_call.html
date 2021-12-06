@@ -143,7 +143,7 @@
 <li><code>callParameters</code>: Array containing a list of hexadecimal-encoded SCALE-encoded parameters to pass to the runtime function.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the call in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_call</code> if instead you want to call the runtime of an arbitrary block.</p>
 <p><strong>TODO</strong>: in order to perform the runtime call, the implementation of this function will simply concatenate all the parameters (without any separator), so does it make sense for the JSON-RPC function to require to split them into an array?</p>
 <p><strong>Note</strong>: This can be used as a replacement for the legacy <code>state_getMetadata</code>, <code>system_accountNextIndex</code>, and <code>payment_queryInfo</code>.</p>

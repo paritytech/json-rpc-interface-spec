@@ -284,7 +284,7 @@
 <p><code>transactionVersion</code>: Opaque integer. Necessary when building the bytes of an extrinsic. Extrinsics that have been generated with a different <code>transactionVersion</code> are incompatible.</p>
 </li>
 <li>
-<p><code>apis</code>: Object containing a list of &quot;entry point APIs&quot; supported by the runtime. Each key is a string containing the hex-encoded 8-bytes blake2 hash of the name of the API, and each value is an integer version number. Before making a runtime call (using <code>chainHead_unstable_call</code>), you should make sure that this list contains the entry point API corresponding to the call and with a known version number.</p>
+<p><code>apis</code>: Object containing a list of &quot;entry point APIs&quot; supported by the runtime. Each key is a string containing the hexadecimal-encoded 8-bytes blake2 hash of the name of the API, and each value is an integer version number. Before making a runtime call (using <code>chainHead_unstable_call</code>), you should make sure that this list contains the entry point API corresponding to the call and with a known version number.</p>
 </li>
 </ul>
 <p><strong>Note</strong>: The format of <code>apis</code> is not the same as in the legacy JSON-RPC API.</p>

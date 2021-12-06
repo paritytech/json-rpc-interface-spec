@@ -190,7 +190,7 @@
 </code></pre>
 <p>The <code>bestChainBlockIncluded</code> event indicates which block of the best chain the extrinsic is included in.</p>
 <p><code>null</code> can be sent back in case the block is no longer in any block of the best chain. This is the state an extrinsic starts in.</p>
-<p><code>hash</code> is a string containing the hex-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
+<p><code>hash</code> is a string containing the hexadecimal-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
 <p>If multiple <code>bestChainBlockIncluded</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last.</p>
 <p><strong>Note</strong>: Please note that these is no guarantee that the mentioned block matches any of the blocks returned by <code>chainHead_unstable_follow</code>.</p>
 <h3 id="finalized"><a class="header" href="#finalized">finalized</a></h3>
@@ -203,7 +203,7 @@
 }
 </code></pre>
 <p>The <code>finalized</code> event indicates that this extrinsic is present in a block of the chain that is finalized.</p>
-<p><code>hash</code> is a string containing the hex-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
+<p><code>hash</code> is a string containing the hexadecimal-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
 <p>No more event will be generated about this extrinsic.</p>
 <h3 id="error"><a class="header" href="#error">error</a></h3>
 <pre><code class="language-json">{

@@ -211,7 +211,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>height</code>: String containing an hexadecimal-encoded integer.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the query in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>The JSON-RPC client must find the blocks (zero, one, or more) whose height is the one passed as parameter. If the <code>height</code> is inferior or equal to the finalized block height, then only finalized blocks must be fetched and returned.</p>
 <p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
@@ -239,7 +239,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header to retreive.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the query in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
@@ -309,7 +309,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>type</code>: String that must be equal to one of: <code>value</code>, <code>hash</code>, or <code>size</code>.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>This function works the same way as <code>chainHead_unstable_storage</code>, except that it is not connected to a chain head follow, and no <code>disjoint</code> event can be generated.</p>
 <p>Note that <code>chainHead_unstable_storage</code> and <code>archive_unstable_storage</code> should be treated as two completely separate functions. It is forbidden to call <code>archive_unstable_stopStorage</code> with a storage fetch started with <code>chainHead_unstable_storage</code>, and vice versa. Some JSON-RPC servers might support only one of these functions.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-2"><a class="header" href="#introduction-2">Introduction</a></h1>
@@ -323,10 +323,11 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose body to fetch.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the body fetch in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_body</code> if instead you want to retrieve the body of an arbitrary block.</p>
-<p>This function will later generate notifications in the following format:</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_bodyEvent&quot;,
@@ -336,26 +337,32 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
     }
 }
 </code></pre>
-<p>If everything is successful, <code>result</code> will be:</p>
+<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<h3 id="done"><a class="header" href="#done">done</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
     &quot;value&quot;: [...]
 }
 </code></pre>
-<p>Where <code>value</code> is an array of strings containing the hexadecimal-encoded SCALE-encoded extrinsics found in this block.</p>
-<p>Alternatively, <code>result</code> can also be:</p>
+<p>The <code>done</code> event indicates that everything was successful.</p>
+<p><code>value</code> is an array of strings containing the hexadecimal-encoded SCALE-encoded extrinsics found in this block.</p>
+<p><strong>Note</strong>: Note that the order of extrinsics is important. Extrinsics in the chain are uniquely identified by a <code>(blockHash, index)</code> tuple.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<h3 id="inaccessible"><a class="header" href="#inaccessible">inaccessible</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;inaccessible&quot;
 }
 </code></pre>
-<p>Which indicates that the body has failed to be retrieved from the network.</p>
-<p>Alternatively, if the <code>followSubscriptionId</code> is dead, then <code>result</code> can also be:</p>
+<p>The <code>inaccessible</code> event indicates that the body has failed to be retrieved from the network.</p>
+<p>Trying again later might succeed.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>### disjoint</p>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
 }
 </code></pre>
-<p>After an <code>&quot;event&quot;: &quot;done&quot;</code>, <code>&quot;event&quot;: &quot;inaccessible&quot;</code>, or <code>&quot;event&quot;: &quot;disjoint&quot;</code> is received, no more notification will be generated.</p>
-<p><strong>Note</strong>: Other events might be added in the future, such as reports on the progress of the fetch.</p>
+<p>The <code>disjoint</code> event indicates that the <code>followSubscriptionId</code> is dead.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
 <h2 id="possible-errors-4"><a class="header" href="#possible-errors-4">Possible errors</a></h2>
 <ul>
 <li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</li>
@@ -373,11 +380,11 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>callParameters</code>: Array containing a list of hexadecimal-encoded SCALE-encoded parameters to pass to the runtime function.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the call in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_call</code> if instead you want to call the runtime of an arbitrary block.</p>
 <p><strong>TODO</strong>: in order to perform the runtime call, the implementation of this function will simply concatenate all the parameters (without any separator), so does it make sense for the JSON-RPC function to require to split them into an array?</p>
 <p><strong>Note</strong>: This can be used as a replacement for the legacy <code>state_getMetadata</code>, <code>system_accountNextIndex</code>, and <code>payment_queryInfo</code>.</p>
-<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<h2 id="notifications-format-1"><a class="header" href="#notifications-format-1">Notifications format</a></h2>
 <p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
@@ -389,7 +396,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 }
 </code></pre>
 <p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
-<h3 id="done"><a class="header" href="#done">done</a></h3>
+<h3 id="done-1"><a class="header" href="#done-1">done</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
     &quot;output&quot;: &quot;0x0000000...&quot;
@@ -398,7 +405,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>The <code>done</code> event indicates that everything was successful.</p>
 <p><code>output</code> is the hexadecimal-encoded output of the runtime function call.</p>
 <p>No more event will be generated with this <code>subscriptionId</code>.</p>
-<h3 id="inaccessible"><a class="header" href="#inaccessible">inaccessible</a></h3>
+<h3 id="inaccessible-1"><a class="header" href="#inaccessible-1">inaccessible</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;inaccessible&quot;,
     &quot;error&quot;: &quot;...&quot;
@@ -472,7 +479,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>For this reason, blocks might be reported more quickly when <code>runtimeUpdates</code> is <code>false</code>.</p>
 <p><strong>Note</strong>: It is unlikely that high-level UIs built on top of a JSON-RPC client can do anything before the JSON-RPC server has access to the runtime. Consequently, they should consider the time before the <code>initialized</code> event is generated as a loading time. During this loading time, the JSON-RPC server might be performing downloads and CPU-intensive operations. This loading time can be considered as a replacement for the <code>isSyncing</code> field of the legacy <code>system_health</code> JSON-RPC call.</p>
 <p>If a JSON-RPC client wants to be sure to receive an <code>initialized</code> event quickly but is also interested in the runtime, it is encouraged to create two subscriptions: one with <code>runtimeUpdates: true</code> and one with <code>runtimeUpdates: false</code>.</p>
-<h2 id="notifications-format-1"><a class="header" href="#notifications-format-1">Notifications format</a></h2>
+<h2 id="notifications-format-2"><a class="header" href="#notifications-format-2">Notifications format</a></h2>
 <p>This function will later generate one or more notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
@@ -586,7 +593,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p><code>transactionVersion</code>: Opaque integer. Necessary when building the bytes of an extrinsic. Extrinsics that have been generated with a different <code>transactionVersion</code> are incompatible.</p>
 </li>
 <li>
-<p><code>apis</code>: Object containing a list of &quot;entry point APIs&quot; supported by the runtime. Each key is a string containing the hex-encoded 8-bytes blake2 hash of the name of the API, and each value is an integer version number. Before making a runtime call (using <code>chainHead_unstable_call</code>), you should make sure that this list contains the entry point API corresponding to the call and with a known version number.</p>
+<p><code>apis</code>: Object containing a list of &quot;entry point APIs&quot; supported by the runtime. Each key is a string containing the hexadecimal-encoded 8-bytes blake2 hash of the name of the API, and each value is an integer version number. Before making a runtime call (using <code>chainHead_unstable_call</code>), you should make sure that this list contains the entry point API corresponding to the call and with a known version number.</p>
 </li>
 </ul>
 <p><strong>Note</strong>: The format of <code>apis</code> is not the same as in the legacy JSON-RPC API.</p>
@@ -690,11 +697,11 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>type</code>: String that must be equal to one of: <code>value</code>, <code>hash</code>, or <code>size</code>.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>The JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> (and possibly <code>childKey</code>) from the storage.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_storage</code> if instead you want to retrieve the storage of an arbitrary block.</p>
 <p>For optimization purposes, the JSON-RPC server is allowed to wait a little bit (e.g. up to 100ms) before starting to try fulfill the storage request, in order to batch multiple storage requests together.</p>
-<h2 id="notifications-format-2"><a class="header" href="#notifications-format-2">Notifications format</a></h2>
+<h2 id="notifications-format-3"><a class="header" href="#notifications-format-3">Notifications format</a></h2>
 <p>This function will later generate notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
@@ -720,7 +727,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li>If <code>type</code> was <code>size</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the number of bytes of the storage entry. Note that a string is used rather than a number in order to prevent JavaScript clients from accidentally rounding the value.</li>
 </ul>
 <p>No more event will be generated with this <code>subscriptionId</code>.</p>
-<h3 id="inaccessible-1"><a class="header" href="#inaccessible-1">inaccessible</a></h3>
+<h3 id="inaccessible-2"><a class="header" href="#inaccessible-2">inaccessible</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;inaccessible&quot;
 }
@@ -797,7 +804,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </ul>
 <p><strong>Return value</strong>: String representing the subscription.</p>
 <p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be matched with the <code>subscriptionId</code> field of events and potentially passed to <code>extrinsic_unstable_unwatch</code>.</p>
-<h2 id="notifications-format-3"><a class="header" href="#notifications-format-3">Notifications format</a></h2>
+<h2 id="notifications-format-4"><a class="header" href="#notifications-format-4">Notifications format</a></h2>
 <p>This function will later generate one or more notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
@@ -846,7 +853,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </code></pre>
 <p>The <code>bestChainBlockIncluded</code> event indicates which block of the best chain the extrinsic is included in.</p>
 <p><code>null</code> can be sent back in case the block is no longer in any block of the best chain. This is the state an extrinsic starts in.</p>
-<p><code>hash</code> is a string containing the hex-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
+<p><code>hash</code> is a string containing the hexadecimal-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
 <p>If multiple <code>bestChainBlockIncluded</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last.</p>
 <p><strong>Note</strong>: Please note that these is no guarantee that the mentioned block matches any of the blocks returned by <code>chainHead_unstable_follow</code>.</p>
 <h3 id="finalized-1"><a class="header" href="#finalized-1">finalized</a></h3>
@@ -859,7 +866,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 }
 </code></pre>
 <p>The <code>finalized</code> event indicates that this extrinsic is present in a block of the chain that is finalized.</p>
-<p><code>hash</code> is a string containing the hex-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
+<p><code>hash</code> is a string containing the hexadecimal-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
 <p>No more event will be generated about this extrinsic.</p>
 <h3 id="error-1"><a class="header" href="#error-1">error</a></h3>
 <pre><code class="language-json">{

@@ -143,7 +143,7 @@
 <li><code>type</code>: String that must be equal to one of: <code>value</code>, <code>hash</code>, or <code>size</code>.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
-<p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>This function works the same way as <code>chainHead_unstable_storage</code>, except that it is not connected to a chain head follow, and no <code>disjoint</code> event can be generated.</p>
 <p>Note that <code>chainHead_unstable_storage</code> and <code>archive_unstable_storage</code> should be treated as two completely separate functions. It is forbidden to call <code>archive_unstable_stopStorage</code> with a storage fetch started with <code>chainHead_unstable_storage</code>, and vice versa. Some JSON-RPC servers might support only one of these functions.</p>
 
