@@ -147,7 +147,8 @@
 <p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
 <p>The JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> (and possibly <code>childKey</code>) from the storage.</p>
 <p>For optimization purposes, the JSON-RPC server is allowed to wait a little bit (e.g. up to 100ms) before starting to try fulfill the storage request, in order to batch multiple storage requests together.</p>
-<p>This function will later generate notifications looking like this:</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>This function will later generate notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_storageEvent&quot;,
@@ -157,30 +158,32 @@
     }
 }
 </code></pre>
-<p>If everything is successful, <code>result</code> will be:</p>
+<p>Where <code>subscriptionId</code> is equal to the value returned by this function, and <code>result</code> can be one of:</p>
+<p>### done</p>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
     &quot;value&quot;: &quot;0x0000000...&quot;
 }
 </code></pre>
+<p>The <code>done</code> event indicates that everything went well. The <code>value</code> field contains the requested value.</p>
 <p>Where <code>value</code> is:</p>
 <ul>
 <li>If <code>type</code> was <code>value</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded value of the storage entry.</li>
 <li>If <code>type</code> was <code>hash</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded hash of the value of the storage item. The hashing algorithm is the same as the one used by the trie of the chain.</li>
 <li>If <code>type</code> was <code>size</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the number of bytes of the storage entry. Note that a string is used rather than a number in order to prevent JavaScript clients from accidentally rounding the value.</li>
 </ul>
-<p>Alternatively, if  <code>result</code> can also be:</p>
+<h3 id="failed"><a class="header" href="#failed">failed</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;failed&quot;
 }
 </code></pre>
-<p>Which indicates that the storage value has failed to be retrieved from the network.</p>
-<p>Alternatively, if the <code>followSubscriptionId</code> is dead, then <code>result</code> can also be:</p>
+<p>The <code>failed</code> event indicates that the storage value has failed to be retrieved from the network.</p>
+<h3 id="disjoint"><a class="header" href="#disjoint">disjoint</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
 }
 </code></pre>
-<p>After an <code>&quot;event&quot;: &quot;done&quot;</code>, <code>&quot;event&quot;: &quot;failed&quot;</code>, or <code>&quot;event&quot;: &quot;disjoint&quot;</code> is received, no more notification will be generated.</p>
+<p>The <code>disjoint</code> event indicates that the provided <code>followSubscriptionId</code> is dead.</p>
 <p><strong>Note</strong>: Other events might be added in the future, such as reports on the progress of the fetch.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>

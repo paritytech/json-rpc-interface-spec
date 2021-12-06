@@ -325,7 +325,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the body fetch in progress.</p>
 <p>The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.</p>
-<p>This function will later generate notifications looking like this:</p>
+<p>This function will later generate notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_bodyEvent&quot;,
@@ -430,9 +430,11 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li>When the node finalizes a block, generates a <code>finalized</code> notification indicating which blocks have been finalized (both directly and indirectly) ordered by ascending height, and which blocks have been pruned (without any ordering). The latest notified best block must <em>not</em> be in the list of pruned blocks. If that would happen, a <code>bestBlockChanged</code> notification needs to be generated beforehand.</li>
 <li>If the node is overloaded and cannot avoid a gap in the notifications, or in case of a warp syncing, or if the maximum number of pinned blocks is reached (see below), generates a <code>stop</code> notification indicating that the subscription is now dead and must be re-created. No more notifications will be sent out on this subscription.</li>
 </ul>
+<p><strong>Note</strong>: This list of notifications makes it very easy for a JSON-RPC client to follow just the best block updates (listening to just <code>bestBlockChanged</code> events) or follow just the finalized block updates (listening to just <code>initialized</code> and <code>finalized</code> events). It is however not possible to easily figure out whether the runtime has been modified when these updates happen. This is not problematic, as anyone using the JSON-RPC interface naively propably doesn't need to account for runtime changes anyway.</p>
 <p>If <code>runtimeUpdates</code> is <code>true</code>, then blocks shouldn't (and can't) be reported to JSON-RPC clients before the JSON-RPC server has finished obtaining the runtime specification of the new block. This means that blocks might be reported more quickly when <code>runtimeUpdates</code> is <code>false</code>.
 If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized</code> event must be sent back quickly after the function returns. If <code>runtimeUpdates</code> is <code>true</code>, then the JSON-RPC server can take as much time as it wants to send back the <code>initialized</code> event.</p>
-<p>Notifications format:</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>This function will later generate one or more notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_followEvent&quot;,
@@ -442,26 +444,18 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
     }
 }
 </code></pre>
-<p>Where <code>result</code> can be one of:</p>
+<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<h3 id="initialized"><a class="header" href="#initialized">initialized</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;initialized&quot;,
     &quot;finalizedBlockHash&quot;: &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,
-    &quot;finalizedBlockRuntime&quot;: {
-        &quot;type&quot;: &quot;valid&quot;,
-        &quot;spec&quot;: {
-            &quot;specName&quot;: ...,
-            &quot;implName&quot;: ...,
-            &quot;authoringVersion&quot;: ...,
-            &quot;specVersion&quot;: ...,
-            &quot;implVersion&quot;: ...,
-            &quot;transactionVersion&quot;: ...,
-            &quot;apis&quot;: [...],
-        }
-    }
+    &quot;finalizedBlockRuntime&quot;: ...
 }
 </code></pre>
-<p>The <code>initialized</code> event is always the first event to be sent back, and is only ever sent back once per subscription.
-<code>finalizedBlockRuntime</code> is present if and only if <code>runtimeUpdates</code>, the parameter to this function, is <code>true</code>.</p>
+<p>The <code>initialized</code> event is always the first event to be sent back, and is only ever sent back once per subscription.</p>
+<p><code>finalizedBlockRuntime</code> is present if and only if <code>runtimeUpdates</code>, the parameter to this function, is <code>true</code>.</p>
+<p>The format of <code>finalizedBlockRuntime</code> is described later down this page.</p>
+<h3 id="newblock"><a class="header" href="#newblock">newBlock</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;newBlock&quot;,
     &quot;blockHash&quot;: &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,
@@ -469,12 +463,19 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
     &quot;newRuntime&quot;: ...
 }
 </code></pre>
-<p><code>newRuntime</code> must not be present if <code>runtimeUpdates</code>, the parameter to this function, is <code>false</code>. <code>newRuntime</code> must be <code>null</code> if the runtime hasn't changed compared to its parent, or . Its format is the same as the <code>finalizedBlockRuntime</code> field in the <code>initialized</code> event.</p>
+<p>The <code>newBlock</code> indicates a new non-finalized block.</p>
+<p><code>parentBlockHash</code> is guaranteed to be equal either to the current finalized block hash, or to a block reported in an earlier <code>newBlock</code> event.</p>
+<p><code>newRuntime</code> must not be present if <code>runtimeUpdates</code>, the parameter to this function, is <code>false</code>. <code>newRuntime</code> must be <code>null</code> if the runtime hasn't changed compared to its parent.</p>
+<p>If present and non-null, the format of <code>newRuntime</code> is the same as the <code>finalizedBlockRuntime</code> field in the <code>initialized</code> event and is explained later down this page.</p>
+<h3 id="bestblockchanged"><a class="header" href="#bestblockchanged">bestBlockChanged</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;bestBlockChanged&quot;,
     &quot;bestBlockHash&quot;: &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;
 }
 </code></pre>
+<p>The <code>bestBlockChanged</code> event indicates that the given block is now considered to be the best block.</p>
+<p><code>bestBlockHash</code> is guaranteed to be equal either to the current finalized block hash, or to a block reported in an earlier <code>newBlock</code> event.</p>
+<p>### finalized</p>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;finalized&quot;,
     &quot;finalizedBlocksHashes&quot;: [
@@ -487,26 +488,68 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
     ]
 }
 </code></pre>
+<p>The <code>finalized</code> event indicates that some of the blocks that have earlier been reported with <code>newBlock</code> events are now either finalized or no longer relevant.</p>
+<p><code>finalizedBlocksHashes</code> contains a list of blocks that are now part of the finalized block, ordered by increasing block number. The last element in this list is the current finalized block.</p>
+<p><code>prunedBlocksHashes</code> contains, in no particular order, a list of blocks that are not descendants of the latest finalized block. These blocks will never be finalized and can be discarded.</p>
+<p>All items in <code>finalizedBlocksHashes</code> and <code>prunedBlocksHashes</code> are guaranteed to have been reported through earlier <code>newBlock</code> events.</p>
+<p>The current best block, in other words the last block reported through a <code>bestBlockChanged</code> event, is guaranteed to either be the last item in <code>finalizedBlocksHashes</code>, or to not be present in either <code>finalizedBlocksHashes</code> or <code>prunedBlocksHashes</code>.</p>
+<h3 id="stop"><a class="header" href="#stop">stop</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;stop&quot;
 }
 </code></pre>
-<p><strong>Note</strong>: This list of notifications makes it very easy for a JSON-RPC client to follow just the best block updates (listening to just <code>bestBlockChanged</code> events) or follow just the finalized block updates (listening to just <code>initialized</code> and <code>finalized</code> events). It is however not possible to easily figure out whether the runtime has been modified when these updates happen. This is not problematic, as anyone using the JSON-RPC interface naively propably doesn't need to account for runtime changes anyway.</p>
+<p>The <code>stop</code> event indicates that the JSON-RPC server was unable to provide a consistent list of the blocks at the head of the chain. This can happen because too many blocks have been pinned, because doing so would use an unreasonable amount of memory, or because a consensus mechanism creates a gap in the chain.</p>
+<p><strong>Note</strong>: In particular, warp syncing algorithms create a &quot;jump&quot; in the chain from a block to a much later block. Any subscription that is active when the warp syncing happens will receive a <code>stop</code> event.</p>
+<h2 id="pinning"><a class="header" href="#pinning">Pinning</a></h2>
 <p>The current finalized block reported in the <code>initialized</code> event, and each subsequent block reported with a <code>newBlock</code> event, is automatically considered by the JSON-RPC server as <em>pinned</em>. A block is guaranteed to not leave the node's memory for as long as it is pinned, making it possible to call functions such as <code>chainHead_unstable_header</code> on it. Blocks must be unpinned by the JSON-RPC client by calling <code>chainHead_unstable_unpin</code>.</p>
 <p>A block is pinned only in the context of a specific subscription. If multiple <code>chainHead_unstable_follow</code> subscriptions exist, then each <code>(subscription, block)</code> tuple must be unpinned individually. Blocks stay pinned even if they have been pruned from the blockchain, and must always be unpinned by the JSON-RPC client.</p>
 <p>The JSON-RPC server is strongly encouraged to enforce a limit to the maximum number of pinned blocks. If this limit is reached, it should then stop the subscription by emitting a <code>stop</code> event. This specification does not mention any specific limit, but it should be large enough for clients to be able to pin all existing non-finalized blocks and a few finalized blocks.</p>
 <p><strong>Note</strong>: A JSON-RPC client should call <code>chainHead_unstable_unpin</code> only after it is sure to no longer be interested in a certain block. This typically happens after the block has been finalized or pruned. There is no requirement to call <code>chainHead_unstable_unpin</code> as quickly as possible.</p>
 <p>If a JSON-RPC client maintains mutiple <code>chainHead_unstable_follow</code> subscriptions at the same time, it has no guarantee that the blocks reported by the various subscriptions are the same. While the finalized blocks reported should eventually be the same, it is possible that in the short term some subscriptions lag behind others.</p>
 <p><strong>Note</strong>: For example, imagine there exists two active <code>chainHead_unstable_follow</code> subscriptions named A and B. Block N is announced on the peer-to-peer network and is announced to A. But then a sibling of block N gets finalized, leading to block N being pruned. Block N might never be announced to B.</p>
-<h4 id="about-the-runtime"><a class="header" href="#about-the-runtime">About the runtime</a></h4>
-<p>The various fields of <code>spec</code> are:</p>
+<h2 id="about-the-runtime"><a class="header" href="#about-the-runtime">About the runtime</a></h2>
+<p>The format of the <code>finalizedBlockRuntime</code> and <code>newRuntime</code> fields can be one of:</p>
+<h4 id="valid"><a class="header" href="#valid">valid</a></h4>
+<pre><code class="language-json">{
+    &quot;type&quot;: &quot;valid&quot;,
+    &quot;spec&quot;: {
+        &quot;specName&quot;: ...,
+        &quot;implName&quot;: ...,
+        &quot;authoringVersion&quot;: ...,
+        &quot;specVersion&quot;: ...,
+        &quot;implVersion&quot;: ...,
+        &quot;transactionVersion&quot;: ...,
+        &quot;apis&quot;: [...],
+    }
+}
+</code></pre>
+<p>In normal situations, the <code>type</code> is <code>valid</code>.</p>
+<p>The fields of <code>spec</code> are:</p>
 <ul>
-<li><code>specVersion</code>: Opaque version number. The JSON-RPC client can assume that the call to <code>Metadata_metadata</code> will always produce the same output as long as the <code>specVersion</code> is the same.</li>
-<li><code>transactionVersion</code>: Opaque version number. Necessary when building the bytes of an extrinsic. Extrinsics that have been generated with a different <code>transactionVersion</code> are incompatible.</li>
-<li><code>apis</code>: Object containing a list of &quot;entry point APIs&quot; supported by the runtime. Each key is the 8-bytes blake2 hash of the name of the API, and each value is a version number. Before making a runtime call (using <code>chainHead_unstable_call</code>), you should make sure that this list contains the entry point API corresponding to the call and with a known version number.</li>
+<li>
+<p><code>specName</code>: Opaque string indicating the name of the chain.</p>
+</li>
+<li>
+<p><code>implName</code>: Opaque string indicating the name of the implementation of the chain.</p>
+</li>
+<li>
+<p><code>authoringVersion</code>: Opaque integer. Used by the internals of validator nodes that use a native executor in order to be sure that their native executor matches the WebAssembly code.</p>
+</li>
+<li>
+<p><code>specVersion</code>: Opaque integer. The JSON-RPC client can assume that the call to <code>Metadata_metadata</code> will always produce the same output as long as the <code>specVersion</code> is the same.</p>
+</li>
+<li>
+<p><code>implVersion</code>: Opaque integer. Whenever the runtime code changes in a backwards-compatible way, the <code>implVersion</code> is modified while the <code>specVersion</code> is left untouched.</p>
+</li>
+<li>
+<p><code>transactionVersion</code>: Opaque integer. Necessary when building the bytes of an extrinsic. Extrinsics that have been generated with a different <code>transactionVersion</code> are incompatible.</p>
+</li>
+<li>
+<p><code>apis</code>: Object containing a list of &quot;entry point APIs&quot; supported by the runtime. Each key is a string containing the hex-encoded 8-bytes blake2 hash of the name of the API, and each value is an integer version number. Before making a runtime call (using <code>chainHead_unstable_call</code>), you should make sure that this list contains the entry point API corresponding to the call and with a known version number.</p>
+</li>
 </ul>
-<p><strong>TODO</strong>: detail the other fields</p>
-<p>Example value:</p>
+<p><strong>Note</strong>: The format of <code>apis</code> is not the same as in the legacy JSON-RPC API.</p>
+<h4 id="example-value"><a class="header" href="#example-value">Example value</a></h4>
 <pre><code class="language-json">{
     &quot;specName&quot;: &quot;westend&quot;,
     &quot;implName&quot;: &quot;parity-westend&quot;,
@@ -532,8 +575,14 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
     }
 }
 </code></pre>
-<p><strong>Note</strong>: The format of <code>apis</code> is not the same as in the current JSON-RPC API.</p>
-<p>If the node fails to compile the Wasm runtime blob of a block, <code>finalizedBlockRuntime</code> or <code>newRuntime</code> can be of the format <code>{&quot;type&quot;: &quot;invalid&quot;, &quot;error&quot;: &quot;...&quot;}</code> where <code>error</code> is a human-readable string indicating why the node considers it as invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
+<h3 id="invalid"><a class="header" href="#invalid">invalid</a></h3>
+<pre><code class="language-json">{
+    &quot;type&quot;: &quot;invalid&quot;,
+    &quot;error&quot;: &quot;...&quot;
+}
+</code></pre>
+<p>The runtime is of type <code>invalid</code> if the JSON-RPC server considers the runtime as invalid, for example because the WebAssembly runtime code doesn't match its expectations.</p>
+<p><code>error</code> is a human-readable string indicating why the node considers it as invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p><strong>Note</strong>: The typical situation where a node could consider the runtime as invalid is a light client after a warp syncing. The light client knows that it's its fault for considering the runtime as invalid, but it has no better way to handle this situation than to return an error through the JSON-RPC interface for the error to get shown to the user.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_genesishash"><a class="header" href="#chainhead_unstable_genesishash">chainHead_unstable_genesisHash</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
@@ -553,7 +602,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 </ul>
 <p>Retrieves the header of a pinned block.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_header_v1</code> if instead you want to retrieve the header of an arbitrary block.</p>
-<p>As explained in the documentation of <code>chainHead_unstable_follow</code>, the JSON-RPC server reserves the right to kill an existing subscription and unpin all its blocks at any moment in case it is overloaded or incapable of following the chain. If that happens, <code>chainHead_unstable_header</code> will return <code>null</code>.</p>
+<p><strong>Note</strong>: As explained in the documentation of <code>chainHead_unstable_follow</code>, the JSON-RPC server reserves the right to kill an existing subscription and unpin all its blocks at any moment in case it is overloaded or incapable of following the chain. If that happens, <code>chainHead_unstable_header</code> will return <code>null</code>.</p>
 <h2 id="possible-errors-6"><a class="header" href="#possible-errors-6">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is invalid.</li>
@@ -578,6 +627,8 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops a call started with <code>chainHead_unstable_call</code>. If the call was still in progress, this interrupts it. If the call was already finished, this call has no effect.</p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive a notification about this call, for example because this notification was already in the process of being sent back by the JSON-RPC server.</p>
+<h2 id="possible-errors-8"><a class="header" href="#possible-errors-8">Possible errors</a></h2>
+<p>A JSON-RPC error is generated if the <code>subscriptionId</code> doesn't correspond to any active subscription.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_stopstorage"><a class="header" href="#chainhead_unstable_stopstorage">chainHead_unstable_stopStorage</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
@@ -586,6 +637,8 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops a storage fetch started with <code>chainHead_unstable_storage</code>. If the storage fetch was still in progress, this interrupts it. If the storage fetch was already finished, this call has no effect.</p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive a notification about this storage fetch, for example because this notification was already in the process of being sent back by the JSON-RPC server.</p>
+<h2 id="possible-errors-9"><a class="header" href="#possible-errors-9">Possible errors</a></h2>
+<p>A JSON-RPC error is generated if the <code>subscriptionId</code> doesn't correspond to any active subscription.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_storage"><a class="header" href="#chainhead_unstable_storage">chainHead_unstable_storage</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
@@ -599,7 +652,8 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
 <p>The JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> (and possibly <code>childKey</code>) from the storage.</p>
 <p>For optimization purposes, the JSON-RPC server is allowed to wait a little bit (e.g. up to 100ms) before starting to try fulfill the storage request, in order to batch multiple storage requests together.</p>
-<p>This function will later generate notifications looking like this:</p>
+<h2 id="notifications-format-1"><a class="header" href="#notifications-format-1">Notifications format</a></h2>
+<p>This function will later generate notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_storageEvent&quot;,
@@ -609,32 +663,34 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
     }
 }
 </code></pre>
-<p>If everything is successful, <code>result</code> will be:</p>
+<p>Where <code>subscriptionId</code> is equal to the value returned by this function, and <code>result</code> can be one of:</p>
+<p>### done</p>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
     &quot;value&quot;: &quot;0x0000000...&quot;
 }
 </code></pre>
+<p>The <code>done</code> event indicates that everything went well. The <code>value</code> field contains the requested value.</p>
 <p>Where <code>value</code> is:</p>
 <ul>
 <li>If <code>type</code> was <code>value</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded value of the storage entry.</li>
 <li>If <code>type</code> was <code>hash</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded hash of the value of the storage item. The hashing algorithm is the same as the one used by the trie of the chain.</li>
 <li>If <code>type</code> was <code>size</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the number of bytes of the storage entry. Note that a string is used rather than a number in order to prevent JavaScript clients from accidentally rounding the value.</li>
 </ul>
-<p>Alternatively, if  <code>result</code> can also be:</p>
+<h3 id="failed"><a class="header" href="#failed">failed</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;failed&quot;
 }
 </code></pre>
-<p>Which indicates that the storage value has failed to be retrieved from the network.</p>
-<p>Alternatively, if the <code>followSubscriptionId</code> is dead, then <code>result</code> can also be:</p>
+<p>The <code>failed</code> event indicates that the storage value has failed to be retrieved from the network.</p>
+<h3 id="disjoint"><a class="header" href="#disjoint">disjoint</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
 }
 </code></pre>
-<p>After an <code>&quot;event&quot;: &quot;done&quot;</code>, <code>&quot;event&quot;: &quot;failed&quot;</code>, or <code>&quot;event&quot;: &quot;disjoint&quot;</code> is received, no more notification will be generated.</p>
+<p>The <code>disjoint</code> event indicates that the provided <code>followSubscriptionId</code> is dead.</p>
 <p><strong>Note</strong>: Other events might be added in the future, such as reports on the progress of the fetch.</p>
-<h2 id="possible-errors-8"><a class="header" href="#possible-errors-8">Possible errors</a></h2>
+<h2 id="possible-errors-10"><a class="header" href="#possible-errors-10">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if <code>type</code> isn't one of the allowed values (similarly to a missing parameter or an invalid parameter type).</li>
 <li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</li>
@@ -659,7 +715,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>See explanations in the documentation of <code>chainHead_unstable_follow</code>.</p>
-<h2 id="possible-errors-9"><a class="header" href="#possible-errors-9">Possible errors</a></h2>
+<h2 id="possible-errors-11"><a class="header" href="#possible-errors-11">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> doesn't correspond to any active subscription.</li>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
@@ -688,14 +744,16 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <p>Because no guarantee is offered about the nature of the returned value, this JSON-RPC function should preferably be used in a context where the JSON-RPC client knows what the <code>properties</code> field contains.</p>
 <p>The <code>properties</code> field is a useful way for a chain developer to store important information about their chain, such as the name of the token or the number of decimals. Without this field, important constants would need to be copy-pasted across all UIs that connect to said chain, potentially leading to mistakes.</p>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="extrinsic_unstable_submitandwatch"><a class="header" href="#extrinsic_unstable_submitandwatch">extrinsic_unstable_submitAndWatch</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h1>
+<p>The <code>extrinsic</code> functions allow submitting an extrinsic for inclusion in the chain.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="extrinsic_unstable_submitandwatch"><a class="header" href="#extrinsic_unstable_submitandwatch">extrinsic_unstable_submitAndWatch</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
 <li><code>extrinsic</code>: String containing the hexadecimal-encoded SCALE-encoded extrinsic to try to include in a block.</li>
 </ul>
 <p><strong>Return value</strong>: String representing the subscription.</p>
-<p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be potentially passed to <code>extrinsic_unstable_unwatch</code>.</p>
-<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be matched with the <code>subscriptionId</code> field of events and potentially passed to <code>extrinsic_unstable_unwatch</code>.</p>
+<h2 id="notifications-format-2"><a class="header" href="#notifications-format-2">Notifications format</a></h2>
 <p>This function will later generate one or more notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
@@ -706,7 +764,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
     }
 }
 </code></pre>
-<p>Where <code>result</code> can be one of:</p>
+<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
 <h3 id="validated"><a class="header" href="#validated">validated</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;validated&quot;
@@ -770,7 +828,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p>The extrinsic that has been submitted will not be included in the chain by the local node, but it could be included by sending it via a different client implementation.</p>
 <p><code>error</code> is a human-readable error message indicating what happened. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p>No more event will be generated about this extrinsic.</p>
-<h3 id="invalid"><a class="header" href="#invalid">invalid</a></h3>
+<h3 id="invalid-1"><a class="header" href="#invalid-1">invalid</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;invalid&quot;,
     &quot;error&quot;: &quot;...&quot;
@@ -809,23 +867,23 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p>The <code>finalized</code>, <code>error</code>, <code>invalid</code>, and <code>dropped</code> event indicate that the extrinsic is no longer being watched. The state of the extrinsic is entirely discarded.</p>
 <p>JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the extrinsic. In other words, multiple <code>validated</code>, <code>broadcasted</code>, or <code>bestChainBlockIncluded</code> events in a row might be merged into one.</p>
 <p><strong>Note</strong>: In order to implement this properly, JSON-RPC servers should maintain a buffer of three notifications (one for each property), and overwrite any unsent notification with a more recent status update.</p>
-<h2 id="possible-errors-10"><a class="header" href="#possible-errors-10">Possible errors</a></h2>
+<h2 id="possible-errors-12"><a class="header" href="#possible-errors-12">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>extrinsic</code> parameter has an invalid format, but no error is produced if the bytes of the <code>extrinsic</code>, once decoded, are invalid. Instead, an <code>invalid</code> notification will be generated.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="extrinsic_unstable_unwatch"><a class="header" href="#extrinsic_unstable_unwatch">extrinsic_unstable_unwatch</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>subscription</code>: An opaque string equal to the value returned by <code>extrinsic_unstable_submitAndWatch</code></li>
+<li><code>subscription</code>: Opaque string equal to the value returned by <code>extrinsic_unstable_submitAndWatch</code></li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p><strong>Note</strong>: This function does not remove the extrinsic from the pool. In other words, the node will still try to include the extrinsic in the chain. Having a function that removes the extrinsic from the pool would be almost useless, as the node might have already gossiped it to the rest of the network.</p>
-<h2 id="possible-errors-11"><a class="header" href="#possible-errors-11">Possible errors</a></h2>
+<h2 id="possible-errors-13"><a class="header" href="#possible-errors-13">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>subscriptionId</code> doesn't correspond to any active subscription.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-4"><a class="header" href="#introduction-4">Introduction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-5"><a class="header" href="#introduction-5">Introduction</a></h1>
 <p>The <code>rpc_methods</code> function is the only one without a version number. It can be used by JSON-RPC clients in order to determine which functions the JSON-RPC server supports.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="rpc_methods"><a class="header" href="#rpc_methods">rpc_methods</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
 <p><strong>Return value</strong>: Array of strings indicating the names of all the JSON-RPC functions supported by the JSON-RPC server.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-5"><a class="header" href="#introduction-5">Introduction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-6"><a class="header" href="#introduction-6">Introduction</a></h1>
 <p>The functions with the <code>sudo</code> prefix are targeted at blockchain node operators who want to inspect the state of their blockchain node.</p>
 <p>Contrary to functions with other prefixes, functions with the <code>sudo</code> prefix are meant to be called on a specific JSON-RPC server, and not for example on a load balancer. When implementing a load balancer in front of multiple JSON-RPC servers, functions with the <code>sudo</code> prefix should be forbidden.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sudo_unstable_addreservedpeer"><a class="header" href="#sudo_unstable_addreservedpeer">sudo_unstable_addReservedPeer</a></h1>

@@ -137,7 +137,7 @@
                         <h1 id="extrinsic_unstable_unwatch"><a class="header" href="#extrinsic_unstable_unwatch">extrinsic_unstable_unwatch</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>subscription</code>: An opaque string equal to the value returned by <code>extrinsic_unstable_submitAndWatch</code></li>
+<li><code>subscription</code>: Opaque string equal to the value returned by <code>extrinsic_unstable_submitAndWatch</code></li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p><strong>Note</strong>: This function does not remove the extrinsic from the pool. In other words, the node will still try to include the extrinsic in the chain. Having a function that removes the extrinsic from the pool would be almost useless, as the node might have already gossiped it to the rest of the network.</p>
