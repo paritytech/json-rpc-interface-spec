@@ -141,8 +141,8 @@
 </ul>
 <p><strong>Return value</strong>: String representing the subscription.</p>
 <p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be potentially passed to <code>extrinsic_unstable_unwatch</code>.</p>
-<p>This function is similar to the current <code>author_submitAndWatchExtrinsic</code>. Note that <code>author_submitExtrinsic</code> is gone because it seems not useful.</p>
-<p>Notifications format:</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;extrinsic_unstable_watchEvent&quot;,
@@ -152,11 +152,122 @@
     }
 }
 </code></pre>
-<p>Where <code>result</code> is:</p>
-<p><strong>TODO</strong>: roughly the same as author_submitAndWatchExtrinsic, but needs to be written down</p>
-<p>The node can drop a transaction (i.e. send back a <code>dropped</code> event extrinsic and discard the extrinsic altogether) if the transaction is invalid, if the JSON-RPC server's transactions pool is full, if the JSON-RPC server's resources have reached their limit, or the syncing requires a gap in the chain that prevents the JSON-RPC server from knowing whether the transaction has been included and/or finalized.</p>
-<p>The JSON-RPC client should unconditionally call <code>extrinsic_unstable_unwatch</code>, even if <strong>TODO</strong>.</p>
-<p>A JSON-RPC error is generated if the <code>extrinsic</code> parameter has an invalid format, but no error is produced if the bytes of the <code>extrinsic</code>, once decoded, are invalid. Instead, a <code>dropped</code> notification will be generated.</p>
+<p>Where <code>result</code> can be one of:</p>
+<h3 id="queued"><a class="header" href="#queued">queued</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;queued&quot;
+}
+</code></pre>
+<p>The <code>queued</code> event indicates that this extrinsic has been received by the JSON-RPC server and is now queued for processing.</p>
+<p>This event is only ever generated once per extrinsic, and if so is always the first event. It is illegal for a JSON-RPC server to send it if any other event has already been generated. However, this event is optional and the JSON-RPC server might not send it as any other event also implicitly implies <code>queued</code>.</p>
+<h3 id="validated"><a class="header" href="#validated">validated</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;validated&quot;
+}
+</code></pre>
+<p>The <code>validated</code> event indicates that this extrinsic has been checked and is considered as valid by the runtime.</p>
+<p>This extrinsic might still become invalid in the future, for example because a conflicting extrinsic is included in the chain in-between.</p>
+<p>Multiple <code>validated</code> events can be generated during the lifetime of an extrinsic. If multiple <code>validated</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last one.</p>
+<blockquote>
+<p><strong>Note</strong>: In theory, this event could include a field indicating the block against which this extrinsic was validated. It has been decided to not include this field for pragmatic reasons: implementing it might be complicated, and it is not very useful for a JSON-RPC client to know this information.</p>
+</blockquote>
+<h3 id="broadcasted"><a class="header" href="#broadcasted">broadcasted</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;broadcasted&quot;,
+    &quot;numPeers&quot;: ...
+}
+</code></pre>
+<p>The ̀<code>broadcasted</code> event indicates the number of other peers this extrinsic has been broadcasted to.</p>
+<p><code>numPeers</code> is the total number of individual peers this extrinsic has been broadcasted to.</p>
+<p>The JSON-RPC server doesn't (and can't) offer any guarantee that these peers have received the extrinsic or have saved it in their own transactions pool. In other words, no matter how large the value in <code>numPeers</code> is, no guarantee is offered that shutting down the local node will lead to the extrinsic being included.</p>
+<blockquote>
+<p><strong>Note</strong>: In principle, a value of <code>numPeers</code> equal to 0 guarantees that shutting down the local node will lead to the extrinsic <em>not</em> being included, assuming that no other node has submitted the same extrinsic. However, because JSON-RPC servers are allowed to delay or skip events, the JSON-RPC client can never be sure that <code>numPeers</code> was still equal to 0 when shutting down the node.</p>
+</blockquote>
+<p>If multiple <code>broadcasted</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last.</p>
+<h3 id="bestchainblockincluded"><a class="header" href="#bestchainblockincluded">bestChainBlockIncluded</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;bestChainBlockIncluded&quot;,
+    &quot;block&quot;: {
+        &quot;hash&quot;: &quot;...&quot;,
+        &quot;index&quot;: &quot;...&quot;
+    }
+}
+</code></pre>
+<p>Or</p>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;bestChainBlockIncluded&quot;,
+    &quot;block&quot;: null
+}
+</code></pre>
+<p>The ̀<code>bestChainBlockIncluded</code> event indicates which block of the best chain the extrinsic is included in.</p>
+<p><code>null</code> can be sent back in case the block is no longer in any block of the best chain. This is the state an extrinsic starts in.</p>
+<p><code>hash</code> is a string containing the hex-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
+<p>If multiple <code>bestChainBlockIncluded</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last.</p>
+<h3 id="finalized"><a class="header" href="#finalized">finalized</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;finalized&quot;,
+    &quot;block&quot;: {
+        &quot;hash&quot;: &quot;...&quot;,
+        &quot;index&quot;: &quot;...&quot;
+    }
+}
+</code></pre>
+<p>The <code>finalized</code> event indicates that this extrinsic is present in a block of the chain that is finalized.</p>
+<p><code>hash</code> is a string containing the hex-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this extrinsic within the body of this block.</p>
+<p>No more event will be generated about this extrinsic.</p>
+<h3 id="error"><a class="header" href="#error">error</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;error&quot;,
+    &quot;error&quot;: &quot;...&quot;
+}
+</code></pre>
+<p>The <code>error</code> event indicates that an internal error within the client has happened.</p>
+<p>Examples include: the runtime crashes, the runtime is missing the function to validate a extrinsic, the format of the value returned by the runtime is invalid, etc.</p>
+<p>This typically indicates a bug in the runtime of the chain or an incompatibility between the client and the runtime of the chain, and there is nothing the end user can do to fix the problem.</p>
+<p>The extrinsic that has been submitted will not be included in the chain by the local node, but it could be included by sending it via a different client implementation.</p>
+<p><code>error</code> is a human-readable error message indicating what happened. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
+<p>No more event will be generated about this extrinsic.</p>
+<h3 id="invalid"><a class="header" href="#invalid">invalid</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;invalid&quot;,
+    &quot;error&quot;: &quot;...&quot;
+}
+</code></pre>
+<p>The <code>invalid</code> event indicates that the runtime has marked the extrinsic as invalid.</p>
+<p>This can happen for a variety of reasons specific to the chain, such as a bad signature, bad nonce, not enough balance for fees, etc.</p>
+<p><code>error</code> is a human-readable error message indicating why the extrinsic is invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
+<p>No more event will be generated about this extrinsic.</p>
+<h3 id="dropped"><a class="header" href="#dropped">dropped</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;dropped&quot;,
+    &quot;broadcasted&quot;: true,
+    &quot;error&quot;: &quot;...&quot;
+}
+</code></pre>
+<p>The <code>dropped</code> event indicates that the client wasn't capable of keeping track of this extrinsic.</p>
+<p>If the <code>broadcasted</code> field is <code>true</code>, then this extrinsic has been sent to other peers and might still be included in the chain in the future. No guarantee is offered that the extrinsic will be included in the chain even if <code>broadcasted</code> is ̀<code>true</code>. However, if <code>broadcasted</code> is <code>false</code>, then it is guaranteed that this extrinsic will not be included, unless it has been sent in parallel on a different node.</p>
+<p>This can happen for example if the JSON-RPC server's extrinsics pool is full, if the JSON-RPC server's resources have reached their limit, if the block the extrinsic is included in takes too long to be finalized, or the syncing requires a gap in the chain that prevents the JSON-RPC server from knowing whether the extrinsic has been included and/or finalized.</p>
+<p><code>error</code> is a human-readable error message indicating why the extrinsic is invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
+<p>No more event will be generated about this extrinsic.</p>
+<h2 id="extrinsic-state"><a class="header" href="#extrinsic-state">Extrinsic state</a></h2>
+<p>While an extrinsic is being watched, it has the following properties:</p>
+<ul>
+<li>
+<p><code>isValidated</code>: <code>yes</code> or <code>not-yet</code>. An extrinsic is initially <code>not-yet</code> validated. A <code>validated</code> event indicates that the extrinsic has now been validated. After a certain number of blocks, an extrinsic will automatically become <code>not-yet</code> validated again and needs to be validated again. No event is generated to indicate that an extrinsic is no longer validated, however a <code>validated</code> event will be generated again when an extrinsic is validated again.</p>
+</li>
+<li>
+<p><code>bestChainBlockIncluded</code>: an optional block hash and index. An extrinsic is initially included in no block. It can automatically become included in a block of the best chain. A <code>bestChainBlockIncluded</code> event reports updates to this property.</p>
+</li>
+<li>
+<p><code>numBroadcastedPeers</code>: <em>integer</em>. An extrinsic is initially broadcasted to 0 other peers. After an extrinsic is in the <code>isValidated: yes</code> and <code>bestChainBlockIncluded: none</code> states, the number of broadcaster peers can increase. This number never decreases and is never reset to 0, even if an extrinsic becomes <code>isValidated: not-yet</code>. The <code>broadcasted</code> event is used to report about updates to this value.</p>
+</li>
+</ul>
+<p>Note that these three properties are orthogonal to each other, except for the fact that <code>numBroadcastedPeers</code> can only increase when <code>isValidated: yes</code> and <code>bestChainBlockIncluded: none</code>. In particular, an extrinsic can be included in a block before being validated or broadcasted.</p>
+<p>The <code>finalized</code>, <code>error</code>, <code>invalid</code>, and <code>dropped</code> event indicate that the extrinsic is no longer being watched. The state of the extrinsic is entirely discarded.</p>
+<p>JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the extrinsic. In other words, multiple <code>validated</code>, <code>broadcasted</code>, or <code>bestChainBlockIncluded</code> events in a row might be merged into one.</p>
+<p><strong>Note</strong>: In order to implement this properly, JSON-RPC servers should maintain a buffer of three notifications (one for each property), and overwrite any unsent notification with a more recent status update.</p>
+<h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
+<p>A JSON-RPC error is generated if the <code>extrinsic</code> parameter has an invalid format, but no error is produced if the bytes of the <code>extrinsic</code>, once decoded, are invalid. Instead, an <code>invalid</code> notification will be generated.</p>
 
                     </main>
 
