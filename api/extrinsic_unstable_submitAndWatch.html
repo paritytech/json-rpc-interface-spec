@@ -142,7 +142,7 @@
 <p><strong>Return value</strong>: String representing the subscription.</p>
 <p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be potentially passed to <code>extrinsic_unstable_unwatch</code>.</p>
 <h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
-<p>This function will later generate a notification in the following format:</p>
+<p>This function will later generate one or more notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;extrinsic_unstable_watchEvent&quot;,
