@@ -177,7 +177,7 @@ It is completely fine to leave functions as unstable forever and never try to st
 <li>&quot;SCALE-encoded&quot; designates a value encoded using <a href="https://docs.substrate.io/v3/advanced/scale-codec/">the SCALE codec</a>.</li>
 </ul>
 <h2 id="the-networkconfig-parameter"><a class="header" href="#the-networkconfig-parameter">The <code>networkConfig</code> parameter</a></h2>
-<p>Many functions below have an optional parameter named <code>networkConfig</code>. This parameter is used when a function needs to request an information from its peers.</p>
+<p>Many functions in the API have an optional parameter named <code>networkConfig</code>. This parameter is used when a function needs to request an information from its peers.</p>
 <p>Requesting an information from a peer involves sending a request to this peer. This request can fail for various reasons: the peer is non responsive, the peer is overwhelmed, the peer is malicious, the peer has a bug in its implementation, etc. Because the request can fail, multiple requests should be attempted towards different peers before the information retrieval fails altogether.</p>
 <p>The passed passed for the <code>networkConfig</code> parameter is a struct defined as:</p>
 <pre><code class="language-json">{
@@ -195,25 +195,25 @@ It is completely fine to leave functions as unstable forever and never try to st
 A JSON-RPC function call that is passed a <code>networkConfig</code> can take, in the worst case scenario, a bit more than <code>timeoutMs * totalAttempts / maxParallel</code> milliseconds.</p>
 <p>The JSON-RPC server implementation is allowed and strongly encouraged to put hard a limit on the values in the <code>networkConfig</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h1>
-<p>Functions with the <code>archive</code> prefix allow obtaining the state of the chain at any point in the past.</p>
-<p>These functions are meant to be used to inspect the history of a chain, and not recent information.</p>
-<p>These functions are typically expensive for a JSON-RPC server, because they likely have to perform some disk access. Consequently, JSON-RPC servers are encouraged to put a global limit on the number of concurrent calls to <code>archive</code>-prefixed functions.</p>
+<p>Functions with the <code>archive</code> prefix allow obtaining the state of the chain at any point in the present or in the past.</p>
+<p>These functions are meant to be used to inspect the history of a chain. They can be used to access recent information as well, but JSON-RPC clients should keep in mind that the <code>chainHead</code> functions could be more appropriate.</p>
+<p>These functions are typically expensive for a JSON-RPC server, because they likely have to perform either disk accesses or network requests. Consequently, JSON-RPC servers are encouraged to put a global limit on the number of concurrent calls to <code>archive</code>-prefixed functions.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_body"><a class="header" href="#archive_unstable_body">archive_unstable_body</a></h1>
 <p><strong>TODO</strong></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_genesishash"><a class="header" href="#archive_unstable_genesishash">archive_unstable_genesisHash</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
 <p><strong>Return value</strong>: String containing the hexadecimal-encoded hash of the genesis block of the chain.</p>
 <p>This function is a simple getter. The JSON-RPC server is expected to keep in its memory the hash of the genesis block.</p>
-<p>The value returned by this function must never change.</p>
+<p>The value returned by this function must never change for the lifetime of the connection between the JSON-RPC client and server.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_hashbyheight"><a class="header" href="#archive_unstable_hashbyheight">archive_unstable_hashByHeight</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
 <li><code>height</code>: String containing an hexadecimal-encoded integer.</li>
-<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See above for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the query in progress.</p>
 <p>The JSON-RPC client must find the blocks (zero, one, or more) whose height is the one passed as parameter. If the <code>height</code> is inferior or equal to the finalized block height, then only finalized blocks must be fetched and returned.</p>
-<p>This function will later generate a notification looking like this:</p>
+<p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;archive_unstable_hashByHeightEvent&quot;,
@@ -237,10 +237,10 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p><strong>Parameters</strong>:</p>
 <ul>
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header to retreive.</li>
-<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See above for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the query in progress.</p>
-<p>This function will later generate a notification looking like this:</p>
+<p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;archive_unstable_headerEvent&quot;,
@@ -265,10 +265,8 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>Only one notification will ever be generated.</p>
 <p><strong>Note</strong>: Other events might be added in the future, such as reports on the progress of the call.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
-<ul>
-<li>If the block hash passed as parameter doesn't correspond to any known block, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</li>
-<li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</li>
-</ul>
+<p>If the block hash passed as parameter doesn't correspond to any known block, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</p>
+<p>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</p>
 <p>Due to the way blockchains work, it is never possible to be certain that a block doesn't exist. For this reason, networking-related errors and unknown block errors are reported in the same way.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_stopbody"><a class="header" href="#archive_unstable_stopbody">archive_unstable_stopBody</a></h1>
 <p><strong>TODO</strong></p>
@@ -309,7 +307,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>key</code>: String containing the hexadecimal-encoded key to fetch in the storage.</li>
 <li><code>childKey</code>: <code>null</code> for main storage look-ups, or a string containing the hexadecimal-encoded key of the trie key of the trie that <code>key</code> refers to. <strong>TODO</strong>: I don't know enough about child tries to design this properly</li>
 <li><code>type</code>: String that must be equal to one of: <code>value</code>, <code>hash</code>, or <code>size</code>.</li>
-<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See above for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
 <p>This function works the same way as <code>chainHead_unstable_storage</code>, except that it is not connected to a chain head follow, and no <code>disjoint</code> event can be generated.</p>
@@ -323,7 +321,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <ul>
 <li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
 <li><code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose body to fetch.</li>
-<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See above for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the body fetch in progress.</p>
 <p>The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.</p>
@@ -372,11 +370,11 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header of the block to make the call against.</li>
 <li><code>function</code>: Name of the runtime entry point to call as a string.</li>
 <li><code>callParameters</code>: Array containing a list of hexadecimal-encoded SCALE-encoded parameters to pass to the runtime function.</li>
-<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See above for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the call in progress.</p>
 <p><strong>TODO</strong>: in order to perform the runtime call, the implementation of this function will simply concatenate all the parameters (without any separator), so does it make sense for the JSON-RPC function to require to split them into an array?</p>
-<p>This function will later generate a notification looking like this:</p>
+<p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_callEvent&quot;,
@@ -541,7 +539,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <p><strong>Parameters</strong>: <em>none</em></p>
 <p><strong>Return value</strong>: String containing the hexadecimal-encoded hash of the genesis block of the chain.</p>
 <p>This function is a simple getter. The JSON-RPC server is expected to keep in its memory the hash of the genesis block.</p>
-<p>The value returned by this function must never change.</p>
+<p>The value returned by this function must never change for the lifetime of the connection between the JSON-RPC client and server.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_header"><a class="header" href="#chainhead_unstable_header">chainHead_unstable_header</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
@@ -596,7 +594,7 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <li><code>key</code>: String containing the hexadecimal-encoded key to fetch in the storage.</li>
 <li><code>childKey</code>: <code>null</code> for main storage look-ups, or a string containing the hexadecimal-encoded key of the trie key of the trie that <code>key</code> refers to. <strong>TODO</strong>: I don't know enough about child tries to design this properly</li>
 <li><code>type</code>: String that must be equal to one of: <code>value</code>, <code>hash</code>, or <code>size</code>.</li>
-<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See above for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the storage fetch in progress.</p>
 <p>The JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> (and possibly <code>childKey</code>) from the storage.</p>
@@ -676,18 +674,20 @@ If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainspec_unstable_chainname"><a class="header" href="#chainspec_unstable_chainname">chainSpec_unstable_chainName</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
 <p><strong>Return value</strong>: String containing the human-readable name of the chain.</p>
-<p>The value returned by this function must never change.</p>
+<p>The value returned by this function must never change for the lifetime of the connection between the JSON-RPC client and server.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainspec_unstable_genesishash"><a class="header" href="#chainspec_unstable_genesishash">chainSpec_unstable_genesisHash</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
 <p><strong>Return value</strong>: String containing the hexadecimal-encoded hash of the genesis block of the chain.</p>
 <p>This function is a simple getter. The JSON-RPC server is expected to keep in its memory the hash of the genesis block.</p>
-<p>The value returned by this function must never change.</p>
+<p>The value returned by this function must never change for the lifetime of the connection between the JSON-RPC client and server.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainspec_unstable_properties"><a class="header" href="#chainspec_unstable_properties">chainSpec_unstable_properties</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
 <p><strong>Return value</strong>: <em>any</em></p>
 <p>Returns the JSON payload found in the chain specification under the key <code>properties</code>. No guarantee is offered about the content of this object.</p>
-<p>The value returned by this function must never change.</p>
-<p><strong>TODO</strong>: is that bad? stronger guarantees?</p>
+<p>The value returned by this function must never change for the lifetime of the connection between the JSON-RPC client and server.</p>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>Because no guarantee is offered about the nature of the returned value, this JSON-RPC function should preferably be used in a context where the JSON-RPC client knows what the <code>properties</code> field contains.</p>
+<p>The <code>properties</code> field is a useful way for a chain developer to store important information about their chain, such as the name of the token or the number of decimals. Without this field, important constants would need to be copy-pasted across all UIs that connect to said chain, potentially leading to mistakes.</p>
 <div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="extrinsic_unstable_submitandwatch"><a class="header" href="#extrinsic_unstable_submitandwatch">extrinsic_unstable_submitAndWatch</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>

@@ -143,7 +143,7 @@
 <li>&quot;SCALE-encoded&quot; designates a value encoded using <a href="https://docs.substrate.io/v3/advanced/scale-codec/">the SCALE codec</a>.</li>
 </ul>
 <h2 id="the-networkconfig-parameter"><a class="header" href="#the-networkconfig-parameter">The <code>networkConfig</code> parameter</a></h2>
-<p>Many functions below have an optional parameter named <code>networkConfig</code>. This parameter is used when a function needs to request an information from its peers.</p>
+<p>Many functions in the API have an optional parameter named <code>networkConfig</code>. This parameter is used when a function needs to request an information from its peers.</p>
 <p>Requesting an information from a peer involves sending a request to this peer. This request can fail for various reasons: the peer is non responsive, the peer is overwhelmed, the peer is malicious, the peer has a bug in its implementation, etc. Because the request can fail, multiple requests should be attempted towards different peers before the information retrieval fails altogether.</p>
 <p>The passed passed for the <code>networkConfig</code> parameter is a struct defined as:</p>
 <pre><code class="language-json">{

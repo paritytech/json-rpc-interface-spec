@@ -138,10 +138,10 @@
 <p><strong>Parameters</strong>:</p>
 <ul>
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header to retreive.</li>
-<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See above for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: An opaque string that identifies the query in progress.</p>
-<p>This function will later generate a notification looking like this:</p>
+<p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;archive_unstable_headerEvent&quot;,
@@ -166,10 +166,8 @@
 <p>Only one notification will ever be generated.</p>
 <p><strong>Note</strong>: Other events might be added in the future, such as reports on the progress of the call.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
-<ul>
-<li>If the block hash passed as parameter doesn't correspond to any known block, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</li>
-<li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</li>
-</ul>
+<p>If the block hash passed as parameter doesn't correspond to any known block, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</p>
+<p>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</p>
 <p>Due to the way blockchains work, it is never possible to be certain that a block doesn't exist. For this reason, networking-related errors and unknown block errors are reported in the same way.</p>
 
                     </main>
