@@ -168,7 +168,7 @@
     &quot;numPeers&quot;: ...
 }
 </code></pre>
-<p>The ̀<code>broadcasted</code> event indicates the number of other peers this extrinsic has been broadcasted to.</p>
+<p>The <code>broadcasted</code> event indicates the number of other peers this extrinsic has been broadcasted to.</p>
 <p><code>numPeers</code> is the total number of individual peers this extrinsic has been broadcasted to.</p>
 <p>The JSON-RPC server doesn't (and can't) offer any guarantee that these peers have received the extrinsic or have saved it in their own transactions pool. In other words, no matter how large the value in <code>numPeers</code> is, no guarantee is offered that shutting down the local node will lead to the extrinsic being included.</p>
 <p><strong>Note</strong>: In principle, a value of <code>numPeers</code> equal to 0 guarantees that shutting down the local node will lead to the extrinsic <em>not</em> being included, assuming that no other node has submitted the same extrinsic. However, because JSON-RPC servers are allowed to delay or skip events, the JSON-RPC client can never be sure that <code>numPeers</code> was still equal to 0 when shutting down the node.</p>
