@@ -137,7 +137,7 @@
                         <h1 id="chainhead_unstable_call"><a class="header" href="#chainhead_unstable_call">chainHead_unstable_call</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
+<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>. The <code>runtimeUpdates</code> parameter of the call must have been equal to <code>true</code>.</li>
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header of the block to make the call against.</li>
 <li><code>function</code>: Name of the runtime entry point to call as a string.</li>
 <li><code>callParameters</code>: Array containing a list of hexadecimal-encoded SCALE-encoded parameters to pass to the runtime function.</li>
@@ -146,6 +146,8 @@
 <p><strong>Return value</strong>: An opaque string that identifies the call in progress.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_call</code> if instead you want to call the runtime of an arbitrary block.</p>
 <p><strong>TODO</strong>: in order to perform the runtime call, the implementation of this function will simply concatenate all the parameters (without any separator), so does it make sense for the JSON-RPC function to require to split them into an array?</p>
+<p><strong>Note</strong>: This can be used as a replacement for the legacy <code>state_getMetadata</code>, <code>system_accountNextIndex</code>, and <code>payment_queryInfo</code>.</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
 <p>This function will later generate a notification in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
@@ -156,36 +158,53 @@
     }
 }
 </code></pre>
-<p>Where <code>result</code> can be:</p>
+<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<h3 id="done"><a class="header" href="#done">done</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
     &quot;output&quot;: &quot;0x0000000...&quot;
 }
 </code></pre>
-<p>Where <code>output</code> is the hexadecimal-encoded output of the runtime function call.</p>
-<p>Alternatively, <code>result</code> can also be:</p>
+<p>The <code>done</code> event indicates that everything was successful.</p>
+<p><code>output</code> is the hexadecimal-encoded output of the runtime function call.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<h3 id="inaccessible"><a class="header" href="#inaccessible">inaccessible</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;failed&quot;,
+    &quot;event&quot;: &quot;inaccessible&quot;,
     &quot;error&quot;: &quot;...&quot;
 }
 </code></pre>
-<p>Where <code>error</code> is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
-<p>Alternatively, if the <code>followSubscriptionId</code> is dead, then <code>result</code> can also be:</p>
+<p>The <code>inaccessible</code> event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the call.</p>
+<p><code>error</code> is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
+<p>Contrary to the <code>error</code> event, repeating the same call in the future might succeed.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<h3 id="error"><a class="header" href="#error">error</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;error&quot;,
+    &quot;error&quot;: &quot;...&quot;
+}
+</code></pre>
+<p>The <code>error</code> event indicates a problem during the call to the runtime, such the function missing or a runtime panic.</p>
+<p>Contrary to the <code>inaccessible</code> event, repeating the same call in the future will not succeed.</p>
+<p><code>error</code> is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<h3 id="disjoint"><a class="header" href="#disjoint">disjoint</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
 }
 </code></pre>
-<p>Only one notification will ever be generated.</p>
-<p><strong>Note</strong>: Other events might be added in the future, such as reports on the progress of the call.</p>
-<p><strong>Note</strong>: This can be used as a replacement for <code>state_getMetadata</code>, <code>system_accountNextIndex</code>, and <code>payment_queryInfo</code>.</p>
+<p>The <code>disjoint</code> event indicates that the provided <code>followSubscriptionId</code> is dead.</p>
+<p>No more event will be generated with this <code>subscriptionId</code>.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
-<p><strong>TODO</strong>: more precise</p>
 <ul>
-<li>If the block hash passed as parameter doesn't correspond to any known block, then a <code>{&quot;event&quot;:&quot;failed&quot;,&quot;error&quot;:&quot;...&quot;}</code> notification is generated (as explained above).</li>
-<li>If the JSON-RPC server is incapable of executing the Wasm runtime of the given block, a JSON-RPC error should be returned.</li>
-<li>If the method to call doesn't exist in the Wasm runtime of the chain, <strong>TODO</strong>.</li>
-<li>If the runtime call fails (e.g. because it triggers a panic in the runtime, running out of memory, etc., or if the runtime call takes too much time), then <strong>TODO</strong>.</li>
-<li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;:&quot;failed&quot;,&quot;error&quot;:&quot;...&quot;}</code> notification is generated (as explained above).</li>
+<li>If the networking part of the behaviour fails, then an <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</li>
+<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is invalid.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> corresponds to a follow where <code>runtimeUpdates</code> was <code>̀false</code>.</li>
+<li>If the <code>followSubscriptionId</code> is dead, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
+<li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
+<li>If the method to call doesn't exist in the Wasm runtime of the chain, then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
+<li>If the runtime call fails (e.g. because it triggers a panic in the runtime, running out of memory, etc., or if the runtime call takes too much time), then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
 </ul>
 
                     </main>

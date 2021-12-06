@@ -160,14 +160,14 @@
 <p>Where <code>output</code> is a string containing the hexadecimal-encoded SCALE-codec encoding of the header of the block.</p>
 <p>Alternatively, <code>result</code> can also be:</p>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;failed&quot;
+    &quot;event&quot;: &quot;inaccessible&quot;
 }
 </code></pre>
 <p>Only one notification will ever be generated.</p>
 <p><strong>Note</strong>: Other events might be added in the future, such as reports on the progress of the call.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
-<p>If the block hash passed as parameter doesn't correspond to any known block, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</p>
-<p>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;failed&quot;}</code> notification is generated (as explained above).</p>
+<p>If the block hash passed as parameter doesn't correspond to any known block, then a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</p>
+<p>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</p>
 <p>Due to the way blockchains work, it is never possible to be certain that a block doesn't exist. For this reason, networking-related errors and unknown block errors are reported in the same way.</p>
 
                     </main>
