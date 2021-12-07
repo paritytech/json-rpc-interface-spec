@@ -190,6 +190,7 @@ It is completely fine to leave functions as unstable forever and never try to st
 <li>The number of pinned blocks (in the context of <code>chainHead_unstable_follow</code>) must be bounded.</li>
 </ul>
 <p>The limits on the number of active subscriptions and pinned block should be enforced per client, as it would be undesirable to limit the number of subscriptions/pinned blocks available to some clients just because other clients are using a lot of them. Since the number of clients is bounded, enforcing these limits per client also automatically enforces these limits globally.</p>
+<p>Note that the limit on the number of JSON-RPC clients simultaneously connected should be enforced by rejecting new clients with a 503 status code, rather than for example closing the TCP socket altogether. This makes it possible for other software in front of the JSON-RPC server, such as a load balancer, to understand what the problem is.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api-specification"><a class="header" href="#api-specification">API specification</a></h1>
 <p>Note that all parameters are mandatory unless specified otherwise. All functions support two ways of calling them: either by passing an array with an ordered list of parameters, or by passing an object where parameters are named.</p>
 <p>Any missing parameter, or parameter with an invalid format, should result in a JSON-RPC error being returned, as described in the JSON-RPC specification.</p>
