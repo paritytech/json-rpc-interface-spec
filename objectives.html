@@ -143,7 +143,7 @@
 <li>Oracles or bridges need to be able to read and interface with the blockchain.</li>
 <li>Archivers want to look at past data.</li>
 </ul>
-<p>## End-user-facing applications</p>
+<h2 id="end-user-facing-applications"><a class="header" href="#end-user-facing-applications">End-user-facing applications</a></h2>
 <p>End-user-facing applications, such as a wallet or an unstoppable application, need to be able to read the storage of the blockchain and submit transactions.</p>
 <p>These applications perform JSON-RPC function calls either against a node run locally by the end-user, or against a trusted JSON-RPC server. The locally-run node solution is strictly better for security and decentralization reasons, and we would like to encourage this. The trusted JSON-RPC server should be used as a back-up solution only in case it is not possible to run a node locally.</p>
 <p>In order to be more user-friendly, a node run locally is very often a <em>light client</em> that doesn't hold the storage of the blockchain in its memory. The JSON-RPC functions are designed having in mind the fact that the target of the function calls might be a light client that doesn't have all the needed information immediately available.</p>
@@ -162,7 +162,7 @@
 <p>When debugging the chain or the node implementation, developers rarely care about the stability of the function they use. They perform manual function calls using some tools (either a UI or a CLI tool) and throw away the function call once they're finished debugging.</p>
 <p>In order to accomodate this audience, it should be relatively easy to perform a JSON-RPC function call manually, and developers should be able to easily add to the interface new semi-temporary JSON-RPC functions specific to their debugging needs.</p>
 <p>The target of the JSON-RPC function calls is either their own node, or a specific node that has encountered an issue, and the bandwidth consumption and latency of the JSON-RPC functions isn't very important for this usage.</p>
-<p>## Oracles and bridges</p>
+<h2 id="oracles-and-bridges"><a class="header" href="#oracles-and-bridges">Oracles and bridges</a></h2>
 <p>Oracles and bridges consist for example in cryptocurencies exchanges or any software that programmatically interacts with a chain.</p>
 <p>Contrary to end-user-facing applications, no human is interfacing directly or indirectly with the JSON-RPC client. Everything is automatic.
 However, everything said in the section about end-user-facing applications also applies here.</p>
