@@ -283,7 +283,7 @@
 <p><code>implVersion</code>: Opaque integer. Whenever the runtime code changes in a backwards-compatible way, the <code>implVersion</code> is modified while the <code>specVersion</code> is left untouched.</p>
 </li>
 <li>
-<p><code>transactionVersion</code>: Opaque integer. Necessary when building the bytes of an transaction. Transactions that have been generated with a different <code>transactionVersion</code> are incompatible.</p>
+<p><code>transactionVersion</code>: Opaque integer. Necessary when building the bytes of a transaction. Transactions that have been generated with a different <code>transactionVersion</code> are incompatible.</p>
 </li>
 <li>
 <p><code>apis</code>: Object containing a list of &quot;entry point APIs&quot; supported by the runtime. Each key is a string containing the hexadecimal-encoded 8-bytes blake2 hash of the name of the API, and each value is an integer version number. Before making a runtime call (using <code>chainHead_unstable_call</code>), you should make sure that this list contains the entry point API corresponding to the call and with a known version number.</p>

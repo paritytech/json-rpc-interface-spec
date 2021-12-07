@@ -696,7 +696,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p><code>implVersion</code>: Opaque integer. Whenever the runtime code changes in a backwards-compatible way, the <code>implVersion</code> is modified while the <code>specVersion</code> is left untouched.</p>
 </li>
 <li>
-<p><code>transactionVersion</code>: Opaque integer. Necessary when building the bytes of an transaction. Transactions that have been generated with a different <code>transactionVersion</code> are incompatible.</p>
+<p><code>transactionVersion</code>: Opaque integer. Necessary when building the bytes of a transaction. Transactions that have been generated with a different <code>transactionVersion</code> are incompatible.</p>
 </li>
 <li>
 <p><code>apis</code>: Object containing a list of &quot;entry point APIs&quot; supported by the runtime. Each key is a string containing the hexadecimal-encoded 8-bytes blake2 hash of the name of the API, and each value is an integer version number. Before making a runtime call (using <code>chainHead_unstable_call</code>), you should make sure that this list contains the entry point API corresponding to the call and with a known version number.</p>
@@ -920,7 +920,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>The return value shouldn't be parsed by a program. It is purely meant to be shown to a human.</p>
 <p><strong>Note</strong>: Example return values: &quot;polkadot 0.9.12-ec34cf7e0-x86_64-linux-gnu&quot;, &quot;smoldot-light 0.5.4&quot;</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-6"><a class="header" href="#introduction-6">Introduction</a></h1>
-<p>The <code>transaction</code> functions allow submitting an transaction for inclusion in the chain.</p>
+<p>The <code>transaction</code> functions allow submitting a transaction for inclusion in the chain.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="transaction_unstable_submitandwatch"><a class="header" href="#transaction_unstable_submitandwatch">transaction_unstable_submitAndWatch</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
@@ -947,7 +947,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </code></pre>
 <p>The <code>validated</code> event indicates that this transaction has been checked and is considered as valid by the runtime.</p>
 <p>This transaction might still become invalid in the future, for example because a conflicting transaction is included in the chain in-between.</p>
-<p>Multiple <code>validated</code> events can be generated during the lifetime of an transaction. If multiple <code>validated</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last one.</p>
+<p>Multiple <code>validated</code> events can be generated during the lifetime of a transaction. If multiple <code>validated</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last one.</p>
 <p><strong>Note</strong>: In theory, this event could include a field indicating the block against which this transaction was validated. It has been decided to not include this field for pragmatic reasons: implementing it might be complicated, and it is not very useful for a JSON-RPC client to know this information.</p>
 <h3 id="broadcasted"><a class="header" href="#broadcasted">broadcasted</a></h3>
 <pre><code class="language-json">{
@@ -976,7 +976,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 }
 </code></pre>
 <p>The <code>bestChainBlockIncluded</code> event indicates which block of the best chain the transaction is included in.</p>
-<p><code>null</code> can be sent back in case the block is no longer in any block of the best chain. This is the state an transaction starts in.</p>
+<p><code>null</code> can be sent back in case the block is no longer in any block of the best chain. This is the state a transaction starts in.</p>
 <p><code>hash</code> is a string containing the hexadecimal-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this transaction within the body of this block.</p>
 <p>If multiple <code>bestChainBlockIncluded</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last.</p>
 <p><strong>Note</strong>: Please note that these is no guarantee that the mentioned block matches any of the blocks returned by <code>chainHead_unstable_follow</code>.</p>
@@ -999,7 +999,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 }
 </code></pre>
 <p>The <code>error</code> event indicates that an internal error within the client has happened.</p>
-<p>Examples include: the runtime crashes, the runtime is missing the function to validate an transaction, the format of the value returned by the runtime is invalid, etc.</p>
+<p>Examples include: the runtime crashes, the runtime is missing the function to validate a transaction, the format of the value returned by the runtime is invalid, etc.</p>
 <p>This typically indicates a bug in the runtime of the chain or an incompatibility between the client and the runtime of the chain, and there is nothing the end user can do to fix the problem.</p>
 <p>The transaction that has been submitted will not be included in the chain by the local node, but it could be included by sending it via a different client implementation.</p>
 <p><code>error</code> is a human-readable error message indicating what happened. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
@@ -1027,19 +1027,19 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p><code>error</code> is a human-readable error message indicating why the transaction has been dropped. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p>No more event will be generated about this transaction.</p>
 <h2 id="transaction-state"><a class="header" href="#transaction-state">Transaction state</a></h2>
-<p>One can build a mental model in order to understand which events can be generated. While an transaction is being watched, it has the following properties:</p>
+<p>One can build a mental model in order to understand which events can be generated. While a transaction is being watched, it has the following properties:</p>
 <ul>
 <li>
-<p><code>isValidated</code>: <code>yes</code> or <code>not-yet</code>. An transaction is initially <code>not-yet</code> validated. A <code>validated</code> event indicates that the transaction has now been validated. After a certain number of blocks or in case of retractation, an transaction automatically becomes <code>not-yet</code> validated and needs to be validated again. No event is generated to indicate that an transaction is no longer validated, however a <code>validated</code> event will be generated again when an transaction is validated again.</p>
+<p><code>isValidated</code>: <code>yes</code> or <code>not-yet</code>. A transaction is initially <code>not-yet</code> validated. A <code>validated</code> event indicates that the transaction has now been validated. After a certain number of blocks or in case of retractation, a transaction automatically becomes <code>not-yet</code> validated and needs to be validated again. No event is generated to indicate that a transaction is no longer validated, however a <code>validated</code> event will be generated again when a transaction is validated again.</p>
 </li>
 <li>
-<p><code>bestChainBlockIncluded</code>: an optional block hash and index. An transaction is initially included in no block. It can automatically become included in a block of the best chain. A <code>bestChainBlockIncluded</code> event reports updates to this property.</p>
+<p><code>bestChainBlockIncluded</code>: an optional block hash and index. A transaction is initially included in no block. It can automatically become included in a block of the best chain. A <code>bestChainBlockIncluded</code> event reports updates to this property.</p>
 </li>
 <li>
-<p><code>numBroadcastedPeers</code>: <em>integer</em>. An transaction is initially broadcasted to 0 other peers. After an transaction is in the <code>isValidated: yes</code> and <code>bestChainBlockIncluded: none</code> states, the number of broadcaster peers can increase. This number never decreases and is never reset to 0, even if an transaction becomes <code>isValidated: not-yet</code>. The <code>broadcasted</code> event is used to report about updates to this value.</p>
+<p><code>numBroadcastedPeers</code>: <em>integer</em>. A transaction is initially broadcasted to 0 other peers. After a transaction is in the <code>isValidated: yes</code> and <code>bestChainBlockIncluded: none</code> states, the number of broadcaster peers can increase. This number never decreases and is never reset to 0, even if a transaction becomes <code>isValidated: not-yet</code>. The <code>broadcasted</code> event is used to report about updates to this value.</p>
 </li>
 </ul>
-<p>Note that these three properties are orthogonal to each other, except for the fact that <code>numBroadcastedPeers</code> can only increase when <code>isValidated: yes</code> and <code>bestChainBlockIncluded: none</code>. In particular, an transaction can be included in a block before being validated or broadcasted.</p>
+<p>Note that these three properties are orthogonal to each other, except for the fact that <code>numBroadcastedPeers</code> can only increase when <code>isValidated: yes</code> and <code>bestChainBlockIncluded: none</code>. In particular, a transaction can be included in a block before being validated or broadcasted.</p>
 <p>The <code>finalized</code>, <code>error</code>, <code>invalid</code>, and <code>dropped</code> event indicate that the transaction is no longer being watched. The state of the transaction is entirely discarded.</p>
 <p>JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the transaction. In other words, multiple <code>validated</code>, <code>broadcasted</code>, or <code>bestChainBlockIncluded</code> events in a row might be merged into one.</p>
 <p><strong>Note</strong>: In order to implement this properly, JSON-RPC servers should maintain a buffer of three notifications (one for each property), and overwrite any unsent notification with a more recent status update.</p>
