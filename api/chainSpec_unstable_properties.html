@@ -138,6 +138,7 @@
 <p><strong>Parameters</strong>: <em>none</em></p>
 <p><strong>Return value</strong>: <em>any</em></p>
 <p>Returns the JSON payload found in the chain specification under the key <code>properties</code>. No guarantee is offered about the content of this object.</p>
+<p>The JSON-RPC server is allowed to re-format the JSON payload found in the chain specification. In other words, whitespaces aren't necessarily preserved.</p>
 <p>The value returned by this function must never change for the lifetime of the connection between the JSON-RPC client and server.</p>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <p>Because no guarantee is offered about the nature of the returned value, this JSON-RPC function is expected to be used in contexts where the JSON-RPC client knows what the <code>properties</code> field contains.</p>
