@@ -937,8 +937,8 @@ The multiaddress passed as parameter should contain the address and identity of 
 <h2 id="about-errors"><a class="header" href="#about-errors">About errors</a></h2>
 <p>It could be useful for a JSON-RPC client to be able to distinguish between addresses that are completely malformed, and would return an error on all JSON-RPC servers, and addresses that contain unsupported protocols, which could be supported by other JSON-RPC servers.</p>
 <p>A better API for this function would consist in returning a JSON-RPC error only if the address if malformed, and a successful response containing a boolean equal to <code>false</code> if the address contains unsupported protocols.</p>
-<p>However, this would force JSON-RPC servers to support parsing all the protocols currently defined in the multiaddress specification. Because the multiaddress specification doesn't use any versioning and is constantly getting new protocols, this would be impossible to enforce.</p>
-<p>Instead, an unsupported protocol and an unrecognized protocol lead to the same JSON-RPC error so that JSON-RPC servers only need to be able to parse the protocols they support.</p>
+<p>However, this would force JSON-RPC servers to support parsing all the protocols currently defined in the multiaddress specification. Because the multiaddress specification doesn't use proper versioning and is constantly getting new protocol additions, this would be impossible to enforce.</p>
+<p>Instead, an unsupported protocol and an unsupported protocol lead to the same JSON-RPC error so that JSON-RPC servers only need to be able to parse the protocols they support.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sudo_unstable_pendingtransactions"><a class="header" href="#sudo_unstable_pendingtransactions">sudo_unstable_pendingTransactions</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sudo_unstable_removereservedpeer"><a class="header" href="#sudo_unstable_removereservedpeer">sudo_unstable_removeReservedPeer</a></h1>
 <p><strong>TODO</strong>: same as <code>system_removeReservedPeer</code> but properly defined</p>
