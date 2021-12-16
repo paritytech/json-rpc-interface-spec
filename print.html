@@ -941,6 +941,9 @@ The multiaddress passed as parameter should contain the address and identity of 
 <p>However, this would force JSON-RPC servers to support parsing all the protocols currently defined in the multiaddress specification. Because the multiaddress specification doesn't use proper versioning and is constantly getting new protocol additions, this would be tedious to enforce.</p>
 <p>Instead, an invalid multiaddress and an unsupported protocol lead to the same JSON-RPC error so that JSON-RPC servers only need to be able to parse the protocols they support.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sudo_unstable_pendingtransactions"><a class="header" href="#sudo_unstable_pendingtransactions">sudo_unstable_pendingTransactions</a></h1>
+<p><strong>Parameters</strong>: <em>none</em></p>
+<p><strong>Return value</strong>: Array of string containing hexadecimal-encoded SCALE-encoded transactions that are in the transactions pool of the node.</p>
+<p><strong>TODO</strong>: is this function actually necessary?</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sudo_unstable_rotatekeys"><a class="header" href="#sudo_unstable_rotatekeys">sudo_unstable_rotateKeys</a></h1>
 <p><strong>TODO</strong>: same as <code>author_rotateKeys</code></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sudo_unstable_version"><a class="header" href="#sudo_unstable_version">sudo_unstable_version</a></h1>
