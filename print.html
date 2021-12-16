@@ -929,6 +929,8 @@ The multiaddress passed as parameter should contain the address and identity of 
 <p>The JSON-RPC server might start connecting to this node, but it is also free to entirely ignore it.</p>
 <p>An example of a valid multiaddress is <code>/ip4/10.2.83.208/tcp/30333/p2p/12D3KooWSNvfxTYrtxqAGmYM1VAtg6YMuAGWvjQ28UvoYoBBgANr</code>.</p>
 <p>A JSON-RPC error should be returned if the JSON-RPC server doesn't support the protocols in the address. In this example, the JSON-RPC server should return an error if it doesn't support plain TCP connections.</p>
+<p>Because a JSON-RPC server is also free to completely ignore the address, it is not strictly mandatory to return a JSON-RPC error when its protocols are not supported.</p>
+<p>However, a JSON-RPC server must always return a JSON-RPC error if it couldn't parse the address. A JSON-RPC client can rely on this behavior to validate user-provided multiaddresses.</p>
 <h2 id="possible-errors-9"><a class="header" href="#possible-errors-9">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if the JSON-RPC couldn't parse <code>multiaddr</code>.</li>
