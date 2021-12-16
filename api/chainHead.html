@@ -149,10 +149,13 @@
 <p>When the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;initialized&quot;}</code> notification with <code>subscriptionId</code> equal to your <code>followSubscriptionId</code>, store the value of <code>finalizedBlockHash</code> in that notification.</p>
 </li>
 <li>
-<p>Call <code>chainHead_unstable_call</code> with <code>hash</code> equal to the <code>finalizedBlockHash</code> you've just retrieved, <code>function</code> equal to <code>Metadata_metadata</code>, and an empty <code>callParameters</code>. <strong>TODO</strong> must check metadata api version</p>
+<p>Make sure that the <code>finalizedBlockRuntime</code> field of the event contains a field <code>type</code> containining <code>valid</code>, and that the <code>spec</code> -&gt; <code>apis</code> object contains a key <code>0xd2bc9897eed08f15</code> whose value is <code>3</code>. This verifies that the runtime of the chain supports the <code>Metadata_metadata</code> function that we will call below (<code>0xd2bc9897eed08f15</code> is the 64bits blake2 hash of the ASCII string <code>Metadata</code>). If it is not the case, enter panic mode as the client software is incompatible with the current state of the blockchain.</p>
 </li>
 <li>
-<p>If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification, jump back to step 3. If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;error&quot;}</code> notification, enter panic mode as the client software is incompatible with the current state of the blockchain. If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification, jump back to step 1. If the JSON-RPC server instead sends back a <code>{&quot;event&quot;: &quot;done&quot;}</code> notification, save the return value.</p>
+<p>Call <code>chainHead_unstable_call</code> with <code>hash</code> equal to the <code>finalizedBlockHash</code> you've just retrieved, <code>function</code> equal to <code>Metadata_metadata</code>, and an empty <code>callParameters</code>.</p>
+</li>
+<li>
+<p>If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification, jump back to step 4 to try again. If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;error&quot;}</code> notification, enter panic mode. If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification, jump back to step 1. If the JSON-RPC server instead sends back a <code>{&quot;event&quot;: &quot;done&quot;}</code> notification, save the return value.</p>
 </li>
 <li>
 <p>The return value you've just saved is called the metadata, prefixed with its SCALE-compact-encoded length. You must decode and parse this metadata. How to do this is out of scope of this small guide. The metadata contains information about the layout of the storage of the chain. Inspect it to determine how to find the storage item you're looking for.</p>
@@ -164,11 +167,11 @@
 <p>You are strongly encouraged to maintain <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Set">a <code>Set</code></a> of the blocks where the runtime changes. Whenever a <code>{&quot;event&quot;: &quot;newBlock&quot;}</code> notification is received with <code>subscriptionId</code> equal to your <code>followSubcriptionId</code>, and <code>newRuntime</code> is non-null, store the provided <code>blockHash</code> in this set.</p>
 </li>
 <li>
-<p>Whenever a <code>{&quot;event&quot;: &quot;finalized&quot;}</code> notification is received with <code>subscriptionId</code> equal to your <code>followSubcriptionId</code>, call <code>chainHead_unstable_unpin</code> once with your current <code>finalizedBlockHash</code> and once for each value in <code>finalizedBlocksHashes</code> except for the last one. The last value in <code>finalizedBlocksHashes</code> becomes your new <code>finalizedBlockHash</code>. If one or more entries of <code>finalizedBlockHashes</code> is found in your <code>Set</code> (see step 6), remove them from the set and jump to step 3 as the metadata has likely been modified. Otherwise, jump to step 6.</p>
+<p>Whenever a <code>{&quot;event&quot;: &quot;finalized&quot;}</code> notification is received with <code>subscriptionId</code> equal to your <code>followSubcriptionId</code>, call <code>chainHead_unstable_unpin</code> once with your current <code>finalizedBlockHash</code> and once for each value in <code>finalizedBlocksHashes</code> except for the last one. The last value in <code>finalizedBlocksHashes</code> becomes your new <code>finalizedBlockHash</code>. If one or more entries of <code>finalizedBlockHashes</code> is found in your <code>Set</code> (see step 7), remove them from the set and jump to step 3 as the metadata has likely been modified. Otherwise, jump to step 7.</p>
 </li>
 </ol>
 <p>Note that these steps are a bit complicated. Any serious user of the JSON-RPC interface is expected to implement high-level wrappers around the various JSON-RPC functions.</p>
-<p>For example, if multiple storage values are desired, only step 6 should be repeated once per storage item. All other steps are application-wide.</p>
+<p>For example, if multiple storage values are desired, only step 7 should be repeated once per storage item. All other steps are application-wide.</p>
 
                     </main>
 
