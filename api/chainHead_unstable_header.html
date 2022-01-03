@@ -143,14 +143,13 @@
 <p><strong>Return value</strong>:</p>
 <ul>
 <li>If the <code>followSubscriptionId</code> is still alive (the vast majority of the time), the hexadecimal-encoded SCALE-encoded header of the block.</li>
-<li>If the <code>followSubscriptionId</code> is dead, <em>null</em>.</li>
+<li>If the <code>followSubscriptionId</code> is invalid or stale, <em>null</em>.</li>
 </ul>
 <p>Retrieves the header of a pinned block.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_header</code> if instead you want to retrieve the header of an arbitrary block.</p>
 <p><strong>Note</strong>: As explained in the documentation of <code>chainHead_unstable_follow</code>, the JSON-RPC server reserves the right to kill an existing subscription and unpin all its blocks at any moment in case it is overloaded or incapable of following the chain. If that happens, <code>chainHead_unstable_header</code> will return <code>null</code>.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is invalid.</li>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
 <li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
 </ul>

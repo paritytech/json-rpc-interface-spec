@@ -143,12 +143,12 @@
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>See explanations in the documentation of <code>chainHead_unstable_follow</code>.</p>
 <p>On-going calls to <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code> and <code>chainHead_unstable_storage</code> against this block will still finish normally.</p>
+<p>Has no effect if the <code>followSubscriptionId</code> is invalid or stale.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> doesn't correspond to any active subscription.</li>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
 <li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
-<li>No error is generated if the <code>followSubscriptionId</code> is dead. The call is simply ignored.</li>
+<li>No error is generated if the <code>followSubscriptionId</code> is invalid or stale. The call is simply ignored.</li>
 </ul>
 
                     </main>
