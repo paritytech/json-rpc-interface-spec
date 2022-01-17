@@ -5,7 +5,10 @@
         <meta charset="UTF-8">
         <title></title>
         <meta name="robots" content="noindex" />
+
+
         <!-- Custom HTML head -->
+        
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,15 +20,18 @@
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
         <link rel="stylesheet" href="css/print.css" media="print">
+
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
         <link rel="stylesheet" href="fonts/fonts.css">
+
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+
     </head>
     <body>
         <!-- Provide site root to javascript -->
@@ -84,7 +90,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -111,6 +117,7 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+
                     </div>
                 </div>
 
@@ -124,6 +131,7 @@
                         </ul>
                     </div>
                 </div>
+
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -489,7 +497,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>. The <code>runtimeUpdates</code> parameter of the call must have been equal to <code>true</code>.</li>
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header of the block to make the call against.</li>
 <li><code>function</code>: Name of the runtime entry point to call as a string.</li>
-<li><code>callParameters</code>: Array containing a list of hexadecimal-encoded SCALE-encoded parameters to pass to the runtime function.</li>
+<li><code>callParameters</code>: Hexadecimal-encoded SCALE-encoded value to pass as input to the runtime function.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
@@ -497,7 +505,6 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p><strong>Note</strong>: Calls are idempotent and never have any side effect. For example they can't be used to modify the storage of the chain. The only motivation for performing a call is to obtain the return value.</p>
 <p>The operation will continue even if the given block is unpinned while it is in progress.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_call</code> if instead you want to call the runtime of an arbitrary block.</p>
-<p><strong>TODO</strong>: in order to perform the runtime call, the implementation of this function will simply concatenate all the parameters (without any separator), so does it make sense for the JSON-RPC function to require to split them into an array?</p>
 <p><strong>Note</strong>: This can be used as a replacement for the legacy <code>state_getMetadata</code>, <code>system_accountNextIndex</code>, and <code>payment_queryInfo</code> functions.</p>
 <h2 id="notifications-format-1"><a class="header" href="#notifications-format-1">Notifications format</a></h2>
 <p>This function will later generate a notification in the following format:</p>
@@ -558,6 +565,8 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li>If the runtime call fails (e.g. because it triggers a panic in the runtime, running out of memory, etc., or if the runtime call takes too much time), then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
 <li>If the runtime call calls a host function that has a side effect, then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
 </ul>
+<h2 id="about-callparameters"><a class="header" href="#about-callparameters">About <code>callParameters</code></a></h2>
+<p>Runtime entry points typically accept multiple input parameters, but this JSON-RPC function accepts as parameter a single hexadecimal-encoded value. The reason is that all the parameters are concatenated together before performing the call anyway. There is no reason to force JSON-RPC clients to provide a proper division between the various parameters if they are all concatenated in the implementation anyway.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_follow"><a class="header" href="#chainhead_unstable_follow">chainHead_unstable_follow</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
@@ -1112,31 +1121,42 @@ The runtime call is done against the current best block of the chain.</p>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+
+
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
             </nav>
 
         </div>
 
+
+
+
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
+
+
         <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
         <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
+
         <script type="text/javascript">
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
         });
         </script>
+
     </body>
 </html>
