@@ -304,7 +304,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;archive_unstable_hashByHeightEvent&quot;,
     &quot;params&quot;: {
-        &quot;subscriptionId&quot;: &quot;...&quot;,
+        &quot;subscription&quot;: &quot;...&quot;,
         &quot;result&quot;: ...
     }
 }
@@ -331,7 +331,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;archive_unstable_headerEvent&quot;,
     &quot;params&quot;:{
-        &quot;subscriptionId&quot;: &quot;...&quot;,
+        &quot;subscription&quot;: &quot;...&quot;,
         &quot;result&quot;: ...
     }
 }
@@ -359,33 +359,33 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_stophashbyheight"><a class="header" href="#archive_unstable_stophashbyheight">archive_unstable_stopHashByHeight</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>subscriptionId</code>: An opaque string that was returned by <code>archive_unstable_hashByHeight</code>.</li>
+<li><code>subscription</code>: An opaque string that was returned by <code>archive_unstable_hashByHeight</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops a query started with <code>archive_unstable_hashByHeight</code>. If the query was still in progress, this interrupts it. If the query was already finished, this call has no effect.</p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive a notification about this call, for example because this notification was already in the process of being sent back by the JSON-RPC server.</p>
 <h2 id="possible-errors-1"><a class="header" href="#possible-errors-1">Possible errors</a></h2>
-<p>A JSON-RPC error is generated if the <code>subscriptionId</code> doesn't correspond to any active subscription.</p>
+<p>A JSON-RPC error is generated if the <code>subscription</code> doesn't correspond to any active subscription.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_stopheader"><a class="header" href="#archive_unstable_stopheader">archive_unstable_stopHeader</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>subscriptionId</code>: An opaque string that was returned by <code>archive_unstable_header</code>.</li>
+<li><code>subscription</code>: An opaque string that was returned by <code>archive_unstable_header</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops a query started with <code>archive_unstable_header</code>. If the query was still in progress, this interrupts it. If the query was already finished, this call has no effect.</p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive a notification about this call, for example because this notification was already in the process of being sent back by the JSON-RPC server.</p>
 <h2 id="possible-errors-2"><a class="header" href="#possible-errors-2">Possible errors</a></h2>
-<p>A JSON-RPC error is generated if the <code>subscriptionId</code> doesn't correspond to any active subscription.</p>
+<p>A JSON-RPC error is generated if the <code>subscription</code> doesn't correspond to any active subscription.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_stopstorage"><a class="header" href="#archive_unstable_stopstorage">archive_unstable_stopStorage</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>subscriptionId</code>: An opaque string that was returned by <code>archive_unstable_storage</code>.</li>
+<li><code>subscription</code>: An opaque string that was returned by <code>archive_unstable_storage</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops a storage fetch started with <code>archive_unstable_storage</code>. If the storage fetch was still in progress, this interrupts it. If the storage fetch was already finished, this call has no effect.</p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive a notification about this storage fetch, for example because this notification was already in the process of being sent back by the JSON-RPC server.</p>
 <h2 id="possible-errors-3"><a class="header" href="#possible-errors-3">Possible errors</a></h2>
-<p>A JSON-RPC error is generated if the <code>subscriptionId</code> doesn't correspond to any active subscription.</p>
+<p>A JSON-RPC error is generated if the <code>subscription</code> doesn't correspond to any active subscription.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_storage"><a class="header" href="#archive_unstable_storage">archive_unstable_storage</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
@@ -407,10 +407,10 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>This beginner guide shows how to use the <code>chainHead</code> functions in order to know the value of a certain storage item.</p>
 <ol>
 <li>
-<p>Call <code>chainHead_unstable_follow</code> with <code>runtimeUpdates: true</code> to obtain a <code>followSubscriptionId</code>. This <code>followSubscriptionId</code> will need to be passed when calling most of the other <code>chainHead</code>-prefixed functions. If at any point in the future the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;stop&quot;}</code> notification, jump back to step 1.</p>
+<p>Call <code>chainHead_unstable_follow</code> with <code>runtimeUpdates: true</code> to obtain a <code>followSubscription</code>. This <code>followSubscription</code> will need to be passed when calling most of the other <code>chainHead</code>-prefixed functions. If at any point in the future the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;stop&quot;}</code> notification, jump back to step 1.</p>
 </li>
 <li>
-<p>When the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;initialized&quot;}</code> notification with <code>subscriptionId</code> equal to your <code>followSubscriptionId</code>, store the value of <code>finalizedBlockHash</code> found in that notification.</p>
+<p>When the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;initialized&quot;}</code> notification with <code>subscription</code> equal to your <code>followSubscription</code>, store the value of <code>finalizedBlockHash</code> found in that notification.</p>
 </li>
 <li>
 <p>Make sure that the <code>finalizedBlockRuntime</code> field of the event contains a field <code>type</code> containining <code>valid</code>, and that the <code>spec</code> -&gt; <code>apis</code> object contains a key <code>0xd2bc9897eed08f15</code> whose value is <code>3</code>. This verifies that the runtime of the chain supports the <code>Metadata_metadata</code> function that we will call below (<code>0xd2bc9897eed08f15</code> is the 64bits blake2 hash of the ASCII string <code>Metadata</code>). If it is not the case, enter panic mode as the client software is incompatible with the current state of the blockchain.</p>
@@ -428,10 +428,10 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>In order to obtain a value in the storage, call <code>chainHead_unstable_storage</code> with <code>hash</code> equal to <code>finalizedBlockHash</code>, <code>key</code> the desired key, and <code>type</code> equal to <code>value</code>. If the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification, jump back to step 1. If the JSON-RPC server instead sends back a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification, the value you're looking for is unfortunately inaccessible and you can either try again or give up. If the JSON-RPC server instead sends back a <code>{&quot;event&quot;: &quot;done&quot;}</code> notification, you can find the desired value inside.</p>
 </li>
 <li>
-<p>You are strongly encouraged to maintain <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Set">a <code>Set</code></a> of the blocks where the runtime changes. Whenever a <code>{&quot;event&quot;: &quot;newBlock&quot;}</code> notification is received with <code>subscriptionId</code> equal to your <code>followSubcriptionId</code>, and <code>newRuntime</code> is non-null, store the provided <code>blockHash</code> in this set.</p>
+<p>You are strongly encouraged to maintain <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Set">a <code>Set</code></a> of the blocks where the runtime changes. Whenever a <code>{&quot;event&quot;: &quot;newBlock&quot;}</code> notification is received with <code>subscription</code> equal to your <code>followSubcriptionId</code>, and <code>newRuntime</code> is non-null, store the provided <code>blockHash</code> in this set.</p>
 </li>
 <li>
-<p>Whenever a <code>{&quot;event&quot;: &quot;finalized&quot;}</code> notification is received with <code>subscriptionId</code> equal to your <code>followSubcriptionId</code>, call <code>chainHead_unstable_unpin</code> once with your current <code>finalizedBlockHash</code>, once for each <code>prunedBlocksHashes</code>, and once for each value in <code>finalizedBlocksHashes</code> except for the last one. The last value in <code>finalizedBlocksHashes</code> becomes your new <code>finalizedBlockHash</code>. If one or more entries of <code>finalizedBlockHashes</code> is found in your <code>Set</code> (see step 7), remove them from the set and jump to step 3 as the metadata has likely been modified. Otherwise, jump to step 7.</p>
+<p>Whenever a <code>{&quot;event&quot;: &quot;finalized&quot;}</code> notification is received with <code>subscription</code> equal to your <code>followSubcriptionId</code>, call <code>chainHead_unstable_unpin</code> once with your current <code>finalizedBlockHash</code>, once for each <code>prunedBlocksHashes</code>, and once for each value in <code>finalizedBlocksHashes</code> except for the last one. The last value in <code>finalizedBlocksHashes</code> becomes your new <code>finalizedBlockHash</code>. If one or more entries of <code>finalizedBlockHashes</code> is found in your <code>Set</code> (see step 7), remove them from the set and jump to step 3 as the metadata has likely been modified. Otherwise, jump to step 7.</p>
 </li>
 </ol>
 <p>Note that these steps are a bit complicated. Any serious user of the JSON-RPC interface is expected to implement high-level wrappers around the various JSON-RPC functions.</p>
@@ -439,7 +439,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_body"><a class="header" href="#chainhead_unstable_body">chainHead_unstable_body</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
+<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
 <li><code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose body to fetch.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
@@ -453,12 +453,12 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_bodyEvent&quot;,
     &quot;params&quot;: {
-        &quot;subscriptionId&quot;: &quot;...&quot;,
+        &quot;subscription&quot;: &quot;...&quot;,
         &quot;result&quot;: ...
     }
 }
 </code></pre>
-<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<p>Where <code>subscription</code> is the value returned by this function, and <code>result</code> can be one of:</p>
 <h3 id="done"><a class="header" href="#done">done</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
@@ -468,7 +468,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>The <code>done</code> event indicates that everything was successful.</p>
 <p><code>value</code> is an array of strings containing the hexadecimal-encoded SCALE-encoded extrinsics found in this block.</p>
 <p><strong>Note</strong>: Note that the order of extrinsics is important. Extrinsics in the chain are uniquely identified by a <code>(blockHash, index)</code> tuple.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="inaccessible"><a class="header" href="#inaccessible">inaccessible</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;inaccessible&quot;
@@ -476,25 +476,25 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </code></pre>
 <p>The <code>inaccessible</code> event indicates that the body has failed to be retrieved from the network.</p>
 <p>Trying again later might succeed.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="disjoint"><a class="header" href="#disjoint">disjoint</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
 }
 </code></pre>
-<p>The <code>disjoint</code> event indicates that the <code>followSubscriptionId</code> is invalid or stale.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>The <code>disjoint</code> event indicates that the <code>followSubscription</code> is invalid or stale.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h2 id="possible-errors-4"><a class="header" href="#possible-errors-4">Possible errors</a></h2>
 <ul>
 <li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</li>
-<li>If the <code>followSubscriptionId</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
+<li>If the <code>followSubscription</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_call"><a class="header" href="#chainhead_unstable_call">chainHead_unstable_call</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>. The <code>runtimeUpdates</code> parameter of the call must have been equal to <code>true</code>.</li>
+<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>. The <code>runtimeUpdates</code> parameter of the call must have been equal to <code>true</code>.</li>
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header of the block to make the call against.</li>
 <li><code>function</code>: Name of the runtime entry point to call as a string.</li>
 <li><code>callParameters</code>: Hexadecimal-encoded SCALE-encoded value to pass as input to the runtime function.</li>
@@ -512,12 +512,12 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_callEvent&quot;,
     &quot;params&quot;: {
-        &quot;subscriptionId&quot;: &quot;...&quot;,
+        &quot;subscription&quot;: &quot;...&quot;,
         &quot;result&quot;: ...
     }
 }
 </code></pre>
-<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<p>Where <code>subscription</code> is the value returned by this function, and <code>result</code> can be one of:</p>
 <h3 id="done-1"><a class="header" href="#done-1">done</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
@@ -526,7 +526,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </code></pre>
 <p>The <code>done</code> event indicates that everything was successful.</p>
 <p><code>output</code> is the hexadecimal-encoded output of the runtime function call.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="inaccessible-1"><a class="header" href="#inaccessible-1">inaccessible</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;inaccessible&quot;,
@@ -536,7 +536,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>The <code>inaccessible</code> event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the call.</p>
 <p><code>error</code> is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p>Contrary to the <code>error</code> event, repeating the same call in the future might succeed.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="error"><a class="header" href="#error">error</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;error&quot;,
@@ -546,21 +546,21 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>The <code>error</code> event indicates a problem during the call to the runtime, such the function missing or a runtime panic.</p>
 <p>Contrary to the <code>inaccessible</code> event, repeating the same call in the future will not succeed.</p>
 <p><code>error</code> is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="disjoint-1"><a class="header" href="#disjoint-1">disjoint</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
 }
 </code></pre>
-<p>The <code>disjoint</code> event indicates that the provided <code>followSubscriptionId</code> is invalid or stale.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>The <code>disjoint</code> event indicates that the provided <code>followSubscription</code> is invalid or stale.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h2 id="possible-errors-5"><a class="header" href="#possible-errors-5">Possible errors</a></h2>
 <ul>
 <li>If the networking part of the behaviour fails, then an <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</li>
-<li>If the <code>followSubscriptionId</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> corresponds to a follow where <code>runtimeUpdates</code> was <code>̀false</code>.</li>
+<li>If the <code>followSubscription</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> corresponds to a follow where <code>runtimeUpdates</code> was <code>̀false</code>.</li>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
 <li>If the method to call doesn't exist in the Wasm runtime of the chain, then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
 <li>If the runtime call fails (e.g. because it triggers a panic in the runtime, running out of memory, etc., or if the runtime call takes too much time), then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
 </ul>
@@ -577,7 +577,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>This function works as follows:</p>
 <ul>
 <li>
-<p>When called, returns an opaque <code>followSubscriptionId</code> that can used to match events and in various other <code>chainHead</code>-prefixed functions.</p>
+<p>When called, returns an opaque <code>followSubscription</code> that can used to match events and in various other <code>chainHead</code>-prefixed functions.</p>
 </li>
 <li>
 <p>Later, generates an <code>initialized</code> notification (see below) containing the hash of the current finalized block, and, if <code>runtimeUpdates</code> is <code>true</code>, the runtime specification of the runtime of the current finalized block.</p>
@@ -608,12 +608,12 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_followEvent&quot;,
     &quot;params&quot;: {
-        &quot;subscriptionId&quot;: &quot;...&quot;,
+        &quot;subscription&quot;: &quot;...&quot;,
         &quot;result&quot;: ...
     }
 }
 </code></pre>
-<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<p>Where <code>subscription</code> is the value returned by this function, and <code>result</code> can be one of:</p>
 <h3 id="initialized"><a class="header" href="#initialized">initialized</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;initialized&quot;,
@@ -669,7 +669,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </code></pre>
 <p>The <code>stop</code> event indicates that the JSON-RPC server was unable to provide a consistent list of the blocks at the head of the chain. This can happen because too many blocks have been pinned, because doing so would use an unreasonable amount of memory, or because a consensus mechanism creates a gap in the chain.</p>
 <p><strong>Note</strong>: In particular, warp syncing algorithms create a &quot;jump&quot; in the chain from a block to a much later block. Any subscription that is active when the warp syncing happens will receive a <code>stop</code> event.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <p>Calling <code>chainHead_unstable_unfollow</code> on a subscription that has produced a <code>stop</code> event is optional.</p>
 <h2 id="pinning"><a class="header" href="#pinning">Pinning</a></h2>
 <p>The current finalized block reported in the <code>initialized</code> event, and each subsequent block reported with a <code>newBlock</code> event, is automatically considered by the JSON-RPC server as <em>pinned</em>. A block is guaranteed to not leave the node's memory for as long as it is pinned, making it possible to call functions such as <code>chainHead_unstable_header</code> on it. Blocks must be unpinned by the JSON-RPC client by calling <code>chainHead_unstable_unpin</code>.</p>
@@ -766,13 +766,13 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_header"><a class="header" href="#chainhead_unstable_header">chainHead_unstable_header</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
+<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header to retrieve.</li>
 </ul>
 <p><strong>Return value</strong>:</p>
 <ul>
-<li>If the <code>followSubscriptionId</code> is still alive (the vast majority of the time), the hexadecimal-encoded SCALE-encoded header of the block.</li>
-<li>If the <code>followSubscriptionId</code> is invalid or stale, <em>null</em>.</li>
+<li>If the <code>followSubscription</code> is still alive (the vast majority of the time), the hexadecimal-encoded SCALE-encoded header of the block.</li>
+<li>If the <code>followSubscription</code> is invalid or stale, <em>null</em>.</li>
 </ul>
 <p>Retrieves the header of a pinned block.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_header</code> if instead you want to retrieve the header of an arbitrary block.</p>
@@ -780,12 +780,12 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <h2 id="possible-errors-6"><a class="header" href="#possible-errors-6">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_stopbody"><a class="header" href="#chainhead_unstable_stopbody">chainHead_unstable_stopBody</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>subscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_body</code>.</li>
+<li><code>subscription</code>: An opaque string that was returned by <code>chainHead_unstable_body</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops a body fetch started with <code>chainHead_unstable_body</code>. If the body fetch was still in progress, this interrupts it. If the body fetch was already finished, this call has no effect.</p>
@@ -793,7 +793,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_stopcall"><a class="header" href="#chainhead_unstable_stopcall">chainHead_unstable_stopCall</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>subscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_call</code>.</li>
+<li><code>subscription</code>: An opaque string that was returned by <code>chainHead_unstable_call</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops a call started with <code>chainHead_unstable_call</code>. If the call was still in progress, this interrupts it. If the call was already finished, this call has no effect.</p>
@@ -801,7 +801,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_stopstorage"><a class="header" href="#chainhead_unstable_stopstorage">chainHead_unstable_stopStorage</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>subscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_storage</code>.</li>
+<li><code>subscription</code>: An opaque string that was returned by <code>chainHead_unstable_storage</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops a storage fetch started with <code>chainHead_unstable_storage</code>. If the storage fetch was still in progress, this interrupts it. If the storage fetch was already finished, this call has no effect.</p>
@@ -809,7 +809,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_storage"><a class="header" href="#chainhead_unstable_storage">chainHead_unstable_storage</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
+<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
 <li><code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose storage to fetch.</li>
 <li><code>key</code>: String containing the hexadecimal-encoded key to fetch in the storage.</li>
 <li><code>childKey</code>: <code>null</code> for main storage look-ups, or a string containing the hexadecimal-encoded key of the trie key of the trie that <code>key</code> refers to. <strong>TODO</strong>: I don't know enough about child tries to design this properly</li>
@@ -827,12 +827,12 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_storageEvent&quot;,
     &quot;params&quot;: {
-        &quot;subscriptionId&quot;: &quot;...&quot;,
+        &quot;subscription&quot;: &quot;...&quot;,
         &quot;result&quot;: ...
     }
 }
 </code></pre>
-<p>Where <code>subscriptionId</code> is equal to the value returned by this function, and <code>result</code> can be one of:</p>
+<p>Where <code>subscription</code> is equal to the value returned by this function, and <code>result</code> can be one of:</p>
 <h3 id="done-2"><a class="header" href="#done-2">done</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
@@ -846,52 +846,52 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li>If <code>type</code> was <code>hash</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded hash of the value of the storage item. The hashing algorithm is the same as the one used by the trie of the chain.</li>
 <li>If <code>type</code> was <code>size</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the number of bytes of the storage entry. Note that a string is used rather than a number in order to prevent JavaScript clients from accidentally rounding the value.</li>
 </ul>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="inaccessible-2"><a class="header" href="#inaccessible-2">inaccessible</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;inaccessible&quot;
 }
 </code></pre>
 <p>The <code>inaccessible</code> event indicates that the storage value has failed to be retrieved from the network.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="disjoint-2"><a class="header" href="#disjoint-2">disjoint</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
 }
 </code></pre>
-<p>The <code>disjoint</code> event indicates that the provided <code>followSubscriptionId</code> is invalid or stale.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>The <code>disjoint</code> event indicates that the provided <code>followSubscription</code> is invalid or stale.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h2 id="possible-errors-7"><a class="header" href="#possible-errors-7">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if <code>type</code> isn't one of the allowed values (similarly to a missing parameter or an invalid parameter type).</li>
 <li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</li>
-<li>If the <code>followSubscriptionId</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
+<li>If the <code>followSubscription</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_unfollow"><a class="header" href="#chainhead_unstable_unfollow">chainHead_unstable_unfollow</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
+<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
-<p>Stops a subscription started with <code>chainHead_unstable_follow</code>. Has no effect if the <code>followSubscriptionId</code> is invalid or refers to a subscription that has already emitted a <code>{&quot;event&quot;: &quot;stop&quot;}</code> event.</p>
+<p>Stops a subscription started with <code>chainHead_unstable_follow</code>. Has no effect if the <code>followSubscription</code> is invalid or refers to a subscription that has already emitted a <code>{&quot;event&quot;: &quot;stop&quot;}</code> event.</p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive chain updates notifications, for example because these notifications were already in the process of being sent back by the JSON-RPC server.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_unpin"><a class="header" href="#chainhead_unstable_unpin">chainHead_unstable_unpin</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
+<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header of the block to unpin.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>See explanations in the documentation of <code>chainHead_unstable_follow</code>.</p>
 <p>On-going calls to <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code> and <code>chainHead_unstable_storage</code> against this block will still finish normally.</p>
-<p>Has no effect if the <code>followSubscriptionId</code> is invalid or stale.</p>
+<p>Has no effect if the <code>followSubscription</code> is invalid or stale.</p>
 <h2 id="possible-errors-8"><a class="header" href="#possible-errors-8">Possible errors</a></h2>
 <ul>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
-<li>No error is generated if the <code>followSubscriptionId</code> is invalid or stale. The call is simply ignored.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
+<li>No error is generated if the <code>followSubscription</code> is invalid or stale. The call is simply ignored.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-3"><a class="header" href="#introduction-3">Introduction</a></h1>
 <p>The functions with the <code>chainSpec</code> prefix allow inspecting the content of the specification of the chain a JSON-RPC server is targeting.</p>
@@ -988,19 +988,19 @@ The runtime call is done against the current best block of the chain.</p>
 <li><code>transaction</code>: String containing the hexadecimal-encoded SCALE-encoded transaction to try to include in a block.</li>
 </ul>
 <p><strong>Return value</strong>: String representing the subscription.</p>
-<p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be matched with the <code>subscriptionId</code> field of events and potentially passed to <code>transaction_unstable_unwatch</code>.</p>
+<p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be matched with the <code>subscription</code> field of events and potentially passed to <code>transaction_unstable_unwatch</code>.</p>
 <h2 id="notifications-format-4"><a class="header" href="#notifications-format-4">Notifications format</a></h2>
 <p>This function will later generate one or more notifications in the following format:</p>
 <pre><code class="language-json">{
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;transaction_unstable_watchEvent&quot;,
     &quot;params&quot;: {
-        &quot;subscriptionId&quot;: &quot;...&quot;,
+        &quot;subscription&quot;: &quot;...&quot;,
         &quot;result&quot;: ...
     }
 }
 </code></pre>
-<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<p>Where <code>subscription</code> is the value returned by this function, and <code>result</code> can be one of:</p>
 <h3 id="validated"><a class="header" href="#validated">validated</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;validated&quot;
@@ -1114,7 +1114,7 @@ The runtime call is done against the current best block of the chain.</p>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p><strong>Note</strong>: This function does not remove the transaction from the pool. In other words, the node will still try to include the transaction in the chain. Having a function that removes the transaction from the pool would be almost useless, as the node might have already gossiped it to the rest of the network.</p>
 <h2 id="possible-errors-12"><a class="header" href="#possible-errors-12">Possible errors</a></h2>
-<p>A JSON-RPC error is generated if the <code>subscriptionId</code> doesn't correspond to any active subscription.</p>
+<p>A JSON-RPC error is generated if the <code>subscription</code> doesn't correspond to any active subscription.</p>
 
                     </main>
 

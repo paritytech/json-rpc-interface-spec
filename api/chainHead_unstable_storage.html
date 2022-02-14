@@ -145,7 +145,7 @@
                         <h1 id="chainhead_unstable_storage"><a class="header" href="#chainhead_unstable_storage">chainHead_unstable_storage</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
+<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
 <li><code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose storage to fetch.</li>
 <li><code>key</code>: String containing the hexadecimal-encoded key to fetch in the storage.</li>
 <li><code>childKey</code>: <code>null</code> for main storage look-ups, or a string containing the hexadecimal-encoded key of the trie key of the trie that <code>key</code> refers to. <strong>TODO</strong>: I don't know enough about child tries to design this properly</li>
@@ -163,12 +163,12 @@
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_storageEvent&quot;,
     &quot;params&quot;: {
-        &quot;subscriptionId&quot;: &quot;...&quot;,
+        &quot;subscription&quot;: &quot;...&quot;,
         &quot;result&quot;: ...
     }
 }
 </code></pre>
-<p>Where <code>subscriptionId</code> is equal to the value returned by this function, and <code>result</code> can be one of:</p>
+<p>Where <code>subscription</code> is equal to the value returned by this function, and <code>result</code> can be one of:</p>
 <h3 id="done"><a class="header" href="#done">done</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;done&quot;,
@@ -182,28 +182,28 @@
 <li>If <code>type</code> was <code>hash</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded hash of the value of the storage item. The hashing algorithm is the same as the one used by the trie of the chain.</li>
 <li>If <code>type</code> was <code>size</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the number of bytes of the storage entry. Note that a string is used rather than a number in order to prevent JavaScript clients from accidentally rounding the value.</li>
 </ul>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="inaccessible"><a class="header" href="#inaccessible">inaccessible</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;inaccessible&quot;
 }
 </code></pre>
 <p>The <code>inaccessible</code> event indicates that the storage value has failed to be retrieved from the network.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="disjoint"><a class="header" href="#disjoint">disjoint</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
 }
 </code></pre>
-<p>The <code>disjoint</code> event indicates that the provided <code>followSubscriptionId</code> is invalid or stale.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>The <code>disjoint</code> event indicates that the provided <code>followSubscription</code> is invalid or stale.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if <code>type</code> isn't one of the allowed values (similarly to a missing parameter or an invalid parameter type).</li>
 <li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</li>
-<li>If the <code>followSubscriptionId</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
+<li>If the <code>followSubscription</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
-<li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
 </ul>
 
                     </main>

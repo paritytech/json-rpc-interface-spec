@@ -153,7 +153,7 @@
 <p>This function works as follows:</p>
 <ul>
 <li>
-<p>When called, returns an opaque <code>followSubscriptionId</code> that can used to match events and in various other <code>chainHead</code>-prefixed functions.</p>
+<p>When called, returns an opaque <code>followSubscription</code> that can used to match events and in various other <code>chainHead</code>-prefixed functions.</p>
 </li>
 <li>
 <p>Later, generates an <code>initialized</code> notification (see below) containing the hash of the current finalized block, and, if <code>runtimeUpdates</code> is <code>true</code>, the runtime specification of the runtime of the current finalized block.</p>
@@ -184,12 +184,12 @@
     &quot;jsonrpc&quot;: &quot;2.0&quot;,
     &quot;method&quot;: &quot;chainHead_unstable_followEvent&quot;,
     &quot;params&quot;: {
-        &quot;subscriptionId&quot;: &quot;...&quot;,
+        &quot;subscription&quot;: &quot;...&quot;,
         &quot;result&quot;: ...
     }
 }
 </code></pre>
-<p>Where <code>subscriptionId</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<p>Where <code>subscription</code> is the value returned by this function, and <code>result</code> can be one of:</p>
 <h3 id="initialized"><a class="header" href="#initialized">initialized</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;initialized&quot;,
@@ -245,7 +245,7 @@
 </code></pre>
 <p>The <code>stop</code> event indicates that the JSON-RPC server was unable to provide a consistent list of the blocks at the head of the chain. This can happen because too many blocks have been pinned, because doing so would use an unreasonable amount of memory, or because a consensus mechanism creates a gap in the chain.</p>
 <p><strong>Note</strong>: In particular, warp syncing algorithms create a &quot;jump&quot; in the chain from a block to a much later block. Any subscription that is active when the warp syncing happens will receive a <code>stop</code> event.</p>
-<p>No more event will be generated with this <code>subscriptionId</code>.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <p>Calling <code>chainHead_unstable_unfollow</code> on a subscription that has produced a <code>stop</code> event is optional.</p>
 <h2 id="pinning"><a class="header" href="#pinning">Pinning</a></h2>
 <p>The current finalized block reported in the <code>initialized</code> event, and each subsequent block reported with a <code>newBlock</code> event, is automatically considered by the JSON-RPC server as <em>pinned</em>. A block is guaranteed to not leave the node's memory for as long as it is pinned, making it possible to call functions such as <code>chainHead_unstable_header</code> on it. Blocks must be unpinned by the JSON-RPC client by calling <code>chainHead_unstable_unpin</code>.</p>

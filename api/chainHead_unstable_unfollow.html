@@ -145,10 +145,10 @@
                         <h1 id="chainhead_unstable_unfollow"><a class="header" href="#chainhead_unstable_unfollow">chainHead_unstable_unfollow</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscriptionId</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
+<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
-<p>Stops a subscription started with <code>chainHead_unstable_follow</code>. Has no effect if the <code>followSubscriptionId</code> is invalid or refers to a subscription that has already emitted a <code>{&quot;event&quot;: &quot;stop&quot;}</code> event.</p>
+<p>Stops a subscription started with <code>chainHead_unstable_follow</code>. Has no effect if the <code>followSubscription</code> is invalid or refers to a subscription that has already emitted a <code>{&quot;event&quot;: &quot;stop&quot;}</code> event.</p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive chain updates notifications, for example because these notifications were already in the process of being sent back by the JSON-RPC server.</p>
 
                     </main>
