@@ -502,7 +502,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </ul>
 <p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>The JSON-RPC server must invoke the entry point of the runtime of the given block using the storage of the given block.</p>
-<p><strong>Note</strong>: Calls are idempotent and never have any side effect. For example they can't be used to modify the storage of the chain. The only motivation for performing a call is to obtain the return value.</p>
+<p><strong>Note</strong>: The runtime is still allowed to call host functions with side effects, however these side effects must be discarded. For example, a runtime function call can try to modify the storage of the chain, but this modification must not be actually applied. The only motivation for performing a call is to obtain the return value.</p>
 <p>The operation will continue even if the given block is unpinned while it is in progress.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_call</code> if instead you want to call the runtime of an arbitrary block.</p>
 <p><strong>Note</strong>: This can be used as a replacement for the legacy <code>state_getMetadata</code>, <code>system_accountNextIndex</code>, and <code>payment_queryInfo</code> functions.</p>
@@ -563,7 +563,6 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <li>A JSON-RPC error is generated if the <code>followSubscriptionId</code> is valid but the block hash passed as parameter has already been unpinned.</li>
 <li>If the method to call doesn't exist in the Wasm runtime of the chain, then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
 <li>If the runtime call fails (e.g. because it triggers a panic in the runtime, running out of memory, etc., or if the runtime call takes too much time), then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
-<li>If the runtime call calls a host function that has a side effect, then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
 </ul>
 <h2 id="about-callparameters"><a class="header" href="#about-callparameters">About <code>callParameters</code></a></h2>
 <p>Runtime entry points typically accept multiple input parameters, but this JSON-RPC function accepts as parameter a single hexadecimal-encoded value. The reason is that all the parameters are concatenated together before performing the call anyway. There is no reason to force JSON-RPC clients to provide a proper division between the various parameters if they are all concatenated in the implementation anyway.</p>
