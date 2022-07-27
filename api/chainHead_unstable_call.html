@@ -149,7 +149,7 @@
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header of the block to make the call against.</li>
 <li><code>function</code>: Name of the runtime entry point to call as a string.</li>
 <li><code>callParameters</code>: Hexadecimal-encoded SCALE-encoded value to pass as input to the runtime function.</li>
-<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./api.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>The JSON-RPC server must invoke the entry point of the runtime of the given block using the storage of the given block.</p>

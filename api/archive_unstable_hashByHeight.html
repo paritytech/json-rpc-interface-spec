@@ -146,7 +146,7 @@
 <p><strong>Parameters</strong>:</p>
 <ul>
 <li><code>height</code>: String containing an hexadecimal-encoded integer.</li>
-<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./introduction.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
+<li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./api.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
 <p>The JSON-RPC client must find the blocks (zero, one, or more) whose height is the one passed as parameter. If the <code>height</code> is inferior or equal to the finalized block height, then only finalized blocks must be fetched and returned.</p>
