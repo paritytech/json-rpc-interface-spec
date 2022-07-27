@@ -223,21 +223,21 @@
 <h3 id="finalized"><a class="header" href="#finalized">finalized</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;finalized&quot;,
-    &quot;finalizedBlocksHashes&quot;: [
+    &quot;finalizedBlockHashes&quot;: [
         &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,
         &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;
     ],
-    &quot;prunedBlocksHashes&quot;: [
+    &quot;prunedBlockHashes&quot;: [
         &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,
         &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;
     ]
 }
 </code></pre>
 <p>The <code>finalized</code> event indicates that some of the blocks that have earlier been reported with <code>newBlock</code> events are now either finalized or no longer relevant.</p>
-<p><code>finalizedBlocksHashes</code> contains a list of blocks that are now part of the finalized block, ordered by increasing block number. The last element in this list is the current finalized block.</p>
-<p><code>prunedBlocksHashes</code> contains, in no particular order, a list of blocks that are not descendants of the latest finalized block. These blocks will never be finalized and can be discarded.</p>
-<p>All items in <code>finalizedBlocksHashes</code> and <code>prunedBlocksHashes</code> are guaranteed to have been reported through earlier <code>newBlock</code> events.</p>
-<p>The current best block, in other words the last block reported through a <code>bestBlockChanged</code> event, is guaranteed to either be the last item in <code>finalizedBlocksHashes</code>, or to not be present in either <code>finalizedBlocksHashes</code> or <code>prunedBlocksHashes</code>.</p>
+<p><code>finalizedBlockHashes</code> contains a list of blocks that are now part of the finalized block, ordered by increasing block number. The last element in this list is the current finalized block.</p>
+<p><code>prunedBlockHashes</code> contains, in no particular order, a list of blocks that are not descendants of the latest finalized block. These blocks will never be finalized and can be discarded.</p>
+<p>All items in <code>finalizedBlockHashes</code> and <code>prunedBlockHashes</code> are guaranteed to have been reported through earlier <code>newBlock</code> events.</p>
+<p>The current best block, in other words the last block reported through a <code>bestBlockChanged</code> event, is guaranteed to either be the last item in <code>finalizedBlockHashes</code>, or to not be present in either <code>finalizedBlockHashes</code> or <code>prunedBlockHashes</code>.</p>
 <h3 id="stop"><a class="header" href="#stop">stop</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;stop&quot;

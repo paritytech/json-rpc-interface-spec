@@ -431,7 +431,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>You are strongly encouraged to maintain <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Set">a <code>Set</code></a> of the blocks where the runtime changes. Whenever a <code>{&quot;event&quot;: &quot;newBlock&quot;}</code> notification is received with <code>subscription</code> equal to your <code>followSubcriptionId</code>, and <code>newRuntime</code> is non-null, store the provided <code>blockHash</code> in this set.</p>
 </li>
 <li>
-<p>Whenever a <code>{&quot;event&quot;: &quot;finalized&quot;}</code> notification is received with <code>subscription</code> equal to your <code>followSubcriptionId</code>, call <code>chainHead_unstable_unpin</code> once with your current <code>finalizedBlockHash</code>, once for each <code>prunedBlocksHashes</code>, and once for each value in <code>finalizedBlocksHashes</code> except for the last one. The last value in <code>finalizedBlocksHashes</code> becomes your new <code>finalizedBlockHash</code>. If one or more entries of <code>finalizedBlockHashes</code> is found in your <code>Set</code> (see step 7), remove them from the set and jump to step 3 as the metadata has likely been modified. Otherwise, jump to step 7.</p>
+<p>Whenever a <code>{&quot;event&quot;: &quot;finalized&quot;}</code> notification is received with <code>subscription</code> equal to your <code>followSubcriptionId</code>, call <code>chainHead_unstable_unpin</code> once with your current <code>finalizedBlockHash</code>, once for each <code>prunedBlockHashes</code>, and once for each value in <code>finalizedBlockHashes</code> except for the last one. The last value in <code>finalizedBlockHashes</code> becomes your new <code>finalizedBlockHash</code>. If one or more entries of <code>finalizedBlockHashes</code> is found in your <code>Set</code> (see step 7), remove them from the set and jump to step 3 as the metadata has likely been modified. Otherwise, jump to step 7.</p>
 </li>
 </ol>
 <p>Note that these steps are a bit complicated. Any serious user of the JSON-RPC interface is expected to implement high-level wrappers around the various JSON-RPC functions.</p>
@@ -647,21 +647,21 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <h3 id="finalized"><a class="header" href="#finalized">finalized</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;finalized&quot;,
-    &quot;finalizedBlocksHashes&quot;: [
+    &quot;finalizedBlockHashes&quot;: [
         &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,
         &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;
     ],
-    &quot;prunedBlocksHashes&quot;: [
+    &quot;prunedBlockHashes&quot;: [
         &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;,
         &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;
     ]
 }
 </code></pre>
 <p>The <code>finalized</code> event indicates that some of the blocks that have earlier been reported with <code>newBlock</code> events are now either finalized or no longer relevant.</p>
-<p><code>finalizedBlocksHashes</code> contains a list of blocks that are now part of the finalized block, ordered by increasing block number. The last element in this list is the current finalized block.</p>
-<p><code>prunedBlocksHashes</code> contains, in no particular order, a list of blocks that are not descendants of the latest finalized block. These blocks will never be finalized and can be discarded.</p>
-<p>All items in <code>finalizedBlocksHashes</code> and <code>prunedBlocksHashes</code> are guaranteed to have been reported through earlier <code>newBlock</code> events.</p>
-<p>The current best block, in other words the last block reported through a <code>bestBlockChanged</code> event, is guaranteed to either be the last item in <code>finalizedBlocksHashes</code>, or to not be present in either <code>finalizedBlocksHashes</code> or <code>prunedBlocksHashes</code>.</p>
+<p><code>finalizedBlockHashes</code> contains a list of blocks that are now part of the finalized block, ordered by increasing block number. The last element in this list is the current finalized block.</p>
+<p><code>prunedBlockHashes</code> contains, in no particular order, a list of blocks that are not descendants of the latest finalized block. These blocks will never be finalized and can be discarded.</p>
+<p>All items in <code>finalizedBlockHashes</code> and <code>prunedBlockHashes</code> are guaranteed to have been reported through earlier <code>newBlock</code> events.</p>
+<p>The current best block, in other words the last block reported through a <code>bestBlockChanged</code> event, is guaranteed to either be the last item in <code>finalizedBlockHashes</code>, or to not be present in either <code>finalizedBlockHashes</code> or <code>prunedBlockHashes</code>.</p>
 <h3 id="stop"><a class="header" href="#stop">stop</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;stop&quot;
