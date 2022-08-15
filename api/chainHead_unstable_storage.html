@@ -149,7 +149,6 @@
 <li><code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose storage to fetch.</li>
 <li><code>key</code>: String containing the hexadecimal-encoded key to fetch in the storage.</li>
 <li><code>childKey</code>: <code>null</code> for main storage look-ups, or a string containing the hexadecimal-encoded key of the trie key of the trie that <code>key</code> refers to. <strong>TODO</strong>: I don't know enough about child tries to design this properly</li>
-<li><code>type</code>: String that must be equal to one of: <code>value</code>, <code>hash</code>, or <code>size</code>.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="./api.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
 <p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
@@ -176,12 +175,7 @@
 }
 </code></pre>
 <p>The <code>done</code> event indicates that everything went well. The <code>value</code> field contains the requested value.</p>
-<p>Where <code>value</code> is:</p>
-<ul>
-<li>If <code>type</code> was <code>value</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded value of the storage entry.</li>
-<li>If <code>type</code> was <code>hash</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded hash of the value of the storage item. The hashing algorithm is the same as the one used by the trie of the chain.</li>
-<li>If <code>type</code> was <code>size</code>, either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the number of bytes of the storage entry. Note that a string is used rather than a number in order to prevent JavaScript clients from accidentally rounding the value.</li>
-</ul>
+<p><code>value</code> is either <code>null</code> if the storage doesn't contain a value at the given key, or a string containing the hexadecimal-encoded value of the storage entry.</p>
 <p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="inaccessible"><a class="header" href="#inaccessible">inaccessible</a></h3>
 <pre><code class="language-json">{
