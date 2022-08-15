@@ -854,6 +854,16 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </code></pre>
 <p>The <code>inaccessible</code> event indicates that the storage value has failed to be retrieved from the network.</p>
 <p>No more event will be generated with this <code>subscription</code>.</p>
+<h3 id="error-1"><a class="header" href="#error-1">error</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;error&quot;,
+    &quot;error&quot;: &quot;...&quot;
+}
+</code></pre>
+<p>The <code>error</code> event indicates a problem during the storage access, such as failing to parse the block header to obtain the state root hash.</p>
+<p>Contrary to the <code>inaccessible</code> event, querying the same storage value again in the future will not succeed.</p>
+<p><code>error</code> is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="disjoint-2"><a class="header" href="#disjoint-2">disjoint</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;disjoint&quot;
@@ -1053,7 +1063,7 @@ The runtime call is done against the current best block of the chain.</p>
 <p>The <code>finalized</code> event indicates that this transaction is present in a block of the chain that is finalized.</p>
 <p><code>hash</code> is a string containing the hexadecimal-encoded hash of the header of the block. <code>index</code> is a string containing an integer indicating the 0-based index of this transaction within the body of this block.</p>
 <p>No more event will be generated about this transaction.</p>
-<h3 id="error-1"><a class="header" href="#error-1">error</a></h3>
+<h3 id="error-2"><a class="header" href="#error-2">error</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;error&quot;,
     &quot;error&quot;: &quot;...&quot;
