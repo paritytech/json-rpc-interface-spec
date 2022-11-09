@@ -10,7 +10,7 @@
 
 **Return value**: String containing an opaque value representing the operation.
 
-The JSON-RPC server must start obtaining the value of the entry with the given `key` from the main trie of the storage. If `childTrie` is not `null`, then the entry must instead be loaded from the child trie whose key is `childTrie`.
+The JSON-RPC server must start obtaining the value of the entry with the given `key` from the main trie of the storage. If `childTrie` is not `null`, then the entry must instead be loaded from the child trie whose key is `childTrie`. If the requested child trie doesn't exist, it should be treated as if it was an empty trie.
 
 > **Note**: When `childTrie` is `null`, querying a `key` that starts with the ASCII-encoded string `:child_storage:` *must* produce a `null` value. This behavior is different from the behavior of the `ext_storage_get_version_1` host function in the client-host interface, where querying a key starts with the ASCII-encoded string `:child_storage:` might return the hash of the root of a child trie.
 
