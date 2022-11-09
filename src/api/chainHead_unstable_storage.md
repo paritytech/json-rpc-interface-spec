@@ -5,7 +5,7 @@
 - `followSubscription`: An opaque string that was returned by `chainHead_unstable_follow`.
 - `hash`: String containing an hexadecimal-encoded hash of the header of the block whose storage to fetch.
 - `key`: String containing the hexadecimal-encoded key to fetch in the storage.
-- `childTrie`: `null` for main storage look-ups, or a string containing the hexadecimal-encoded key of the key of the trie that `key` refers to.
+- `childTrie`: `null` for main trie look-ups, or a string containing the hexadecimal-encoded key of the key of the trie where to perform the look-up.
 - `networkConfig` (optional): Object containing the configuration of the networking part of the function. See [here](./api.md) for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.
 
 **Return value**: String containing an opaque value representing the operation.
