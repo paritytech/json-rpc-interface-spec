@@ -14,6 +14,8 @@ The JSON-RPC server must start obtaining the value of the entry with the given `
 
 > **Note**: When `childTrie` is `null`, querying a `key` that starts with the ASCII-encoded string `:child_storage:` *must* produce a `null` value. This behavior is different from the behavior of the `ext_storage_get_version_1` host function in the client-host interface, where querying a key starts with the ASCII-encoded string `:child_storage:` might return the hash of the root of a child trie.
 
+> **Note**: The `childTrie`, if not `null`, doesn't need to be prefixed with `:child_storage:` or `:child_storage:default:`. In other words, any child trie key is potentially valid, and not just ones that start with a specific prefix.
+
 The operation will continue even if the given block is unpinned while it is in progress.
 
 This function should be seen as a complement to `chainHead_unstable_follow`, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use `archive_unstable_storage` if instead you want to retrieve the storage of an arbitrary block.
