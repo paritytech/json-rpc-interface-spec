@@ -10,7 +10,7 @@
 
 **Return value**: String containing an opaque value representing the operation.
 
-The JSON-RPC server must start obtaining the value of the entry with the given `key` from the storage, either from the main trie of from `childTrie`.
+The JSON-RPC server must start obtaining the value of the entry with the given `key` from the storage, either from the main trie or from `childTrie`.
 
 The operation will continue even if the given block is unpinned while it is in progress.
 
