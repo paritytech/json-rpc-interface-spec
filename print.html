@@ -407,7 +407,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>This beginner guide shows how to use the <code>chainHead</code> functions in order to know the value of a certain storage item.</p>
 <ol>
 <li>
-<p>Call <code>chainHead_unstable_follow</code> with <code>runtimeUpdates: true</code> to obtain a <code>followSubscription</code>. This <code>followSubscription</code> will need to be passed when calling most of the other <code>chainHead</code>-prefixed functions. If at any point in the future the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;stop&quot;}</code> notification, jump back to step 1.</p>
+<p>Call <code>chainHead_unstable_follow</code> with <code>withRuntime: true</code> to obtain a <code>followSubscription</code>. This <code>followSubscription</code> will need to be passed when calling most of the other <code>chainHead</code>-prefixed functions. If at any point in the future the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;stop&quot;}</code> notification, jump back to step 1.</p>
 </li>
 <li>
 <p>When the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;initialized&quot;}</code> notification with <code>subscription</code> equal to your <code>followSubscription</code>, store the value of <code>finalizedBlockHash</code> found in that notification.</p>
@@ -494,7 +494,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_call"><a class="header" href="#chainhead_unstable_call">chainHead_unstable_call</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>. The <code>runtimeUpdates</code> parameter of the call must have been equal to <code>true</code>.</li>
+<li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>. The <code>withRuntime</code> parameter of the call must have been equal to <code>true</code>.</li>
 <li><code>hash</code>: String containing the hexadecimal-encoded hash of the header of the block to make the call against.</li>
 <li><code>function</code>: Name of the runtime entry point to call as a string.</li>
 <li><code>callParameters</code>: Hexadecimal-encoded SCALE-encoded value to pass as input to the runtime function.</li>
@@ -558,7 +558,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <ul>
 <li>If the networking part of the behaviour fails, then an <code>{&quot;event&quot;: &quot;inaccessible&quot;}</code> notification is generated (as explained above).</li>
 <li>If the <code>followSubscription</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
-<li>A JSON-RPC error is generated if the <code>followSubscription</code> corresponds to a follow where <code>runtimeUpdates</code> was <code>̀false</code>.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> corresponds to a follow where <code>withRuntime</code> was <code>̀false</code>.</li>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
 <li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
 <li>If the method to call doesn't exist in the Wasm runtime of the chain, then an <code>{&quot;event&quot;: &quot;error&quot;}</code> notification is generated.</li>
@@ -569,7 +569,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_follow"><a class="header" href="#chainhead_unstable_follow">chainHead_unstable_follow</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>runtimeUpdates</code>: A boolean indicating whether the events should report changes to the runtime.</li>
+<li><code>withRuntime</code>: A boolean indicating whether the events should report changes to the runtime.</li>
 </ul>
 <p><strong>Return value</strong>: String containing an opaque value representing the subscription.</p>
 <p>This functions lets the JSON-RPC client track the state of the head of the chain: the finalized, non-finalized, and best blocks.</p>
@@ -580,7 +580,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 <p>When called, returns an opaque <code>followSubscription</code> that can used to match events and in various other <code>chainHead</code>-prefixed functions.</p>
 </li>
 <li>
-<p>Later, generates an <code>initialized</code> notification (see below) containing the hash of the current finalized block, and, if <code>runtimeUpdates</code> is <code>true</code>, the runtime specification of the runtime of the current finalized block.</p>
+<p>Later, generates an <code>initialized</code> notification (see below) containing the hash of the current finalized block, and, if <code>withRuntime</code> is <code>true</code>, the runtime specification of the runtime of the current finalized block.</p>
 </li>
 <li>
 <p>Afterwards, generates one <code>newBlock</code> notification (see below) for each non-finalized block currently in the node's memory (including all forks), then a <code>bestBlockChanged</code> notification. The notifications must be sent in an ordered way such that the parent of each block either can be found in an earlier notification or is the current finalized block.</p>
@@ -596,12 +596,12 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </li>
 </ul>
 <p><strong>Note</strong>: This list of notifications makes it very easy for a JSON-RPC client to follow just the best block updates (listening to just <code>bestBlockChanged</code> events) or follow just the finalized block updates (listening to just <code>initialized</code> and <code>finalized</code> events). It is however not possible to easily figure out whether the runtime has been modified when these updates happen. This is not problematic, as anyone using the JSON-RPC interface naively propably doesn't need to account for runtime changes anyway.</p>
-<h2 id="the-runtimeupdates-parameter"><a class="header" href="#the-runtimeupdates-parameter">The <code>runtimeUpdates</code> parameter</a></h2>
-<p>If the <code>runtimeUpdates</code> parameter is <code>true</code>, then blocks shouldn't (and can't) be reported to JSON-RPC clients before the JSON-RPC server has finished obtaining the runtime specification of the blocks that it reports. This includes the finalized block reported in the <code>initialized</code> event.</p>
-<p>If <code>runtimeUpdates</code> is <code>false</code>, then the <code>initialized</code> event must be sent back quickly after the function returns. If <code>runtimeUpdates</code> is <code>true</code>, then the JSON-RPC server can take as much time as it wants to send back the <code>initialized</code> event.</p>
-<p>For this reason, blocks might be reported more quickly when <code>runtimeUpdates</code> is <code>false</code>.</p>
+<h2 id="the-withruntime-parameter"><a class="header" href="#the-withruntime-parameter">The <code>withRuntime</code> parameter</a></h2>
+<p>If the <code>withRuntime</code> parameter is <code>true</code>, then blocks shouldn't (and can't) be reported to JSON-RPC clients before the JSON-RPC server has finished obtaining the runtime specification of the blocks that it reports. This includes the finalized block reported in the <code>initialized</code> event.</p>
+<p>If <code>withRuntime</code> is <code>false</code>, then the <code>initialized</code> event must be sent back quickly after the function returns. If <code>withRuntime</code> is <code>true</code>, then the JSON-RPC server can take as much time as it wants to send back the <code>initialized</code> event.</p>
+<p>For this reason, blocks might be reported more quickly when <code>withRuntime</code> is <code>false</code>.</p>
 <p><strong>Note</strong>: It is unlikely that high-level UIs built on top of a JSON-RPC client can do anything before the JSON-RPC server has access to the runtime. Consequently, they should consider the time before the <code>initialized</code> event is generated as a loading time. During this loading time, the JSON-RPC server might be performing downloads and CPU-intensive operations. This loading time can be considered as a replacement for the <code>isSyncing</code> field of the legacy <code>system_health</code> JSON-RPC call.</p>
-<p>If a JSON-RPC client wants to be sure to receive an <code>initialized</code> event quickly but is also interested in the runtime, it is encouraged to create two subscriptions: one with <code>runtimeUpdates: true</code> and one with <code>runtimeUpdates: false</code>.</p>
+<p>If a JSON-RPC client wants to be sure to receive an <code>initialized</code> event quickly but is also interested in the runtime, it is encouraged to create two subscriptions: one with <code>withRuntime: true</code> and one with <code>withRuntime: false</code>.</p>
 <h2 id="notifications-format-2"><a class="header" href="#notifications-format-2">Notifications format</a></h2>
 <p>This function will later generate one or more notifications in the following format:</p>
 <pre><code class="language-json">{
@@ -622,7 +622,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 }
 </code></pre>
 <p>The <code>initialized</code> event is always the first event to be sent back, and is only ever sent back once per subscription.</p>
-<p><code>finalizedBlockRuntime</code> is present if and only if <code>runtimeUpdates</code>, the parameter to this function, is <code>true</code>.</p>
+<p><code>finalizedBlockRuntime</code> is present if and only if <code>withRuntime</code>, the parameter to this function, is <code>true</code>.</p>
 <p>The format of <code>finalizedBlockRuntime</code> is described later down this page.</p>
 <h3 id="newblock"><a class="header" href="#newblock">newBlock</a></h3>
 <pre><code class="language-json">{
@@ -634,7 +634,7 @@ A JSON-RPC function call that is passed a <code>networkConfig</code> can take, i
 </code></pre>
 <p>The <code>newBlock</code> indicates a new non-finalized block.</p>
 <p><code>parentBlockHash</code> is guaranteed to be equal either to the current finalized block hash, or to a block reported in an earlier <code>newBlock</code> event.</p>
-<p><code>newRuntime</code> must not be present if <code>runtimeUpdates</code>, the parameter to this function, is <code>false</code>. <code>newRuntime</code> must be <code>null</code> if the runtime hasn't changed compared to its parent.</p>
+<p><code>newRuntime</code> must not be present if <code>withRuntime</code>, the parameter to this function, is <code>false</code>. <code>newRuntime</code> must be <code>null</code> if the runtime hasn't changed compared to its parent.</p>
 <p>If present and non-null, the format of <code>newRuntime</code> is the same as the <code>finalizedBlockRuntime</code> field in the <code>initialized</code> event and is explained later down this page.</p>
 <h3 id="bestblockchanged"><a class="header" href="#bestblockchanged">bestBlockChanged</a></h3>
 <pre><code class="language-json">{

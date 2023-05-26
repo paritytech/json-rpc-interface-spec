@@ -151,7 +151,7 @@
 <p>This beginner guide shows how to use the <code>chainHead</code> functions in order to know the value of a certain storage item.</p>
 <ol>
 <li>
-<p>Call <code>chainHead_unstable_follow</code> with <code>runtimeUpdates: true</code> to obtain a <code>followSubscription</code>. This <code>followSubscription</code> will need to be passed when calling most of the other <code>chainHead</code>-prefixed functions. If at any point in the future the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;stop&quot;}</code> notification, jump back to step 1.</p>
+<p>Call <code>chainHead_unstable_follow</code> with <code>withRuntime: true</code> to obtain a <code>followSubscription</code>. This <code>followSubscription</code> will need to be passed when calling most of the other <code>chainHead</code>-prefixed functions. If at any point in the future the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;stop&quot;}</code> notification, jump back to step 1.</p>
 </li>
 <li>
 <p>When the JSON-RPC server sends back a <code>{&quot;event&quot;: &quot;initialized&quot;}</code> notification with <code>subscription</code> equal to your <code>followSubscription</code>, store the value of <code>finalizedBlockHash</code> found in that notification.</p>
