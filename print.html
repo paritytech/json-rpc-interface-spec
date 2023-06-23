@@ -831,19 +831,26 @@ This specification does not mention any specific limit, but it must be large eno
 <ul>
 <li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
 <li><code>hash</code>: String containing an hexadecimal-encoded hash of the header of the block whose storage to fetch.</li>
-<li><code>key</code>: String containing the hexadecimal-encoded key to fetch in the storage.</li>
+<li><code>items</code>: Array of objects. The structure of these objects is found below.</li>
 <li><code>childTrie</code>: <code>null</code> for main storage look-ups, or a string containing the hexadecimal-encoded key of the child trie of the &quot;default&quot; namespace.</li>
-<li><code>type</code>: String equal to one of: <code>value</code>, <code>hash</code>, <code>closest-ancestor-merkle-value</code>, <code>descendants-values</code>, <code>descendants-hashes</code>.</li>
 <li><code>networkConfig</code> (optional): Object containing the configuration of the networking part of the function. See <a href="api/./api.html">here</a> for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.</li>
 </ul>
+<p>Each element in <code>items</code> must be an object containing the following fields:</p>
+<ul>
+<li><code>key</code>: String containing the hexadecimal-encoded key to fetch in the storage.</li>
+<li><code>type</code>: String equal to one of: <code>value</code>, <code>hash</code>, <code>closest-ancestor-merkle-value</code>, <code>descendants-values</code>, <code>descendants-hashes</code>.</li>
+</ul>
 <p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
-<p>The JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> from the storage, either from the main trie or from <code>childTrie</code>. If <code>type</code> is <code>descendants-values</code> or <code>descendants-hashes</code>, then it must also obtain the values of all the descendants of the entry.</p>
+<p>For each item in <code>items</code>, the JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> from the storage, either from the main trie or from <code>childTrie</code>. If <code>type</code> is <code>descendants-values</code> or <code>descendants-hashes</code>, then it must also obtain the values of all the descendants of the entry.</p>
 <p>The operation will continue even if the given block is unpinned while it is in progress.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_storage</code> if instead you want to retrieve the storage of an arbitrary block.</p>
-<p>For optimization purposes, the JSON-RPC server is allowed to wait a little bit (e.g. up to 100ms) before starting to try fulfill the storage request, in order to batch multiple storage requests together.</p>
-<p>One <code>{&quot;event&quot;: &quot;item&quot;}</code> notification will be generated for each value found in the storage. If <code>type</code> is <code>value</code> or <code>hash</code>, then either 0 or 1 <code>&quot;item&quot;</code> notification will be generated. If <code>type</code> is <code>closest-ancestor-merkle-value</code> then exactly 1 <code>&quot;item&quot;</code> notification will be generated. If <code>type</code> is <code>descendants-values</code> or <code>descendants-hashes</code>, then one <code>&quot;item&quot;</code> notifications that will be generated for each descendant of the <code>key</code> (including the <code>key</code> itself).</p>
-<p>If <code>type</code> is <code>hash</code> or <code>descendants-hashes</code>, then the cryptographic hash of each item is provided rather than the full value. The hashing algorithm used is the one of the chain, which is typically blake2b. This can lead to significantly less bandwidth usage and can be used in order to compare the value of an item with a known hash and querying the full value only if it differs.</p>
-<p>If <code>type</code> is <code>closest-ancestor-merkle-value</code>, then the so-called trie Merkle value of the <code>key</code> is provided. If <code>key</code> doesn't exist in the trie, then the Merkle value of the closest ancestor of <code>key</code> is provided. Contrary to <code>hash</code>, a <code>closest-ancestor-merkle-value</code> always exists for every <code>key</code>. The Merkle value is similar to a hash of the value and all of its descendants together.</p>
+<p><code>{&quot;event&quot;: &quot;items&quot;}</code> notifications will be generated. Each notification contains a list of items. The list of items, concatenated together, forms the result.</p>
+<p>If the <code>type</code> of an item is <code>value</code>, then at least one item in the result is guaranteed to contain the storage value of the <code>key</code> of this item.</p>
+<p>If the <code>type</code> of an item is <code>hash</code>, then at least one item in the result is guaranteed to contain the cryptographic hash of this item. The hashing algorithm used is the one of the chain, which is typically blake2b. This can lead to significantly less bandwidth usage and can be used in order to compare the value of an item with a known hash and querying the full value only if it differs.</p>
+<p>If the <code>type</code> of an item is <code>descendants-values</code> or <code>descendants-hashes</code>, then the result will contain zero or more items whose key starts with the <code>key</code> of this item.</p>
+<p>If the <code>type</code> of an item is <code>closest-ancestor-merkle-value</code>, then the so-called trie Merkle value of the <code>key</code> can be found in the result. If <code>key</code> doesn't exist in the trie, then the Merkle value of the closest ancestor of <code>key</code> is provided. Contrary to <code>hash</code>, a <code>closest-ancestor-merkle-value</code> always exists for every <code>key</code> unless the trie is completely empty. The Merkle value is similar to a hash of the value and all of its descendants together.</p>
+<p>If <code>items</code> contains multiple identical or overlapping queries, the JSON-RPC server can choose whether to merge or not the items in the result. For example, if the request contains two items with the same key, one with <code>hash</code> and one with <code>value</code>, the JSON-RPC server can choose whether to generate two <code>item</code> objects, one with the value and one with the hash, or only a single <code>item</code> object with both <code>hash</code> and <code>value</code> set. The JSON-RPC server is encouraged to notify as soon as possible of the information at its disposal, without waiting for missing information.</p>
+<p>It is allowed (but discouraged) for the JSON-RPC server to provide the same information multiple times in the result, for example providing the <code>value</code> field of the same <code>key</code> twice. Forcing the JSON-RPC server to de-duplicate items in the result might lead to unnecessary overhead.</p>
 <p>If a <code>{&quot;event&quot;: &quot;waiting-for-continue&quot;}</code> notification is generated, the subscription will not generate any more notification unless the JSON-RPC client calls the <code>chainHead_unstable_storageContinue</code> JSON-RPC function. The JSON-RPC server is encouraged to generate this event after having sent a certain number of bytes to the JSON-RPC client in order to avoid head-of-line-blocking issues.</p>
 <h2 id="notifications-format-4"><a class="header" href="#notifications-format-4">Notifications format</a></h2>
 <p>This function will later generate notifications in the following format:</p>
@@ -857,24 +864,29 @@ This specification does not mention any specific limit, but it must be large eno
 }
 </code></pre>
 <p>Where <code>subscription</code> is equal to the value returned by this function, and <code>result</code> can be one of:</p>
-<h3 id="item-1"><a class="header" href="#item-1">item</a></h3>
+<h3 id="items"><a class="header" href="#items">items</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;item&quot;,
-    &quot;key&quot;: &quot;0x0000000...&quot;,
-    &quot;value&quot;: &quot;0x0000000...&quot;,
-    &quot;hash&quot;: &quot;0x0000000...&quot;,
-    &quot;merkle-value&quot;: &quot;0x000000...&quot;,
+    &quot;event&quot;: &quot;items&quot;,
+    &quot;items&quot;: [
+        {
+            &quot;key&quot;: &quot;0x0000000...&quot;,
+            &quot;value&quot;: &quot;0x0000000...&quot;,
+            &quot;hash&quot;: &quot;0x0000000...&quot;,
+            &quot;merkle-value-key&quot;: &quot;0x0000000...&quot;,
+            &quot;merkle-value&quot;: &quot;0x000000...&quot;
+        },
+        ...
+    ]
 }
 </code></pre>
-<p>Yields an item that was found in the storage.</p>
-<p>The <code>key</code> field is a string containing the hexadecimal-encoded key of the value that was found.
-If the <code>type</code> parameter was <code>&quot;value&quot;</code>, <code>&quot;hash&quot;</code>, <code>&quot;descendants-values&quot;</code> or <code>&quot;descendants-hashes&quot;</code>, this <code>key</code> is guaranteed to start with the <code>key</code> provided as parameter.
-If the <code>type</code> parameter was <code>&quot;value&quot;</code> or <code>&quot;hash&quot;</code>, then it is also guaranteed to be equal to the <code>key</code> provided as parameter.
-If the <code>type</code> parameter was <code>&quot;closest-ancestor-merkle-value&quot;</code>, then the <code>key</code> provided as parameter is guaranteed to start with the value in the <code>key</code> field.</p>
-<p>If the <code>type</code> parameter was <code>&quot;value&quot;</code> or <code>&quot;descendants-values&quot;</code>, then the <code>value</code> field is set. The <code>value</code> field is a string containing the hexadecimal-encoded value of the storage entry.</p>
-<p>If the <code>type</code> parameter was <code>&quot;hash&quot;</code> or <code>&quot;descendants-hashes&quot;</code>, then the <code>hash</code> field is set. The <code>hash</code> field is a string containing the hexadecimal-encoded hash of the storage entry.</p>
-<p>If the <code>type</code> parameter was <code>&quot;closest-ancestor-merkle-value&quot;</code>, then the <code>merkle-value</code> field is set and the <code>key</code> field indicates which closest ancestor has been found. The <code>merkle-value</code> field is a string containing the hexadecimal-encoded Merkle value of the storage item indicated by the <code>key</code> field.</p>
-<p>Only one of <code>value</code>, <code>hash</code> or <code>merkle-value</code> are set at any given time.</p>
+<p>Yields one or more items that were found in the storage.</p>
+<p>The <code>key</code> field is a string containing the hexadecimal-encoded key of the item. This <code>key</code> is guaranteed to start with one of the <code>key</code>s provided as parameter.
+If the <code>type</code> parameter was <code>&quot;value&quot;</code>, <code>&quot;hash&quot;</code>, <code>&quot;closest-ancestor-merkle-value&quot;</code>, then it is also guaranteed to be equal to one of the <code>key</code>s provided as parameter.</p>
+<p>In the situation where the <code>type</code> parameter was <code>&quot;closest-ancestor-merkle-value&quot;</code>, the fact that <code>key</code> is equal to a <code>key</code> that was provided as parameter is necessary in order to avoid ambiguities when multiple <code>items</code> of type <code>&quot;closest-ancestor-merkle-value&quot;</code> were requested.</p>
+<p>The <code>value</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;value&quot;</code> or <code>&quot;descendants-values&quot;</code>. The <code>value</code> field is a string containing the hexadecimal-encoded value of the storage entry.</p>
+<p>The <code>hash</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;hash&quot;</code> or <code>&quot;descendants-hashes&quot;</code>. The <code>hash</code> field is a string containing the hexadecimal-encoded hash of the storage entry.</p>
+<p>The <code>merkle-value</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;closest-ancestor-merkle-value&quot;</code>. The <code>merkle-value-key</code> field indicates which closest ancestor has been found. The <code>merkle-value</code> field is a string containing the hexadecimal-encoded Merkle value of the storage item indicated by the <code>merkle-value-key</code> field. The <code>merkle-value-key</code> is guaranteed to start with the <code>key</code>.
+The <code>merkle-value</code> and <code>merkle-value-key</code> fields must either both be set or both be missing.</p>
 <h3 id="waiting-for-continue-1"><a class="header" href="#waiting-for-continue-1">waiting-for-continue</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;waiting-for-continue&quot;
@@ -888,8 +900,8 @@ If the <code>type</code> parameter was <code>&quot;closest-ancestor-merkle-value
     &quot;event&quot;: &quot;done&quot;
 }
 </code></pre>
-<p>The <code>done</code> event indicates that everything went well and all values have been provided through <code>item</code> events in the past.</p>
-<p>If no <code>item</code> event was yielded, then the storage doesn't contain a value at the given key.</p>
+<p>The <code>done</code> event indicates that everything went well and all result has been provided through <code>items</code> events in the past.</p>
+<p>If no <code>items</code> event was yielded, then the storage doesn't contain a value at the given key.</p>
 <p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="inaccessible-2"><a class="header" href="#inaccessible-2">inaccessible</a></h3>
 <pre><code class="language-json">{
@@ -924,7 +936,6 @@ No other event will be generated with this subscription.</p>
 <li>If the <code>followSubscription</code> is invalid or stale, then a <code>{&quot;event&quot;: &quot;disjoint&quot;}</code> notification is generated (as explained above).</li>
 <li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
 <li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
-<li>If the trie is empty and <code>type</code> is <code>closest-ancestor-merkle-value</code>, then a <code>{&quot;event&quot;: &quot;error&quot;}</code>.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_unfollow"><a class="header" href="#chainhead_unstable_unfollow">chainHead_unstable_unfollow</a></h1>
 <p><strong>Parameters</strong>:</p>
@@ -938,16 +949,17 @@ No other event will be generated with this subscription.</p>
 <p><strong>Parameters</strong>:</p>
 <ul>
 <li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
-<li><code>hash</code>: String containing the hexadecimal-encoded hash of the header of the block to unpin.</li>
+<li><code>hash</code>: String or array of strings containing the hexadecimal-encoded hash of the header of the block to unpin.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>See explanations in the documentation of <code>chainHead_unstable_follow</code>.</p>
 <p>On-going calls to <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code> and <code>chainHead_unstable_storage</code> against this block will still finish normally.</p>
 <p>Has no effect if the <code>followSubscription</code> is invalid or stale.</p>
+<p>If this function returns an error, then no block must have been unpinned. Implementations are expected to start unpinning the blocks only after it has made sure that all the blocks could be unpinned.</p>
 <h2 id="possible-errors-5"><a class="header" href="#possible-errors-5">Possible errors</a></h2>
 <ul>
-<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
-<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but at least one of the block hashes passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but at least one of the the block hashes passed as parameter has already been unpinned.</li>
 <li>No error is generated if the <code>followSubscription</code> is invalid or stale. The call is simply ignored.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-3"><a class="header" href="#introduction-3">Introduction</a></h1>
