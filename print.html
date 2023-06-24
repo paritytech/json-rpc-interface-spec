@@ -708,7 +708,6 @@ This specification does not mention any specific limit, but it must be large eno
     &quot;spec&quot;: {
         &quot;specName&quot;: ...,
         &quot;implName&quot;: ...,
-        &quot;authoringVersion&quot;: ...,
         &quot;specVersion&quot;: ...,
         &quot;implVersion&quot;: ...,
         &quot;transactionVersion&quot;: ...,
@@ -726,9 +725,6 @@ This specification does not mention any specific limit, but it must be large eno
 <p><code>implName</code>: Opaque string indicating the name of the implementation of the chain.</p>
 </li>
 <li>
-<p><code>authoringVersion</code>: Opaque integer. Used by the internals of validator nodes that use a native executor in order to be sure that their native executor matches the WebAssembly code.</p>
-</li>
-<li>
 <p><code>specVersion</code>: Opaque integer. The JSON-RPC client can assume that the call to <code>Metadata_metadata</code> will always produce the same output as long as the <code>specVersion</code> is the same.</p>
 </li>
 <li>
@@ -741,13 +737,13 @@ This specification does not mention any specific limit, but it must be large eno
 <p><code>apis</code>: Object containing a list of &quot;entry point APIs&quot; supported by the runtime. Each key is an opaque string indicating the API, and each value is an integer version number. Before making a runtime call (using <code>chainHead_unstable_call</code>), you should make sure that this list contains the entry point API corresponding to the call and with a known version number.</p>
 </li>
 </ul>
-<p><strong>Note</strong>: In Substrate, the key contains the hexadecimal-encoded 8-bytes blake2 hash of the name of the API. For example, the <code>TaggedTransactionQueue</code> API is <code>0xd2bc9897eed08f15</code>.</p>
+<p><strong>Note</strong>: In Substrate, the keys in the <code>apis</code> field consists of the hexadecimal-encoded 8-bytes blake2 hash of the name of the API. For example, the <code>TaggedTransactionQueue</code> API is <code>0xd2bc9897eed08f15</code>.</p>
 <p><strong>Note</strong>: The format of <code>apis</code> is not the same as in the legacy JSON-RPC API.</p>
+<p><strong>Note</strong>: The list of fields is only a subset of the list of so-called &quot;runtime specification&quot; found in the runtime. The fields that aren't useful from a JSON-RPC client perspective are intentionally not included.</p>
 <h4 id="example-value"><a class="header" href="#example-value">Example value</a></h4>
 <pre><code class="language-json">{
     &quot;specName&quot;: &quot;westend&quot;,
     &quot;implName&quot;: &quot;parity-westend&quot;,
-    &quot;authoringVersion&quot;: 2,
     &quot;specVersion&quot;: 9122,
     &quot;implVersion&quot;: 0,
     &quot;transactionVersion&quot;: 7,
