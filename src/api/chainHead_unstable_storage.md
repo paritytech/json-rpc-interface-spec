@@ -64,7 +64,7 @@ Where `subscription` is equal to the value returned by this function, and `resul
             "key": "0x0000000...",
             "value": "0x0000000...",
             "hash": "0x0000000...",
-            "merkle-value": "0x000000..."
+            "closest-descendant-merkle-value": "0x000000..."
         },
         ...
     ]
@@ -82,7 +82,7 @@ The `value` field is set if this item corresponds to one of the requested items 
 
 The `hash` field is set if this item corresponds to one of the requested items whose `type` was `"hash"` or `"descendants-hashes"`. The `hash` field is a string containing the hexadecimal-encoded hash of the storage entry.
 
-The `merkle-value` field is set if this item corresponds to one of the requested items whose `type` was `"closest-descendant-merkle-value"`. The trie node whose Merkle value is indicated in `merkle_value` is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server.
+The `closest-descendant-merkle-value` field is set if this item corresponds to one of the requested items whose `type` was `"closest-descendant-merkle-value"`. The trie node whose Merkle value is indicated in `closest-descendant-merkle-value` is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server.
 
 ### waiting-for-continue
 
