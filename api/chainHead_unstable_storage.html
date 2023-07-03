@@ -188,8 +188,7 @@
             &quot;key&quot;: &quot;0x0000000...&quot;,
             &quot;value&quot;: &quot;0x0000000...&quot;,
             &quot;hash&quot;: &quot;0x0000000...&quot;,
-            &quot;merkle-value-key&quot;: &quot;0x0000000...&quot;,
-            &quot;merkle-value&quot;: &quot;0x000000...&quot;
+            &quot;closest-descendant-merkle-value&quot;: &quot;0x000000...&quot;
         },
         ...
     ]
@@ -201,8 +200,7 @@ If the <code>type</code> parameter was <code>&quot;value&quot;</code>, <code>&qu
 <p>In the situation where the <code>type</code> parameter was <code>&quot;closest-descendant-merkle-value&quot;</code>, the fact that <code>key</code> is equal to a <code>key</code> that was provided as parameter is necessary in order to avoid ambiguities when multiple <code>items</code> of type <code>&quot;closest-descendant-merkle-value&quot;</code> were requested.</p>
 <p>The <code>value</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;value&quot;</code> or <code>&quot;descendants-values&quot;</code>. The <code>value</code> field is a string containing the hexadecimal-encoded value of the storage entry.</p>
 <p>The <code>hash</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;hash&quot;</code> or <code>&quot;descendants-hashes&quot;</code>. The <code>hash</code> field is a string containing the hexadecimal-encoded hash of the storage entry.</p>
-<p>The <code>merkle-value</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;closest-descendant-merkle-value&quot;</code>. The <code>merkle-value-key</code> field indicates which closest descendant has been found. Because this closest descendant can be a branch node, the value in the <code>merkle-value-key</code> field can have an uneven number of hexadecimal digits. The <code>merkle-value</code> field is a string containing the hexadecimal-encoded Merkle value of the storage item indicated by the <code>merkle-value-key</code> field. The <code>merkle-value-key</code> is guaranteed to start with the <code>key</code>.
-The <code>merkle-value</code> and <code>merkle-value-key</code> fields must either both be set or both be missing.</p>
+<p>The <code>closest-descendant-merkle-value</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;closest-descendant-merkle-value&quot;</code>. The trie node whose Merkle value is indicated in <code>closest-descendant-merkle-value</code> is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server.</p>
 <h3 id="waiting-for-continue"><a class="header" href="#waiting-for-continue">waiting-for-continue</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;waiting-for-continue&quot;
