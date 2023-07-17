@@ -20,7 +20,6 @@
     - [chainHead_unstable_body](api/chainHead_unstable_body.md)
     - [chainHead_unstable_call](api/chainHead_unstable_call.md)
     - [chainHead_unstable_follow](api/chainHead_unstable_follow.md)
-    - [chainHead_unstable_genesisHash](api/chainHead_unstable_genesisHash.md)
     - [chainHead_unstable_header](api/chainHead_unstable_header.md)
     - [chainHead_unstable_stopBody](api/chainHead_unstable_stopBody.md)
     - [chainHead_unstable_stopCall](api/chainHead_unstable_stopCall.md)
