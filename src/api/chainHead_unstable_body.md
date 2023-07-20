@@ -4,9 +4,50 @@
 
 - `followSubscription`: An opaque string that was returned by `chainHead_unstable_follow`.
 - `hash`: String containing an hexadecimal-encoded hash of the header of the block whose body to fetch.
-- `networkConfig` (optional): Object containing the configuration of the networking part of the function. See [here](./api.md) for details. Ignored if the JSON-RPC server doesn't need to perform a network request. Sensible defaults are used if not provided.
 
-**Return value**: String containing an opaque value representing the operation.
+**Return value**: A JSON object.
+
+The JSON object returned by this function has one the following formats:
+
+### Started
+
+```
+{
+    "result": "started",
+    "subscriptionId": ...
+}
+```
+
+This return value indicates that the request has successfully started.
+
+`subscriptionId` is a string containing an opaque value representing the operation.
+
+### LimitReached
+
+```
+{
+    "result": "limitReached"
+}
+```
+
+This return value indicates the request couldn't be started because the server is overloaded.
+
+The JSON-RPC client should try again after an on-going [`chainHead_unstable_storage`], [`chainHead_unstable_body`], or [`chainHead_unstable_call`] operation finishes.
+
+The JSON-RPC server must accept at least 16 concurrent operations for any given [`chainHead_unstable_follow`] subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
+For this purpose, each item requested through [`chainHead_unstable_storage`] counts as one operation, and each call to [`chainHead_unstable_body`] and [`chainHead_unstable_call`] counts as one operation.
+
+### Disjoint
+
+```
+{
+    "result": "disjoint"
+}
+```
+
+This return value indicates that the provided `followSubscription` is invalid or stale.
+
+## Overview
 
 The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.
 
@@ -62,21 +103,9 @@ Trying again later might succeed.
 
 No more event will be generated with this `subscription`.
 
-### disjoint
-
-```json
-{
-    "event": "disjoint"
-}
-```
-
-The `disjoint` event indicates that the `followSubscription` is invalid or stale.
-
-No more event will be generated with this `subscription`.
-
 ## Possible errors
 
 - If the networking part of the behaviour fails, then a `{"event": "inaccessible"}` notification is generated (as explained above).
-- If the `followSubscription` is invalid or stale, then a `{"event": "disjoint"}` notification is generated (as explained above).
+- If the `followSubscription` is invalid or stale, then `"result": "disjoint"` is returned (as explained above).
 - A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by `chainHead_unstable_follow`.
 - A JSON-RPC error is generated if the `followSubscription` is valid but the block hash passed as parameter has already been unpinned.

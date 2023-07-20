@@ -4,11 +4,38 @@
 
 - `withRuntime`: A boolean indicating whether the events should report changes to the runtime.
 
-**Return value**: String containing an opaque value representing the subscription.
+**Return value**: A JSON object.
 
-This functions lets the JSON-RPC client track the state of the head of the chain: the finalized, non-finalized, and best blocks.
+The JSON object returned by this function has one the following formats:
+
+### Started
+
+```
+{
+    "result": "started",
+    "subscriptionId": ...
+}
+```
+
+This return value indicates that the request has successfully started.
+
+`subscriptionId` is a string containing an opaque value representing the operation.
+
+### LimitReached
+
+```
+{
+    "result": "limitReached"
+}
+```
+
+This return value indicates that the JSON-RPC server is not willing to accept any more `chainHead_unstable_follow` subscription.
+
+The JSON-RPC server must accept at least 2 `chainHead_unstable_follow` subscriptions per JSON-RPC client. In other words, as long as a JSON-RPC client starts 2 or fewer `chainHead_unstable_follow` subscriptions, it is guaranteed that this return value will never happen.
 
 ## Usage
+
+This functions lets the JSON-RPC client track the state of the head of the chain: the finalized, non-finalized, and best blocks.
 
 This function works as follows:
 
