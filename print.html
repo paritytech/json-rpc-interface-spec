@@ -547,12 +547,10 @@ If the <code>includeDescendants</code> parameter was <code>false</code>, then it
 <p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="inaccessible-1"><a class="header" href="#inaccessible-1">inaccessible</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;inaccessible&quot;,
-    &quot;error&quot;: &quot;...&quot;
+    &quot;event&quot;: &quot;inaccessible&quot;
 }
 </code></pre>
 <p>The <code>inaccessible</code> event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the call.</p>
-<p><code>error</code> is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p>Contrary to the <code>error</code> event, repeating the same call in the future might succeed.</p>
 <p>No more event will be generated with this <code>subscription</code>.</p>
 <h3 id="error"><a class="header" href="#error">error</a></h3>
