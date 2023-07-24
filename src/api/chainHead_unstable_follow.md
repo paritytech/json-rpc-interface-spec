@@ -4,34 +4,7 @@
 
 - `withRuntime`: A boolean indicating whether the events should report changes to the runtime.
 
-**Return value**: A JSON object.
-
-The JSON object returned by this function has one the following formats:
-
-### Started
-
-```
-{
-    "result": "started",
-    "subscriptionId": ...
-}
-```
-
-This return value indicates that the request has successfully started.
-
-`subscriptionId` is a string containing an opaque value representing the operation.
-
-### LimitReached
-
-```
-{
-    "result": "limitReached"
-}
-```
-
-This return value indicates that the JSON-RPC server is not willing to accept any more `chainHead_unstable_follow` subscription.
-
-The JSON-RPC server must accept at least 2 `chainHead_unstable_follow` subscriptions per JSON-RPC client. In other words, as long as a JSON-RPC client starts 2 or fewer `chainHead_unstable_follow` subscriptions, it is guaranteed that this return value will never happen.
+**Return value**: String containing an opaque value representing the operation.
 
 ## Usage
 
@@ -189,6 +162,8 @@ This specification does not mention any specific limit, but it must be large eno
 
 ## Multiple subscriptions
 
+The JSON-RPC server must accept at least 2 `chainHead_unstable_follow` subscriptions per JSON-RPC client. Trying to open more might lead to a JSON-RPC error when calling `chainHead_unstable_follow`. In other words, as long as a JSON-RPC client starts 2 or fewer `chainHead_unstable_follow` subscriptions, it is guaranteed that this return value will never happen.
+
 If a JSON-RPC client maintains mutiple `chainHead_unstable_follow` subscriptions at the same time, it has no guarantee that the blocks reported by the various subscriptions are the same. While the finalized blocks reported should eventually be the same, it is possible that in the short term some subscriptions lag behind others.
 
 **Note**: For example, imagine there exists two active `chainHead_unstable_follow` subscriptions named A and B. Block N is announced on the peer-to-peer network and is announced to A. But then a sibling of block N gets finalized, leading to block N being pruned. Block N might never be announced to B.
@@ -277,3 +252,7 @@ The runtime is of type `invalid` if the JSON-RPC server considers the runtime as
 `error` is a human-readable string indicating why the node considers it as invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.
 
 **Note**: The typical situation where a node could consider the runtime as invalid is a light client after a warp syncing. The light client knows that it's its fault for considering the runtime as invalid, but it has no better way to handle this situation than to return an error through the JSON-RPC interface for the error to get shown to the user.
+
+## Possible errors
+
+- A JSON-RPC error can be generated if the JSON-RPC client has already opened 2 or more `chainHead_unstable_follow` subscriptions.
