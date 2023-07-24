@@ -129,6 +129,149 @@ All items in `finalizedBlockHashes` and `prunedBlockHashes` are guaranteed to ha
 
 The current best block, in other words the last block reported through a `bestBlockChanged` event, is guaranteed to either be the last item in `finalizedBlockHashes`, or to not be present in either `finalizedBlockHashes` or `prunedBlockHashes`.
 
+### operation-body-done
+
+```json
+{
+    "event": "done",
+    "value": [...]
+}
+```
+
+`operationId` is a string returned by `chainHead_unstable_body`.
+
+The `operation-body-done` event indicates that an operation started with `chainHead_unstable_body` was successful.
+
+`value` is an array of strings containing the hexadecimal-encoded SCALE-encoded extrinsics found in the block.
+
+**Note**: Note that the order of extrinsics is important. Extrinsics in the chain are uniquely identified by a `(blockHash, index)` tuple.
+
+No more event will be generated with this `operationId`.
+
+### operation-call-done
+
+```json
+{
+    "event": "done",
+    "operationId": ...,
+    "output": "0x0000000..."
+}
+```
+
+`operationId` is a string returned by`chainHead_unstable_call`.
+
+The `operation-call-done` event indicates that an operation started with `chainHead_unstable_call` was successful.
+
+`output` is the hexadecimal-encoded output of the runtime function call.
+
+No more event will be generated with this `operationId`.
+
+### operation-storage-items
+
+```json
+{
+    "event": "operation-storage-items",
+    "operationId": ...,
+    "items": [
+        {
+            "key": "0x0000000...",
+            "value": "0x0000000...",
+            "hash": "0x0000000...",
+            "closest-descendant-merkle-value": "0x000000..."
+        },
+        ...
+    ]
+}
+```
+
+`operationId` is a string returned by `chainHead_unstable_storage`.
+
+Yields one or more items that were found in the storage.
+
+The `key` field is a string containing the hexadecimal-encoded key of the item. This `key` is guaranteed to start with one of the `key`s provided as parameter to `chainHead_unstable_storage`.
+If the `type` parameter was `"value"`, `"hash"`, `"closest-descendant-merkle-value"`, then it is also guaranteed to be equal to one of the `key`s provided as parameter to `chainHead_unstable_storage`.
+
+In the situation where the `type` parameter was `"closest-descendant-merkle-value"`, the fact that `key` is equal to a `key` that was provided as parameter is necessary in order to avoid ambiguities when multiple `items` of type `"closest-descendant-merkle-value"` were requested.
+
+The `value` field is set if this item corresponds to one of the requested items whose `type` was `"value"` or `"descendants-values"`. The `value` field is a string containing the hexadecimal-encoded value of the storage entry.
+
+The `hash` field is set if this item corresponds to one of the requested items whose `type` was `"hash"` or `"descendants-hashes"`. The `hash` field is a string containing the hexadecimal-encoded hash of the storage entry.
+
+The `closest-descendant-merkle-value` field is set if this item corresponds to one of the requested items whose `type` was `"closest-descendant-merkle-value"`. The trie node whose Merkle value is indicated in `closest-descendant-merkle-value` is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server.
+
+### operation-waiting-for-continue
+
+```json
+{
+    "event": "operation-waiting-for-continue",
+    "operationId": ...
+}
+```
+
+`operationId` is a string returned by `chainHead_unstable_storage`.
+
+The `waiting-for-continue` event is generated after at least one `"operation-storage-item"` event has been generated, and indicates that the JSON-RPC client must call `chainHead_unstable_storageContinue` before more events are generated.
+
+This event only ever happens if the `type` parameter that was provided to `chainHead_unstable_storage` was `descendants-values` or `descendants-hashes`.
+
+While the JSON-RPC server is waiting for a call to `chainHead_unstable_storageContinue`, it can generate an `operation-inaccessible` event in order to indicate that it can no longer proceed with the operation. If that is the case, the JSON-RPC client can simply try again.
+
+### operation-storage-done
+
+```json
+{
+    "event": "operation-storage-done"
+}
+```
+
+`operationId` is a string returned by `chainHead_unstable_storage`.
+
+The `operation-storage-done` event indicates that an operation started with `chainHead_unstable_storage` went well and all result has been provided through `operation-storage-items` events in the past.
+
+If no `operation-storage-items` event was yielded for this `operationId`, then the storage doesn't contain a value at the given key.
+
+No more event will be generated with this `operationId`.
+
+### operation-inaccessible
+
+```json
+{
+    "event": "operation-inaccessible",
+    "operationId": ...,
+    "error": "..."
+}
+```
+
+`operationId` is a string returned by `chainHead_unstable_body`, `chainHead_unstable_call`, or `chainHead_unstable_storage`.
+
+The `operation-inaccessible` event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the given operation.
+
+`error` is a human-readable error message indicating why the operation has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.
+
+Contrary to the `operation-error` event, repeating the same operation in the future might succeed.
+
+No more event will be generated about this `operationId`.
+
+### operation-error
+
+```json
+{
+    "event": "operation-error",
+    "operationId": ...,
+    "error": "..."
+}
+```
+
+`operationId` is a string returned by `chainHead_unstable_body`, `chainHead_unstable_call`, or `chainHead_unstable_storage`.
+
+The `operation-error` event indicates a problem during the operation. In the case of `chainHead_unstable_call`, this can include the function missing or a runtime panic. In the case of `chainHead_unstable_body` or `chainHead_unstable_storage`, this includes failing to parse the block header to obtain the extrinsics root hash or state root hash.
+
+Contrary to the `operation-inaccessible` event, repeating the same call in the future will not succeed.
+
+`error` is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.
+
+No more event will be generated about this `operationId`.
+
 ### stop
 
 ```json
