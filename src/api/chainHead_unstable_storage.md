@@ -21,7 +21,7 @@ The JSON object returned by this function has one the following formats:
 ```
 {
     "result": "started",
-    "subscriptionId": ...
+    "operationId": ...
     "discardedItems": ...
 }
 ```
@@ -30,7 +30,7 @@ This return value indicates that the request has successfully started.
 
 Where:
 
-- `subscriptionId` is a string containing an opaque value representing the operation.
+- `operationId` is a string containing an opaque value representing the operation.
 - `discardedItems` is an integer indicating the number of items at the back of the array of the `items` parameters that couldn't be processed.
 
 If the list the JSON-RPC server is overloaded, it might refuse to accept new storage requests. In that situation, the JSON-RPC server will discard some or all the `items` passed as parameter. The number of items discarded is indicated in `discardedItems`. When that happens, the JSON-RPC client should try again after an on-going [`chainHead_unstable_storage`], [`chainHead_unstable_body`], or [`chainHead_unstable_call`] operation finishes.

@@ -16,13 +16,13 @@ The JSON object returned by this function has one the following formats:
 ```
 {
     "result": "started",
-    "subscriptionId": ...
+    "operationId": ...
 }
 ```
 
 This return value indicates that the request has successfully started.
 
-`subscriptionId` is a string containing an opaque value representing the operation.
+`operationId` is a string containing an opaque value representing the operation.
 
 ### LimitReached
 

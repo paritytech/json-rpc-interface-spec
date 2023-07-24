@@ -2,7 +2,7 @@
 
 **Parameters**:
 
-- `subscription`: An opaque string that was returned by `chainHead_unstable_body`.
+- `operationId`: An opaque string that was returned by `chainHead_unstable_body`.
 
 **Return value**: *null*
 
