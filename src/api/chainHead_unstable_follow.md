@@ -210,7 +210,7 @@ The `closest-descendant-merkle-value` field is set if this item corresponds to o
 
 `operationId` is a string returned by `chainHead_unstable_storage`.
 
-The `waiting-for-continue` event is generated after at least one `"operation-storage-item"` event has been generated, and indicates that the JSON-RPC client must call `chainHead_unstable_storageContinue` before more events are generated.
+The `waiting-for-continue` event is generated after at least one `"operation-storage-items"` event has been generated, and indicates that the JSON-RPC client must call `chainHead_unstable_storageContinue` before more events are generated.
 
 This event only ever happens if the `type` parameter that was provided to `chainHead_unstable_storage` was `descendants-values` or `descendants-hashes`.
 
