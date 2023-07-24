@@ -133,7 +133,7 @@ The current best block, in other words the last block reported through a `bestBl
 
 ```json
 {
-    "event": "done",
+    "event": "operation-body-done",
     "operationId": ...,
     "value": [...]
 }
@@ -153,7 +153,7 @@ No more event will be generated with this `operationId`.
 
 ```json
 {
-    "event": "done",
+    "event": "operation-call-done",
     "operationId": ...,
     "output": "0x0000000..."
 }
