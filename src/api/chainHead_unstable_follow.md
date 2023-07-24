@@ -237,16 +237,13 @@ No more event will be generated with this `operationId`.
 ```json
 {
     "event": "operation-inaccessible",
-    "operationId": ...,
-    "error": "..."
+    "operationId": ...
 }
 ```
 
 `operationId` is a string returned by `chainHead_unstable_body`, `chainHead_unstable_call`, or `chainHead_unstable_storage`.
 
 The `operation-inaccessible` event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the given operation.
-
-`error` is a human-readable error message indicating why the operation has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.
 
 Contrary to the `operation-error` event, repeating the same operation in the future might succeed.
 
