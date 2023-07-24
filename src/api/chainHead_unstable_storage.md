@@ -42,11 +42,11 @@ For this purpose, each item requested through [`chainHead_unstable_storage`] cou
 
 ```
 {
-    "result": "disjoint"
+    "result": "limitReached"
 }
 ```
 
-This return value indicates that the provided `followSubscription` is invalid or stale.
+This return value indicates that all the items would be discarded, or that the provided `followSubscription` is invalid or stale.
 
 ## Overview
 
@@ -181,6 +181,6 @@ No other event will be generated with this subscription.
 
 - A JSON-RPC error is generated if `type` isn't one of the allowed values (similarly to a missing parameter or an invalid parameter type).
 - If the networking part of the behaviour fails, then a `{"event": "inaccessible"}` notification is generated (as explained above).
-- If the `followSubscription` is invalid or stale, then `"result": "disjoint"` is returned (as explained above).
+- If the `followSubscription` is invalid or stale, then `"result": "limitReached"` is returned (as explained above).
 - A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by `chainHead_unstable_follow`.
 - A JSON-RPC error is generated if the `followSubscription` is valid but the block hash passed as parameter has already been unpinned.
