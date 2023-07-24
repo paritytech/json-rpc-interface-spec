@@ -397,4 +397,4 @@ The runtime is of type `invalid` if the JSON-RPC server considers the runtime as
 
 ## Possible errors
 
-- A JSON-RPC error can be generated if the JSON-RPC client has already opened 2 or more `chainHead_unstable_follow` subscriptions.
+- A JSON-RPC error with error code `-32100` can be generated if the JSON-RPC client has already opened 2 or more `chainHead_unstable_follow` subscriptions.
