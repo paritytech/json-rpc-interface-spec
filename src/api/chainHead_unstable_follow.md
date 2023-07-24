@@ -134,6 +134,7 @@ The current best block, in other words the last block reported through a `bestBl
 ```json
 {
     "event": "done",
+    "operationId": ...,
     "value": [...]
 }
 ```
@@ -220,7 +221,8 @@ While the JSON-RPC server is waiting for a call to `chainHead_unstable_storageCo
 
 ```json
 {
-    "event": "operation-storage-done"
+    "event": "operation-storage-done",
+    "operationId": ...
 }
 ```
 
