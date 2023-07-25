@@ -464,6 +464,7 @@ For this purpose, each item requested through [<code>chainHead_unstable_storage<
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p>The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.</p>
 <p>The progress of the operation is indicated through <code>operation-body-done</code>, <code>operation-inaccessible</code>, or <code>operation-error</code> notifications generated on the corresponding <code>chainHead_unstable_follow</code> subscription.</p>
+<p>The operation continues even if the target block is unpinned with <code>chainHead_unstable_unpin</code>.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_body</code> if instead you want to retrieve the body of an arbitrary block.</p>
 <h2 id="possible-errors-1"><a class="header" href="#possible-errors-1">Possible errors</a></h2>
 <ul>
@@ -503,6 +504,7 @@ For this purpose, each item requested through [<code>chainHead_unstable_storage<
 <p>The JSON-RPC server must invoke the entry point of the runtime of the given block using the storage of the given block.</p>
 <p><strong>Note</strong>: The runtime is still allowed to call host functions with side effects, however these side effects must be discarded. For example, a runtime function call can try to modify the storage of the chain, but this modification must not be actually applied. The only motivation for performing a call is to obtain the return value.</p>
 <p>The progress of the operation is indicated through <code>operation-call-done</code>, <code>operation-inaccessible</code>, or <code>operation-error</code> notifications generated on the corresponding <code>chainHead_unstable_follow</code> subscription.</p>
+<p>The operation continues even if the target block is unpinned with <code>chainHead_unstable_unpin</code>.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_call</code> if instead you want to call the runtime of an arbitrary block.</p>
 <p><strong>Note</strong>: This can be used as a replacement for the legacy <code>state_getMetadata</code>, <code>system_accountNextIndex</code>, and <code>payment_queryInfo</code> functions.</p>
 <h2 id="possible-errors-2"><a class="header" href="#possible-errors-2">Possible errors</a></h2>
@@ -888,6 +890,7 @@ For this purpose, each item requested through [<code>chainHead_unstable_storage<
 <p>For each item in <code>items</code>, the JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> from the storage, either from the main trie or from <code>childTrie</code>. If <code>type</code> is <code>descendants-values</code> or <code>descendants-hashes</code>, then it must also obtain the values of all the descendants of the entry.</p>
 <p>For the purpose of storage requests, the trie root hash of the child tries of the storage can be found in the main trie at keys starting the bytes of the ASCII string <code>:child_storage:</code>. This behaviour is consistent with all the other storage-request-alike mechanisms of Polkadot and Substrate-based chains, such as host functions or libp2p network requests.</p>
 <p>The progress of the operation is indicated through <code>operation-storage-items</code>, <code>operation-waiting-for-continue</code>, <code>operation-storage-done</code>, <code>operation-inaccessible</code>, or <code>operation-error</code> notifications generated on the corresponding <code>chainHead_unstable_follow</code> subscription.</p>
+<p>The operation continues even if the target block is unpinned with <code>chainHead_unstable_unpin</code>.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_storage</code> if instead you want to retrieve the storage of an arbitrary block.</p>
 <p><code>{&quot;event&quot;: &quot;operation-storage-items&quot;}</code> notifications will be generated. Each notification contains a list of items. The list of items, concatenated together, forms the result.</p>
 <p>If the <code>type</code> of an item is <code>value</code>, and <code>key</code> is associated with a storage value in the trie, then the result will include an item that contains this storage value. If <code>key</code> is not associated with a storage value in the trie, then the result will not include such item.</p>

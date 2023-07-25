@@ -170,6 +170,7 @@ For this purpose, each item requested through [<code>chainHead_unstable_storage<
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p>The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.</p>
 <p>The progress of the operation is indicated through <code>operation-body-done</code>, <code>operation-inaccessible</code>, or <code>operation-error</code> notifications generated on the corresponding <code>chainHead_unstable_follow</code> subscription.</p>
+<p>The operation continues even if the target block is unpinned with <code>chainHead_unstable_unpin</code>.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_body</code> if instead you want to retrieve the body of an arbitrary block.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>
