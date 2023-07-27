@@ -238,39 +238,39 @@
 <p><code>prunedBlockHashes</code> contains, in no particular order, a list of blocks that are not descendants of the latest finalized block. These blocks will never be finalized and can be discarded.</p>
 <p>All items in <code>finalizedBlockHashes</code> and <code>prunedBlockHashes</code> are guaranteed to have been reported through earlier <code>newBlock</code> events.</p>
 <p>The current best block, in other words the last block reported through a <code>bestBlockChanged</code> event, is guaranteed to either be the last item in <code>finalizedBlockHashes</code>, or to not be present in either <code>finalizedBlockHashes</code> or <code>prunedBlockHashes</code>.</p>
-<h3 id="operation-body-done"><a class="header" href="#operation-body-done">operation-body-done</a></h3>
+<h3 id="operationbodydone"><a class="header" href="#operationbodydone">operationBodyDone</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;operation-body-done&quot;,
+    &quot;event&quot;: &quot;operationBodyDone&quot;,
     &quot;operationId&quot;: ...,
     &quot;value&quot;: [...]
 }
 </code></pre>
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_body</code>.</p>
-<p>The <code>operation-body-done</code> event indicates that an operation started with <code>chainHead_unstable_body</code> was successful.</p>
+<p>The <code>operationBodyDone</code> event indicates that an operation started with <code>chainHead_unstable_body</code> was successful.</p>
 <p><code>value</code> is an array of strings containing the hexadecimal-encoded SCALE-encoded extrinsics found in the block.</p>
 <p><strong>Note</strong>: Note that the order of extrinsics is important. Extrinsics in the chain are uniquely identified by a <code>(blockHash, index)</code> tuple.</p>
 <p>No more event will be generated with this <code>operationId</code>.</p>
-<h3 id="operation-call-done"><a class="header" href="#operation-call-done">operation-call-done</a></h3>
+<h3 id="operationcalldone"><a class="header" href="#operationcalldone">operationCallDone</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;operation-call-done&quot;,
+    &quot;event&quot;: &quot;operationCallDone&quot;,
     &quot;operationId&quot;: ...,
     &quot;output&quot;: &quot;0x0000000...&quot;
 }
 </code></pre>
 <p><code>operationId</code> is a string returned by<code>chainHead_unstable_call</code>.</p>
-<p>The <code>operation-call-done</code> event indicates that an operation started with <code>chainHead_unstable_call</code> was successful.</p>
+<p>The <code>operationCallDone</code> event indicates that an operation started with <code>chainHead_unstable_call</code> was successful.</p>
 <p><code>output</code> is the hexadecimal-encoded output of the runtime function call.</p>
 <p>No more event will be generated with this <code>operationId</code>.</p>
-<h3 id="operation-storage-items"><a class="header" href="#operation-storage-items">operation-storage-items</a></h3>
+<h3 id="operationstorageitems"><a class="header" href="#operationstorageitems">operationStorageItems</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;operation-storage-items&quot;,
+    &quot;event&quot;: &quot;operationStorageItems&quot;,
     &quot;operationId&quot;: ...,
     &quot;items&quot;: [
         {
             &quot;key&quot;: &quot;0x0000000...&quot;,
             &quot;value&quot;: &quot;0x0000000...&quot;,
             &quot;hash&quot;: &quot;0x0000000...&quot;,
-            &quot;closest-descendant-merkle-value&quot;: &quot;0x000000...&quot;
+            &quot;closestDescendantMerkleValue&quot;: &quot;0x000000...&quot;
         },
         ...
     ]
@@ -279,51 +279,51 @@
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_storage</code>.</p>
 <p>Yields one or more items that were found in the storage.</p>
 <p>The <code>key</code> field is a string containing the hexadecimal-encoded key of the item. This <code>key</code> is guaranteed to start with one of the <code>key</code>s provided as parameter to <code>chainHead_unstable_storage</code>.
-If the <code>type</code> parameter was <code>&quot;value&quot;</code>, <code>&quot;hash&quot;</code>, <code>&quot;closest-descendant-merkle-value&quot;</code>, then it is also guaranteed to be equal to one of the <code>key</code>s provided as parameter to <code>chainHead_unstable_storage</code>.</p>
-<p>In the situation where the <code>type</code> parameter was <code>&quot;closest-descendant-merkle-value&quot;</code>, the fact that <code>key</code> is equal to a <code>key</code> that was provided as parameter is necessary in order to avoid ambiguities when multiple <code>items</code> of type <code>&quot;closest-descendant-merkle-value&quot;</code> were requested.</p>
-<p>The <code>value</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;value&quot;</code> or <code>&quot;descendants-values&quot;</code>. The <code>value</code> field is a string containing the hexadecimal-encoded value of the storage entry.</p>
-<p>The <code>hash</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;hash&quot;</code> or <code>&quot;descendants-hashes&quot;</code>. The <code>hash</code> field is a string containing the hexadecimal-encoded hash of the storage entry.</p>
-<p>The <code>closest-descendant-merkle-value</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;closest-descendant-merkle-value&quot;</code>. The trie node whose Merkle value is indicated in <code>closest-descendant-merkle-value</code> is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server.</p>
-<h3 id="operation-waiting-for-continue"><a class="header" href="#operation-waiting-for-continue">operation-waiting-for-continue</a></h3>
+If the <code>type</code> parameter was <code>&quot;value&quot;</code>, <code>&quot;hash&quot;</code>, <code>&quot;closestDescendantMerkleValue&quot;</code>, then it is also guaranteed to be equal to one of the <code>key</code>s provided as parameter to <code>chainHead_unstable_storage</code>.</p>
+<p>In the situation where the <code>type</code> parameter was <code>&quot;closestDescendantMerkleValue&quot;</code>, the fact that <code>key</code> is equal to a <code>key</code> that was provided as parameter is necessary in order to avoid ambiguities when multiple <code>items</code> of type <code>&quot;closestDescendantMerkleValue&quot;</code> were requested.</p>
+<p>The <code>value</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;value&quot;</code> or <code>&quot;descendantsValues&quot;</code>. The <code>value</code> field is a string containing the hexadecimal-encoded value of the storage entry.</p>
+<p>The <code>hash</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;hash&quot;</code> or <code>&quot;descendantsHashes&quot;</code>. The <code>hash</code> field is a string containing the hexadecimal-encoded hash of the storage entry.</p>
+<p>The <code>closestDescendantMerkleValue</code> field is set if this item corresponds to one of the requested items whose <code>type</code> was <code>&quot;closestDescendantMerkleValue&quot;</code>. The trie node whose Merkle value is indicated in <code>closestDescendantMerkleValue</code> is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server.</p>
+<h3 id="operationwaitingforcontinue"><a class="header" href="#operationwaitingforcontinue">operationWaitingForContinue</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;operation-waiting-for-continue&quot;,
+    &quot;event&quot;: &quot;operationWaitingForContinue&quot;,
     &quot;operationId&quot;: ...
 }
 </code></pre>
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_storage</code>.</p>
-<p>The <code>waiting-for-continue</code> event is generated after at least one <code>&quot;operation-storage-items&quot;</code> event has been generated, and indicates that the JSON-RPC client must call <code>chainHead_unstable_continue</code> before more events are generated.</p>
-<p>This event only ever happens if the <code>type</code> parameter that was provided to <code>chainHead_unstable_storage</code> was <code>descendants-values</code> or <code>descendants-hashes</code>.</p>
-<p>While the JSON-RPC server is waiting for a call to <code>chainHead_unstable_continue</code>, it can generate an <code>operation-inaccessible</code> event in order to indicate that it can no longer proceed with the operation. If that is the case, the JSON-RPC client can simply try again.</p>
-<h3 id="operation-storage-done"><a class="header" href="#operation-storage-done">operation-storage-done</a></h3>
+<p>The <code>waiting-for-continue</code> event is generated after at least one <code>&quot;operationStorageItems&quot;</code> event has been generated, and indicates that the JSON-RPC client must call <code>chainHead_unstable_continue</code> before more events are generated.</p>
+<p>This event only ever happens if the <code>type</code> parameter that was provided to <code>chainHead_unstable_storage</code> was <code>descendantsValues</code> or <code>descendantsHashes</code>.</p>
+<p>While the JSON-RPC server is waiting for a call to <code>chainHead_unstable_continue</code>, it can generate an <code>operationInaccessible</code> event in order to indicate that it can no longer proceed with the operation. If that is the case, the JSON-RPC client can simply try again.</p>
+<h3 id="operationstoragedone"><a class="header" href="#operationstoragedone">operationStorageDone</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;operation-storage-done&quot;,
+    &quot;event&quot;: &quot;operationStorageDone&quot;,
     &quot;operationId&quot;: ...
 }
 </code></pre>
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_storage</code>.</p>
-<p>The <code>operation-storage-done</code> event indicates that an operation started with <code>chainHead_unstable_storage</code> went well and all result has been provided through <code>operation-storage-items</code> events in the past.</p>
-<p>If no <code>operation-storage-items</code> event was yielded for this <code>operationId</code>, then the storage doesn't contain a value at the given key.</p>
+<p>The <code>operationStorageDone</code> event indicates that an operation started with <code>chainHead_unstable_storage</code> went well and all result has been provided through <code>operationStorageItems</code> events in the past.</p>
+<p>If no <code>operationStorageItems</code> event was yielded for this <code>operationId</code>, then the storage doesn't contain a value at the given key.</p>
 <p>No more event will be generated with this <code>operationId</code>.</p>
-<h3 id="operation-inaccessible"><a class="header" href="#operation-inaccessible">operation-inaccessible</a></h3>
+<h3 id="operationinaccessible"><a class="header" href="#operationinaccessible">operationInaccessible</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;operation-inaccessible&quot;,
+    &quot;event&quot;: &quot;operationInaccessible&quot;,
     &quot;operationId&quot;: ...
 }
 </code></pre>
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code>, or <code>chainHead_unstable_storage</code>.</p>
-<p>The <code>operation-inaccessible</code> event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the given operation.</p>
-<p>Contrary to the <code>operation-error</code> event, repeating the same operation in the future might succeed.</p>
+<p>The <code>operationInaccessible</code> event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the given operation.</p>
+<p>Contrary to the <code>operationError</code> event, repeating the same operation in the future might succeed.</p>
 <p>No more event will be generated about this <code>operationId</code>.</p>
-<h3 id="operation-error"><a class="header" href="#operation-error">operation-error</a></h3>
+<h3 id="operationerror"><a class="header" href="#operationerror">operationError</a></h3>
 <pre><code class="language-json">{
-    &quot;event&quot;: &quot;operation-error&quot;,
+    &quot;event&quot;: &quot;operationError&quot;,
     &quot;operationId&quot;: ...,
     &quot;error&quot;: &quot;...&quot;
 }
 </code></pre>
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code>, or <code>chainHead_unstable_storage</code>.</p>
-<p>The <code>operation-error</code> event indicates a problem during the operation. In the case of <code>chainHead_unstable_call</code>, this can include the function missing or a runtime panic. In the case of <code>chainHead_unstable_body</code> or <code>chainHead_unstable_storage</code>, this includes failing to parse the block header to obtain the extrinsics root hash or state root hash.</p>
-<p>Contrary to the <code>operation-inaccessible</code> event, repeating the same call in the future will not succeed.</p>
+<p>The <code>operationError</code> event indicates a problem during the operation. In the case of <code>chainHead_unstable_call</code>, this can include the function missing or a runtime panic. In the case of <code>chainHead_unstable_body</code> or <code>chainHead_unstable_storage</code>, this includes failing to parse the block header to obtain the extrinsics root hash or state root hash.</p>
+<p>Contrary to the <code>operationInaccessible</code> event, repeating the same call in the future will not succeed.</p>
 <p><code>error</code> is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p>No more event will be generated about this <code>operationId</code>.</p>
 <h3 id="stop"><a class="header" href="#stop">stop</a></h3>

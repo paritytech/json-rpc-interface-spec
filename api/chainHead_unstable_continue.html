@@ -149,11 +149,11 @@
 <li><code>operationId</code>: An opaque string that was returned by <code>chainHead_unstable_storage</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
-<p>Resumes a storage fetch started with <code>chainHead_unstable_storage</code> after it has generated an <code>operation-waiting-for-continue</code> event.</p>
-<p>Has no effect if the <code>operationId</code> is invalid or refers to an operation that has emitted a <code>{&quot;event&quot;: &quot;operation-inaccessible&quot;}</code> event, or if the <code>followSubscription</code> is invalid or stale.</p>
+<p>Resumes a storage fetch started with <code>chainHead_unstable_storage</code> after it has generated an <code>operationWaitingForContinue</code> event.</p>
+<p>Has no effect if the <code>operationId</code> is invalid or refers to an operation that has emitted a <code>{&quot;event&quot;: &quot;operationInaccessible&quot;}</code> event, or if the <code>followSubscription</code> is invalid or stale.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>
-<li>A JSON-RPC error is generated if the <code>followSubscription</code> and <code>operationId</code> are valid but haven't generated a <code>operation-waiting-for-continue</code> event.</li>
+<li>A JSON-RPC error is generated if the <code>followSubscription</code> and <code>operationId</code> are valid but haven't generated a <code>operationWaitingForContinue</code> event.</li>
 </ul>
 
                     </main>
