@@ -111,6 +111,8 @@ The `finalized` event indicates that the latest block that was previously report
 
 No more event will be generated about this transaction.
 
+**Note**: Please note that when this event occurs, the `bestChainBlockIncluded` event always precedes the `finalized` event of `chainHead_unstable_follow`, which includes the block hash from `bestChainBlockIncluded` in its list of `finalizedBlockHashes`.
+
 ### error
 
 ```json
