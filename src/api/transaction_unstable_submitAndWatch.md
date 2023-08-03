@@ -105,7 +105,7 @@ If multiple `bestChainBlockIncluded` events happen in a row, the JSON-RPC server
 }
 ```
 
-The `finalized` event indicates that this transaction is present in a block of the chain that is finalized.
+The `finalized` event indicates that the latest block that was previously reported with `bestChainBlockIncluded` is now finalized.
 
 `hash` is a string containing the hexadecimal-encoded hash of the header of the block. `index` is a string containing an integer indicating the 0-based index of this transaction within the body of this block.
 
