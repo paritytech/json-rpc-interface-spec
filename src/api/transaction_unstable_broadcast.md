@@ -12,3 +12,5 @@ Once this function has been called, the JSON-RPC server will try to propagate th
 
 The JSON-RPC server must allow at least 4 transactions being broadcasted at the same time per JSON-RPC client.
 Any attempt to broadcast more than 4 transactions simultaneously might result in `null` being returned.
+
+The JSON-RPC server might check whether the transaction is valid before broadcasting it. If it does so and if the transaction is invalid, the server should silently do nothing and the JSON-RPC client is not informed of the problem. Invalid transactions should still count towards the limit to the number of simultaneously broadcasted transactions.
