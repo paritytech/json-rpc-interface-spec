@@ -151,7 +151,7 @@
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops an operation started with <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code>, or <code>chainHead_unstable_storage</code>. If the operation was still in progress, this interrupts it. If the operation was already finished, this call has no effect.</p>
 <p>Has no effect if the <code>followSubscription</code> is invalid or stale.</p>
-<p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive a notification about the operation, for example because a notification was already in the process of being sent back by the JSON-RPC server.</p>
+<p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive notifications about the operation, for example because a notification was already in the process of being sent back by the JSON-RPC server.</p>
 
                     </main>
 

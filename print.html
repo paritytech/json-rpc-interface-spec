@@ -458,9 +458,9 @@ If the <code>includeDescendants</code> parameter was <code>false</code>, then it
 }
 </code></pre>
 <p>This return value indicates the request couldn't be started because the server is overloaded, or that the <code>followSubscription</code> is invalid or stale.</p>
-<p>The JSON-RPC client should try again after an on-going [<code>chainHead_unstable_storage</code>], [<code>chainHead_unstable_body</code>], or [<code>chainHead_unstable_call</code>] operation finishes.</p>
-<p>The JSON-RPC server must accept at least 16 concurrent operations for any given [<code>chainHead_unstable_follow</code>] subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
-For this purpose, each item requested through [<code>chainHead_unstable_storage</code>] counts as one operation, and each call to [<code>chainHead_unstable_body</code>] and [<code>chainHead_unstable_call</code>] counts as one operation.</p>
+<p>The JSON-RPC client should try again after an on-going <code>chainHead_unstable_storage</code>, <code>chainHead_unstable_body</code>, or <code>chainHead_unstable_call</code> operation finishes.</p>
+<p>The JSON-RPC server must accept at least 16 concurrent operations for any given <code>chainHead_unstable_follow</code> subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
+For this purpose, each item requested through <code>chainHead_unstable_storage</code> counts as one operation, and each call to <code>chainHead_unstable_body</code> and <code>chainHead_unstable_call</code> counts as one operation.</p>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p>The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.</p>
 <p>The progress of the operation is indicated through <code>operationBodyDone</code>, <code>operationInaccessible</code>, or <code>operationError</code> notifications generated on the corresponding <code>chainHead_unstable_follow</code> subscription.</p>
@@ -497,9 +497,9 @@ For this purpose, each item requested through [<code>chainHead_unstable_storage<
 }
 </code></pre>
 <p>This return value indicates the call couldn't be started because the server is overloaded, or that the <code>followSubscription</code> is invalid or stale.</p>
-<p>The JSON-RPC client should try again after an on-going [<code>chainHead_unstable_storage</code>], [<code>chainHead_unstable_body</code>], or [<code>chainHead_unstable_call</code>] operation finishes.</p>
-<p>The JSON-RPC server must accept at least 16 concurrent operations for any given [<code>chainHead_unstable_follow</code>] subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
-For this purpose, each item requested through [<code>chainHead_unstable_storage</code>] counts as one operation, and each call to [<code>chainHead_unstable_body</code>] and [<code>chainHead_unstable_call</code>] counts as one operation.</p>
+<p>The JSON-RPC client should try again after an on-going <code>chainHead_unstable_storage</code>, <code>chainHead_unstable_body</code>, or <code>chainHead_unstable_call</code> operation finishes.</p>
+<p>The JSON-RPC server must accept at least 16 concurrent operations for any given <code>chainHead_unstable_follow</code> subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
+For this purpose, each item requested through <code>chainHead_unstable_storage</code> counts as one operation, and each call to <code>chainHead_unstable_body</code> and <code>chainHead_unstable_call</code> counts as one operation.</p>
 <h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
 <p>The JSON-RPC server must invoke the entry point of the runtime of the given block using the storage of the given block.</p>
 <p><strong>Note</strong>: The runtime is still allowed to call host functions with side effects, however these side effects must be discarded. For example, a runtime function call can try to modify the storage of the chain, but this modification must not be actually applied. The only motivation for performing a call is to obtain the return value.</p>
@@ -562,6 +562,7 @@ For this purpose, each item requested through [<code>chainHead_unstable_storage<
 </li>
 </ul>
 <p><strong>Note</strong>: This list of notifications makes it very easy for a JSON-RPC client to follow just the best block updates (listening to just <code>bestBlockChanged</code> events) or follow just the finalized block updates (listening to just <code>initialized</code> and <code>finalized</code> events). It is however not possible to easily figure out whether the runtime has been modified when these updates happen. This is not problematic, as anyone using the JSON-RPC interface naively propably doesn't need to account for runtime changes anyway.</p>
+<p>Additionally, the <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code>, and <code>chainHead_unstable_storage</code> JSON-RPC function might cause the subscription to produce additional notifications.</p>
 <h2 id="the-withruntime-parameter"><a class="header" href="#the-withruntime-parameter">The <code>withRuntime</code> parameter</a></h2>
 <p>If the <code>withRuntime</code> parameter is <code>true</code>, then blocks shouldn't (and can't) be reported to JSON-RPC clients before the JSON-RPC server has finished obtaining the runtime specification of the blocks that it reports. This includes the finalized block reported in the <code>initialized</code> event.</p>
 <p>If <code>withRuntime</code> is <code>false</code>, then the <code>initialized</code> event must be sent back quickly after the function returns. If <code>withRuntime</code> is <code>true</code>, then the JSON-RPC server can take as much time as it wants to send back the <code>initialized</code> event.</p>
@@ -682,7 +683,7 @@ If the <code>type</code> parameter was <code>&quot;value&quot;</code>, <code>&qu
 </code></pre>
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_storage</code>.</p>
 <p>The <code>waiting-for-continue</code> event is generated after at least one <code>&quot;operationStorageItems&quot;</code> event has been generated, and indicates that the JSON-RPC client must call <code>chainHead_unstable_continue</code> before more events are generated.</p>
-<p>This event only ever happens if the <code>type</code> parameter that was provided to <code>chainHead_unstable_storage</code> was <code>descendantsValues</code> or <code>descendantsHashes</code>.</p>
+<p>This event only ever happens if the <code>type</code> of one of the <code>items</code> provided as a parameter to <code>chainHead_unstable_storage</code> was <code>descendantsValues</code> or <code>descendantsHashes</code>.</p>
 <p>While the JSON-RPC server is waiting for a call to <code>chainHead_unstable_continue</code>, it can generate an <code>operationInaccessible</code> event in order to indicate that it can no longer proceed with the operation. If that is the case, the JSON-RPC client can simply try again.</p>
 <h3 id="operationstoragedone"><a class="header" href="#operationstoragedone">operationStorageDone</a></h3>
 <pre><code class="language-json">{
@@ -843,7 +844,7 @@ This specification does not mention any specific limit, but it must be large eno
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Stops an operation started with <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code>, or <code>chainHead_unstable_storage</code>. If the operation was still in progress, this interrupts it. If the operation was already finished, this call has no effect.</p>
 <p>Has no effect if the <code>followSubscription</code> is invalid or stale.</p>
-<p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive a notification about the operation, for example because a notification was already in the process of being sent back by the JSON-RPC server.</p>
+<p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive notifications about the operation, for example because a notification was already in the process of being sent back by the JSON-RPC server.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_storage"><a class="header" href="#chainhead_unstable_storage">chainHead_unstable_storage</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
@@ -872,9 +873,9 @@ This specification does not mention any specific limit, but it must be large eno
 <li><code>operationId</code> is a string containing an opaque value representing the operation.</li>
 <li><code>discardedItems</code> is an integer indicating the number of items at the back of the array of the <code>items</code> parameters that couldn't be processed.</li>
 </ul>
-<p>If the list the JSON-RPC server is overloaded, it might refuse to accept new storage requests. In that situation, the JSON-RPC server will discard some or all the <code>items</code> passed as parameter. The number of items discarded is indicated in <code>discardedItems</code>. When that happens, the JSON-RPC client should try again after an on-going [<code>chainHead_unstable_storage</code>], [<code>chainHead_unstable_body</code>], or [<code>chainHead_unstable_call</code>] operation finishes.</p>
-<p>The JSON-RPC server must accept at least 16 concurrent operations for any given [<code>chainHead_unstable_follow</code>] subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
-For this purpose, each item requested through [<code>chainHead_unstable_storage</code>] counts as one operation, and each call to [<code>chainHead_unstable_body</code>] and [<code>chainHead_unstable_call</code>] counts as one operation.</p>
+<p>If the list the JSON-RPC server is overloaded, it might refuse to accept new storage requests. In that situation, the JSON-RPC server will discard some or all the <code>items</code> passed as parameter. The number of items discarded is indicated in <code>discardedItems</code>. When that happens, the JSON-RPC client should try again after an on-going <code>chainHead_unstable_storage</code>, <code>chainHead_unstable_body</code>, or <code>chainHead_unstable_call</code> operation finishes.</p>
+<p>The JSON-RPC server must accept at least 16 concurrent operations for any given <code>chainHead_unstable_follow</code> subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
+For this purpose, each item requested through <code>chainHead_unstable_storage</code> counts as one operation, and each call to <code>chainHead_unstable_body</code> and <code>chainHead_unstable_call</code> counts as one operation.</p>
 <h3 id="limitreached-2"><a class="header" href="#limitreached-2">LimitReached</a></h3>
 <pre><code>{
     &quot;result&quot;: &quot;limitReached&quot;
@@ -921,7 +922,7 @@ For this purpose, each item requested through [<code>chainHead_unstable_storage<
 <p>See explanations in the documentation of <code>chainHead_unstable_follow</code>.</p>
 <p>On-going calls to <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code> and <code>chainHead_unstable_storage</code> against this block will still finish normally.</p>
 <p>Has no effect if the <code>followSubscription</code> is invalid or stale.</p>
-<p>If this function returns an error, then no block must have been unpinned. Implementations are expected to start unpinning the blocks only after it has made sure that all the blocks could be unpinned.</p>
+<p>If this function returns an error, then no block has been unpinned. An JSON-RPC server implementation is expected to start unpinning the blocks only after it has made sure that all the blocks could be unpinned.</p>
 <h2 id="possible-errors-7"><a class="header" href="#possible-errors-7">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but at least one of the block hashes passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>

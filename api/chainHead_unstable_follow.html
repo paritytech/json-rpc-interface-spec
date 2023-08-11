@@ -172,6 +172,7 @@
 </li>
 </ul>
 <p><strong>Note</strong>: This list of notifications makes it very easy for a JSON-RPC client to follow just the best block updates (listening to just <code>bestBlockChanged</code> events) or follow just the finalized block updates (listening to just <code>initialized</code> and <code>finalized</code> events). It is however not possible to easily figure out whether the runtime has been modified when these updates happen. This is not problematic, as anyone using the JSON-RPC interface naively propably doesn't need to account for runtime changes anyway.</p>
+<p>Additionally, the <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code>, and <code>chainHead_unstable_storage</code> JSON-RPC function might cause the subscription to produce additional notifications.</p>
 <h2 id="the-withruntime-parameter"><a class="header" href="#the-withruntime-parameter">The <code>withRuntime</code> parameter</a></h2>
 <p>If the <code>withRuntime</code> parameter is <code>true</code>, then blocks shouldn't (and can't) be reported to JSON-RPC clients before the JSON-RPC server has finished obtaining the runtime specification of the blocks that it reports. This includes the finalized block reported in the <code>initialized</code> event.</p>
 <p>If <code>withRuntime</code> is <code>false</code>, then the <code>initialized</code> event must be sent back quickly after the function returns. If <code>withRuntime</code> is <code>true</code>, then the JSON-RPC server can take as much time as it wants to send back the <code>initialized</code> event.</p>
@@ -292,7 +293,7 @@ If the <code>type</code> parameter was <code>&quot;value&quot;</code>, <code>&qu
 </code></pre>
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_storage</code>.</p>
 <p>The <code>waiting-for-continue</code> event is generated after at least one <code>&quot;operationStorageItems&quot;</code> event has been generated, and indicates that the JSON-RPC client must call <code>chainHead_unstable_continue</code> before more events are generated.</p>
-<p>This event only ever happens if the <code>type</code> parameter that was provided to <code>chainHead_unstable_storage</code> was <code>descendantsValues</code> or <code>descendantsHashes</code>.</p>
+<p>This event only ever happens if the <code>type</code> of one of the <code>items</code> provided as a parameter to <code>chainHead_unstable_storage</code> was <code>descendantsValues</code> or <code>descendantsHashes</code>.</p>
 <p>While the JSON-RPC server is waiting for a call to <code>chainHead_unstable_continue</code>, it can generate an <code>operationInaccessible</code> event in order to indicate that it can no longer proceed with the operation. If that is the case, the JSON-RPC client can simply try again.</p>
 <h3 id="operationstoragedone"><a class="header" href="#operationstoragedone">operationStorageDone</a></h3>
 <pre><code class="language-json">{

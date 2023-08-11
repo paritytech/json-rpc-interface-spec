@@ -164,9 +164,9 @@
 }
 </code></pre>
 <p>This return value indicates the request couldn't be started because the server is overloaded, or that the <code>followSubscription</code> is invalid or stale.</p>
-<p>The JSON-RPC client should try again after an on-going [<code>chainHead_unstable_storage</code>], [<code>chainHead_unstable_body</code>], or [<code>chainHead_unstable_call</code>] operation finishes.</p>
-<p>The JSON-RPC server must accept at least 16 concurrent operations for any given [<code>chainHead_unstable_follow</code>] subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
-For this purpose, each item requested through [<code>chainHead_unstable_storage</code>] counts as one operation, and each call to [<code>chainHead_unstable_body</code>] and [<code>chainHead_unstable_call</code>] counts as one operation.</p>
+<p>The JSON-RPC client should try again after an on-going <code>chainHead_unstable_storage</code>, <code>chainHead_unstable_body</code>, or <code>chainHead_unstable_call</code> operation finishes.</p>
+<p>The JSON-RPC server must accept at least 16 concurrent operations for any given <code>chainHead_unstable_follow</code> subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
+For this purpose, each item requested through <code>chainHead_unstable_storage</code> counts as one operation, and each call to <code>chainHead_unstable_body</code> and <code>chainHead_unstable_call</code> counts as one operation.</p>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p>The JSON-RPC server must start obtaining the body (in other words the list of transactions) of the given block.</p>
 <p>The progress of the operation is indicated through <code>operationBodyDone</code>, <code>operationInaccessible</code>, or <code>operationError</code> notifications generated on the corresponding <code>chainHead_unstable_follow</code> subscription.</p>
