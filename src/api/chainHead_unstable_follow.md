@@ -80,7 +80,12 @@ The format of `finalizedBlockRuntime` is described later down this page.
     "event": "newBlock",
     "blockHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "parentBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-    "newRuntime": ...
+    "newRuntime": ...,
+    "submittedTransactions": {
+        "operationIdA": 0,
+        "operationIdB": 3,
+        ...
+    },
 }
 ```
 
@@ -89,6 +94,8 @@ The `newBlock` indicates a new non-finalized block.
 `parentBlockHash` is guaranteed to be equal either to the current finalized block hash, or to a block reported in an earlier `newBlock` event.
 
 `newRuntime` must not be present if `withRuntime`, the parameter to this function, is `false`. `newRuntime` must be `null` if the runtime hasn't changed compared to its parent.
+
+`submittedTransactions` when the transactions submitted via `chainHead_unstable_transaction` end up being included in a block, then they will be present in this object. The keys of this object are the `transactionId`s and the values are the index where the transaction is present inside the block.
 
 If present and non-null, the format of `newRuntime` is the same as the `finalizedBlockRuntime` field in the `initialized` event and is explained later down this page.
 
@@ -130,6 +137,60 @@ The `finalized` event indicates that some of the blocks that have earlier been r
 All items in `finalizedBlockHashes` and `prunedBlockHashes` are guaranteed to have been reported through earlier `newBlock` events.
 
 The current best block, in other words the last block reported through a `bestBlockChanged` event, is guaranteed to either be the last item in `finalizedBlockHashes`, or to not be present in either `finalizedBlockHashes` or `prunedBlockHashes`.
+
+### operationTransactionValid
+
+```json
+{
+    "event": "operationTransactionValid",
+    "operationId": ...,
+}
+```
+
+`operationId` is a string returned by `chainHead_unstable_transaction`.
+
+The `operationTransactionValid` event indicates that this transaction has been checked and is considered as valid by the runtime.
+
+This transaction might still become invalid in the future, for example because a conflicting transaction is included in the chain in-between.
+
+Multiple `operationTransactionValid` events can be generated during the lifetime of a transaction. If multiple `operationTransactionValid` events happen in a row, the JSON-RPC serve
+
+### operationTransactionInvalid
+
+```json
+{
+    "event": "operationTransactionInvalid",
+    "operationId": ...,
+    "error": ...,
+}
+```
+
+The `operationTransactionInvalid` event indicates that the runtime has marked the transaction as invalid.
+
+This can happen for a variety of reasons specific to the chain, such as a bad signature, bad nonce, not enough balance for fees, etc.
+
+`error` is a human-readable error message indicating why the transaction is invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.
+
+No more event will be generated about this transaction.
+
+### operationTransactionBroadcasted
+
+```json
+{
+    "event": "operationTransactionBroadcasted",
+    "numPeers": ...
+}
+```
+
+The `operationTransactionBroadcasted` event indicates the number of other peers this transaction has been broadcasted to.
+
+`numPeers` is the total number of individual peers this transaction has been broadcasted to.
+
+The JSON-RPC server doesn't (and can't) offer any guarantee that these peers have received the transaction or have saved it in their own transactions pool. In other words, no matter how large the value in `numPeers` is, no guarantee is offered that shutting down the local node will lead to the transaction being included.
+
+**Note**: In principle, a value of `numPeers` equal to 0 guarantees that shutting down the local node will lead to the transaction _not_ being included, assuming that the JSON-RPC server isn't a block producer and that no other node has submitted the same transaction. However, because JSON-RPC servers are allowed to delay or skip events, the JSON-RPC client can never be sure that `numPeers` was still equal to 0 when shutting down the node.
+
+If multiple ``operationTransactionBroadcasted` events happen in a row, the JSON-RPC server is allowed to skip all but the last.
 
 ### operationBodyDone
 
