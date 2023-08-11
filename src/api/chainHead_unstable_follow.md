@@ -95,7 +95,7 @@ The `newBlock` indicates a new non-finalized block.
 
 `newRuntime` must not be present if `withRuntime`, the parameter to this function, is `false`. `newRuntime` must be `null` if the runtime hasn't changed compared to its parent.
 
-`submittedTransactions` when the transactions submitted via `chainHead_unstable_transaction` end up being included in a block, then they will be present in this object. The keys of this object are the `transactionId`s and the values are the index where the transaction is present inside the block.
+`submittedTransactions` when the transactions submitted via `chainHead_unstable_transaction` end up being included in a block, then they will be present in this object. The keys of this object are the `operationId`s and the values are the index where the transaction is present inside the block.
 
 If present and non-null, the format of `newRuntime` is the same as the `finalizedBlockRuntime` field in the `initialized` event and is explained later down this page.
 
