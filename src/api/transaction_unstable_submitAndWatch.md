@@ -199,4 +199,22 @@ No more event will be generated about this transaction.
 
 ## Transaction state
 
-One can build a mental model in order to understand which e
+One can build a mental model in order to understand which events can be generated. While a transaction is being watched, it has the following properties:
+
+- `isValidated`: `yes` or `not-yet`. A transaction is initially `not-yet` validated. A `validated` event indicates that the transaction has now been validated. After a certain number of blocks or in case of retractation, a transaction automatically becomes `not-yet` validated and needs to be validated again. No event is generated to indicate that a transaction is no longer validated, however a `validated` event will be generated again when a transaction is validated again.
+
+- `bestChainBlockIncluded`: an optional block hash and index. A transaction is initially included in no block. It can automatically become included in a block of the best chain. A `bestChainBlockIncluded` event reports updates to this property.
+
+- `numBroadcastedPeers`: _integer_. A transaction is initially broadcasted to 0 other peers. After a transaction is in the `isValidated: yes` and `bestChainBlockIncluded: none` states, the number of broadcaster peers can increase. This number never decreases and is never reset to 0, even if a transaction becomes `isValidated: not-yet`. The `broadcasted` event is used to report about updates to this value.
+
+Note that these three properties are orthogonal to each other, except for the fact that `numBroadcastedPeers` can only increase when `isValidated: yes` and `bestChainBlockIncluded: none`. In particular, a transaction can be included in a block before being validated or broadcasted.
+
+The `finalized`, `error`, `invalid`, and `dropped` event indicate that the transaction is no longer being watched. The state of the transaction is entirely discarded.
+
+JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the transaction. In other words, multiple `validated`, `broadcasted`, or `bestChainBlockIncluded` events in a row might be merged into one.
+
+**Note**: In order to implement this properly, JSON-RPC servers should maintain a buffer of three notifications (one for each property), and overwrite any unsent notification with a more recent status update.
+
+## Possible errors
+
+A JSON-RPC error is generated if the `transaction` parameter has an invalid format, but no error is produced if the bytes of the `transaction`, once decoded, are invalid. Instead, an `invalid` notification will be generated.
