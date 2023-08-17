@@ -62,6 +62,34 @@ The JSON-RPC server doesn't (and can't) offer any guarantee that these peers hav
 
 If multiple `broadcasted` events happen in a row, the JSON-RPC server is allowed to skip all but the last.
 
+### `searched`
+
+The `searched` event signals that the JSON-RPC server has sought the transaction within a set of blocks.
+
+```json
+{
+    "event": "searched",
+    "blocks": [
+        {
+            "hash": "..."
+        },
+        {
+            "hash": "...",
+            "index": "..."
+        }
+    ]
+}
+```
+
+- `blocks`: An array of blocks in which the server has performed the search.
+  - `hash`: A string denoting the hexadecimal-encoded hash of the block's header.
+  - `index` (optional): A string-formatted integer representing the 0-based index of the transaction within the block. It's present only if the transaction exists in the block.
+
+**Notes:**
+
+- The JSON-RPC server does not guarantee the sequence in which it will scan the blocks.
+- While the server aims to dispatch the `searched` event as soon as possible, it doesn't ensure its delivery preceding any other event.
+
 ### bestChainBlockIncluded
 
 ```json
@@ -171,22 +199,4 @@ No more event will be generated about this transaction.
 
 ## Transaction state
 
-One can build a mental model in order to understand which events can be generated. While a transaction is being watched, it has the following properties:
-
-- `isValidated`: `yes` or `not-yet`. A transaction is initially `not-yet` validated. A `validated` event indicates that the transaction has now been validated. After a certain number of blocks or in case of retractation, a transaction automatically becomes `not-yet` validated and needs to be validated again. No event is generated to indicate that a transaction is no longer validated, however a `validated` event will be generated again when a transaction is validated again.
-
-- `bestChainBlockIncluded`: an optional block hash and index. A transaction is initially included in no block. It can automatically become included in a block of the best chain. A `bestChainBlockIncluded` event reports updates to this property.
-
-- `numBroadcastedPeers`: _integer_. A transaction is initially broadcasted to 0 other peers. After a transaction is in the `isValidated: yes` and `bestChainBlockIncluded: none` states, the number of broadcaster peers can increase. This number never decreases and is never reset to 0, even if a transaction becomes `isValidated: not-yet`. The `broadcasted` event is used to report about updates to this value.
-
-Note that these three properties are orthogonal to each other, except for the fact that `numBroadcastedPeers` can only increase when `isValidated: yes` and `bestChainBlockIncluded: none`. In particular, a transaction can be included in a block before being validated or broadcasted.
-
-The `finalized`, `error`, `invalid`, and `dropped` event indicate that the transaction is no longer being watched. The state of the transaction is entirely discarded.
-
-JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the transaction. In other words, multiple `validated`, `broadcasted`, or `bestChainBlockIncluded` events in a row might be merged into one.
-
-**Note**: In order to implement this properly, JSON-RPC servers should maintain a buffer of three notifications (one for each property), and overwrite any unsent notification with a more recent status update.
-
-## Possible errors
-
-A JSON-RPC error is generated if the `transaction` parameter has an invalid format, but no error is produced if the bytes of the `transaction`, once decoded, are invalid. Instead, an `invalid` notification will be generated.
+One can build a mental model in order to understand which e
