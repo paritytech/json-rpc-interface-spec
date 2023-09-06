@@ -8,3 +8,10 @@ Any missing parameter, or parameter with an invalid format, should result in a J
 
 - "hexadecimal-encoded" designates a binary value encoded as hexadecimal. The value must either be empty, or start with `"0x"` and contain an even number of characters.
 - "SCALE-encoded" designates a value encoded using [the SCALE codec](https://docs.substrate.io/v3/advanced/scale-codec/).
+- ["Merkle value"](https://spec.polkadot.network/chap-state#defn-merkle-value) designates a SCALE encoded value of the following type:
+  ```
+  enum MerkleValue {
+      Node(Vec<u8>),
+      Hash(Hash)
+  }
+  ```
