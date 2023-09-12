@@ -36,7 +36,7 @@
     - [sudo_unstable_p2pDiscover](api/sudo_unstable_p2pDiscover.md)
     - [sudo_unstable_pendingTransactions](api/sudo_unstable_pendingTransactions.md)
     - [sudo_unstable_version](api/sudo_unstable_version.md)
-  - sudo_network
+  - [sudo_network]()
     - [sudo_network_unstable_unwatch](api/sudo_network_unstable_unwatch.md)
     - [sudo_network_unstable_watch](api/sudo_network_unstable_watch.md)
   - [sudo_sessionKeys]()
