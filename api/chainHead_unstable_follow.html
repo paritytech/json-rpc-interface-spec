@@ -292,7 +292,7 @@ If the <code>type</code> parameter was <code>&quot;value&quot;</code>, <code>&qu
 }
 </code></pre>
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_storage</code>.</p>
-<p>The <code>waiting-for-continue</code> event is generated after at least one <code>&quot;operationStorageItems&quot;</code> event has been generated, and indicates that the JSON-RPC client must call <code>chainHead_unstable_continue</code> before more events are generated.</p>
+<p>The <code>waitingForContinue</code> event is generated after at least one <code>&quot;operationStorageItems&quot;</code> event has been generated, and indicates that the JSON-RPC client must call <code>chainHead_unstable_continue</code> before more events are generated.</p>
 <p>This event only ever happens if the <code>type</code> of one of the <code>items</code> provided as a parameter to <code>chainHead_unstable_storage</code> was <code>descendantsValues</code> or <code>descendantsHashes</code>.</p>
 <p>While the JSON-RPC server is waiting for a call to <code>chainHead_unstable_continue</code>, it can generate an <code>operationInaccessible</code> event in order to indicate that it can no longer proceed with the operation. If that is the case, the JSON-RPC client can simply try again.</p>
 <h3 id="operationstoragedone"><a class="header" href="#operationstoragedone">operationStorageDone</a></h3>

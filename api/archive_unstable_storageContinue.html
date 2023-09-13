@@ -148,11 +148,11 @@
 <li><code>subscription</code>: An opaque string that was returned by <code>archive_unstable_storage</code>.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
-<p>Resumes a storage fetch started with <code>archive_unstable_storage</code> after it has generated a <code>waiting-for-continue</code> event.</p>
+<p>Resumes a storage fetch started with <code>archive_unstable_storage</code> after it has generated a <code>waitingForContinue</code> event.</p>
 <p>Has no effect if the <code>subscription</code> is invalid or refers to a subscription that has emitted a <code>{&quot;event&quot;: &quot;stop&quot;}</code> event.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>
-<li>A JSON-RPC error is generated if the <code>subscription</code> is valid but hasn't generated a <code>waiting-for-continue</code> event.</li>
+<li>A JSON-RPC error is generated if the <code>subscription</code> is valid but hasn't generated a <code>waitingForContinue</code> event.</li>
 </ul>
 
                     </main>
