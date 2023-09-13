@@ -301,7 +301,7 @@ The JSON-RPC client can then call <code>archive_unstable_header</code>, <code>ar
 <p>If the block was previously returned by <code>archive_unstable_hashByHeight</code> at a height strictly superior to the current finalized block height (as indicated by <code>archive_unstable_finalizedHeight</code>), then the block might &quot;disappear&quot; and calling this function might return <code>null</code> at any point.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_finalizedheight"><a class="header" href="#archive_unstable_finalizedheight">archive_unstable_finalizedHeight</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
-<p><strong>Return value</strong>: String containing the hexadecimal-encoded height of the current finalized block of the chain.</p>
+<p><strong>Return value</strong>: An integer height of the current finalized block of the chain.</p>
 <p>The value returned by this function must only ever increase over time. In other words, if calling this function returns <code>N</code>, then calling it again later must return a value superior or equal to <code>N</code>.</p>
 <p>When implemented on a load balancer, keep in mind that the other functions of the <code>archive</code> namespace must always return the same value when the block's height is inferior or equal to the finalized block height indicated by this function. One possible implementation strategy is for this function to call <code>archive_unstable_finalizedHeight</code> on every node being load balanced and return the smallest value.</p>
 <p>This function is expected to be called rarely by the JSON-RPC client. This function exists in order to give an indication of which blocks are accessible, and not for JSON-RPC clients to follow the finalized block. The <code>archive</code> namespace isn't meant to follow the head of the chain, and <code>chainHead</code> should be used instead in that situation.</p>
@@ -313,7 +313,7 @@ The JSON-RPC client can then call <code>archive_unstable_header</code>, <code>ar
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_hashbyheight"><a class="header" href="#archive_unstable_hashbyheight">archive_unstable_hashByHeight</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>height</code>: String containing an hexadecimal-encoded integer.</li>
+<li><code>height</code>: Integer representing the height of the block.</li>
 </ul>
 <p><strong>Return value</strong>: Array (possibly empty) of strings containing an hexadecimal-encoded hash of a block header.</p>
 <p>The JSON-RPC client must find the blocks (zero, one, or more) whose height is the one passed as parameter. If the <code>height</code> is inferior or equal to the finalized block height, then only finalized blocks must be fetched and returned.</p>

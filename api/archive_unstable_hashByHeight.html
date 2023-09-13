@@ -145,7 +145,7 @@
                         <h1 id="archive_unstable_hashbyheight"><a class="header" href="#archive_unstable_hashbyheight">archive_unstable_hashByHeight</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>height</code>: String containing an hexadecimal-encoded integer.</li>
+<li><code>height</code>: Integer representing the height of the block.</li>
 </ul>
 <p><strong>Return value</strong>: Array (possibly empty) of strings containing an hexadecimal-encoded hash of a block header.</p>
 <p>The JSON-RPC client must find the blocks (zero, one, or more) whose height is the one passed as parameter. If the <code>height</code> is inferior or equal to the finalized block height, then only finalized blocks must be fetched and returned.</p>
