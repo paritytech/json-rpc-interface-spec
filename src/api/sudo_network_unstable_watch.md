@@ -56,7 +56,7 @@ Once a `connectionState` event with `status` equal to `closed` is generated, the
 
 If `status` is `closed`, the connection must not have any associated substream still alive. A `substreamEvent` of `status` equal to `closed` must have been generated earlier for each substream that corresponds to this connection.
 
-If `status` is `open` or `closed`, the `targetPeerId` is a string containing the string representation of the PeerId of the remote side of the connection. If `status` is `connecting` and `direction` is `in`, the `targetPeerId` must be omitted  If `status` is `connecting`, the `targetPeerId` contains the string representation of the PeerId that the remote is expected to have, which might end up being different from the actual PeerId.
+If `status` is `open` or `closed`, the `targetPeerId` is a string containing the string representation of the PeerId of the remote side of the connection. If `status` is `connecting` and `direction` is `in`, the `targetPeerId` must be omitted. If `status` is `connecting`, the `targetPeerId` contains the string representation of the PeerId that the remote is expected to have, which might end up being different from the actual PeerId.
 
 `targetMultiaddr` is a string containing the string representation of the multiaddress of the remote side of the connection. The value in the `targetMultiaddr` field must always be the same for all the events related to a specific connection. In other words, a the multiaddress of the remote never changes during the lifetime of the connection.
 
