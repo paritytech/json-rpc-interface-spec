@@ -2,7 +2,7 @@
 
 **Parameters**: *none*
 
-**Return value**: String containing an opaque value representing the operation.
+**Return value**: String containing an opaque value representing the subscription.
 
 This functions lets the JSON-RPC client track the state of the peer-to-peer networking of the blockchain node associated to the JSON-RPC server.
 
