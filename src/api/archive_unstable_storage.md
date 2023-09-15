@@ -22,7 +22,7 @@ This function will later generate notifications in the following format:
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "archive_unstable_storageEvent",
+    "method": "archive_unstable_storage",
     "params": {
         "subscription": "...",
         "result": ...

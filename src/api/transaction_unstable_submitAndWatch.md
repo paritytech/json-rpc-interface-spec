@@ -17,7 +17,7 @@ This function will later generate one or more notifications in the following for
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "transaction_unstable_watchEvent",
+    "method": "transaction_unstable_submitAndWatch",
     "params": {
         "subscription": "...",
         "result": ...

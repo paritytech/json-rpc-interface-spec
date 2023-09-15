@@ -47,7 +47,7 @@ This function will later generate one or more notifications in the following for
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "chainHead_unstable_followEvent",
+    "method": "chainHead_unstable_follow",
     "params": {
         "subscription": "...",
         "result": ...
