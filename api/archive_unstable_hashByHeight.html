@@ -147,7 +147,7 @@
 <ul>
 <li><code>height</code>: Integer representing the height of the block.</li>
 </ul>
-<p><strong>Return value</strong>: Array (possibly empty) of strings containing an hexadecimal-encoded hash of a block header.</p>
+<p><strong>Return value</strong>: Array (possibly empty) of strings containing a hexadecimal-encoded hash of a block header.</p>
 <p>The JSON-RPC client must find the blocks (zero, one, or more) whose height is the one passed as parameter. If the <code>height</code> is inferior or equal to the finalized block height, then only finalized blocks must be fetched and returned.</p>
 <p>It returns an array of hexadecimal-encoded hashes corresponding to the blocks of this height that are known to the node.
 If the <code>height</code> is inferior or equal to the finalized block height, the array must contain exactly one entry. Furthermore, calling this function multiple times with the same <code>height</code> inferior or equal to the finalized block height must always return the same result.</p>

@@ -145,7 +145,7 @@
                         <h1 id="archive_unstable_body"><a class="header" href="#archive_unstable_body">archive_unstable_body</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
-<li><code>hash</code>: String containing the hexadecimal-encoded hash of the header of the block whose body must be retrieved.</li>
+<li><code>hash</code>: String containing a hexadecimal-encoded hash of the header of the block whose body will be retrieved.</li>
 </ul>
 <p><strong>Return value</strong>: If a block with that hash is found, an array of strings containing the hexadecimal-encoded SCALE-codec-encoded transactions in that block. If no block with that hash is found, <code>null</code>.</p>
 <p>If the block was previously returned by <code>archive_unstable_hashByHeight</code> at a height inferior or equal to the current finalized block height (as indicated by <code>archive_unstable_finalizedHeight</code>), then calling this method multiple times is guaranteed to always return non-null and always the same result.</p>
