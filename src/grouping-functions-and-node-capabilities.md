@@ -8,7 +8,7 @@ The group a JSON-RPC function belongs to is indicated by the `prefix_` in its na
 
 This JSON-RPC interface is intended to be implemented on various types of nodes:
 
-- Full nodes, which hold in their database all headers from the genesis block to the most recent block, plus the bodies and storage of the most recent blocks (typically the latest 256).
+- Full nodes, which hold in their database all block headers and bodies, plus the storage of recent blocks.
 - Light clients, which only know the headers of recent blocks.
 - Archive nodes, which hold in their database all block headers, bodies, and storage of every past block.
 - Plain databases that aren't actually connected to the peer-to-peer network of the blockchain.
