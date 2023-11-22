@@ -836,7 +836,7 @@ This specification does not mention any specific limit, but it must be large eno
 <p><strong>Note</strong>: The typical situation where a node could consider the runtime as invalid is a light client after a warp syncing. The light client knows that it's its fault for considering the runtime as invalid, but it has no better way to handle this situation than to return an error through the JSON-RPC interface for the error to get shown to the user.</p>
 <h2 id="possible-errors-4"><a class="header" href="#possible-errors-4">Possible errors</a></h2>
 <ul>
-<li>A JSON-RPC error with error code <code>-32100</code> can be generated if the JSON-RPC client has already opened 2 or more <code>chainHead_unstable_follow</code> subscriptions.</li>
+<li>A JSON-RPC error with error code <code>-32800</code> can be generated if the JSON-RPC client has already opened 2 or more <code>chainHead_unstable_follow</code> subscriptions.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chainhead_unstable_header"><a class="header" href="#chainhead_unstable_header">chainHead_unstable_header</a></h1>
 <p><strong>Parameters</strong>:</p>
