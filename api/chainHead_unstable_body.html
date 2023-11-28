@@ -176,8 +176,9 @@ For this purpose, each item requested through <code>chainHead_unstable_storage</
 <ul>
 <li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;operationInaccessible&quot;}</code> notification is generated (as explained above).</li>
 <li>If the <code>followSubscription</code> is invalid or stale, then <code>&quot;result&quot;: &quot;limitReached&quot;</code> is returned (as explained above).</li>
-<li>A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>.</li>
-<li>A JSON-RPC error is generated if the <code>followSubscription</code> is valid but the block hash passed as parameter has already been unpinned.</li>
+<li>A JSON-RPC error with error code <code>-32801</code> is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>, or the block hash has been unpinned.</li>
+<li>A JSON-RPC error with error code <code>-32602</code> is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).</li>
+<li>A JSON-RPC error with error code <code>-32603</code> is generated if the JSON-RPC server cannot interpret the block (hardware issues, corrupted database, disk failure etc).</li>
 </ul>
 
                     </main>
