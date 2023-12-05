@@ -119,3 +119,5 @@ It is allowed (but discouraged) for the JSON-RPC server to provide the same info
 ## Possible errors
 
 - A JSON-RPC error is generated if `type` isn't one of the allowed values (similarly to a missing parameter or an invalid parameter type).
+- A JSON-RPC error is generated if a `key` of the query items, or the `childTrie`
+parameter starts with the bytes of the ASCII string `:child_storage:`.

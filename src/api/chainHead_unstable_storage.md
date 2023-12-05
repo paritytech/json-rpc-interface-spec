@@ -83,3 +83,5 @@ If a `{"event": "operationWaitingForContinue"}` notification is generated, the s
 
 - A JSON-RPC error with error code `-32801` is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by `chainHead_unstable_follow`, or the block hash has been unpinned.
 - A JSON-RPC error with error code `-32602` is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).
+- A JSON-RPC error with error code `-32602` is generated if a `key` of the query items, or the `childTrie`
+parameter starts with the bytes of the ASCII string `:child_storage:`.
