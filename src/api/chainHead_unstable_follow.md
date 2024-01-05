@@ -245,7 +245,7 @@ No more event will be generated with this `operationId`.
 }
 ```
 
-`operationId` is a string returned by `chainHead_unstable_body`, `chainHead_unstable_call`, or `chainHead_unstable_storage`.
+`operationId` is, in the case of this event, a string returned only by `chainHead_unstable_storage`.
 
 The `operationInaccessible` event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the given operation.
 
