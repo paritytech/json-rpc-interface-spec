@@ -63,6 +63,7 @@ Where `subscription` is the value returned by this function, and `result` can be
 {
     "event": "initialized",
     "finalizedBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "finalizedParentBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "finalizedBlockRuntime": ...
 }
 ```
@@ -70,6 +71,8 @@ Where `subscription` is the value returned by this function, and `result` can be
 The `initialized` event is always the first event to be sent back, and is only ever sent back once per subscription.
 
 `finalizedBlockRuntime` is present if and only if `withRuntime`, the parameter to this function, is `true`.
+
+The `finalizedParentBlockHash` field indicates a block finalized before the start of the current subscription, and as such, it is not pinned and will not appear in subsequent events. Despite this, it can be useful when recovering from a subscription ended by the `stop` event.
 
 The format of `finalizedBlockRuntime` is described later down this page.
 
