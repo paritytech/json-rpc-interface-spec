@@ -312,7 +312,7 @@ If the <code>type</code> parameter was <code>&quot;value&quot;</code>, <code>&qu
 }
 </code></pre>
 <p><code>operationId</code> is a string returned by <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code>, or <code>chainHead_unstable_storage</code>.</p>
-<p>The <code>operationInaccessible</code> event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the given operation.</p>
+<p>The <code>operationInaccessible</code> event is produced if the JSON-RPC server fails to retrieve either the block body or the necessary storage items for the given operation.</p>
 <p>Contrary to the <code>operationError</code> event, repeating the same operation in the future might succeed.</p>
 <p>No more event will be generated about this <code>operationId</code>.</p>
 <h3 id="operationerror"><a class="header" href="#operationerror">operationError</a></h3>
