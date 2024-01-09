@@ -3,6 +3,7 @@
 **Parameters**:
 
 - `withRuntime`: A boolean indicating whether the events should report changes to the runtime.
+- `withHeader`: A boolean indicating whether the `newBlock` and the `initialized` events should report the block's header.
 
 **Return value**: String containing an opaque value representing the operation.
 
@@ -63,11 +64,14 @@ Where `subscription` is the value returned by this function, and `result` can be
 {
     "event": "initialized",
     "finalizedBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "header": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "finalizedBlockRuntime": ...
 }
 ```
 
 The `initialized` event is always the first event to be sent back, and is only ever sent back once per subscription.
+
+`header` is present if and only if `withHeader`, the parameter to this function, is `true`. Its value is the hexadecimal-encoded SCALE-encoded header of the block.
 
 `finalizedBlockRuntime` is present if and only if `withRuntime`, the parameter to this function, is `true`.
 
@@ -80,6 +84,7 @@ The format of `finalizedBlockRuntime` is described later down this page.
     "event": "newBlock",
     "blockHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "parentBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "header": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "newRuntime": ...
 }
 ```
@@ -87,6 +92,8 @@ The format of `finalizedBlockRuntime` is described later down this page.
 The `newBlock` indicates a new non-finalized block.
 
 `parentBlockHash` is guaranteed to be equal either to the current finalized block hash, or to a block reported in an earlier `newBlock` event.
+
+`header` is present if and only if `withHeader`, the parameter to this function, is `true`. Its value is the hexadecimal-encoded SCALE-encoded header of the block.
 
 `newRuntime` must not be present if `withRuntime`, the parameter to this function, is `false`. `newRuntime` must be `null` if the runtime hasn't changed compared to its parent.
 
