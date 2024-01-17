@@ -41,9 +41,10 @@ The JSON object returned by this function has the following format:
         }
     ],
 
-    "protocolId": "...",
-
-    "forkId": "...",
+    "networkProperties": {
+        "protocolId": "...",
+        "forkId": "...",
+    },
 
     "checkpoint": {
         "trustedBlocks": [
@@ -126,12 +127,20 @@ Each object has the following format:
     }
     ```
 
-  The `"address"` is a string containing the address of the telemetry server. The address can be specified in the URL format, or in the multi address format.  
-  The `"verbosity_level"` is an unsigned integer indicating the verbosity level of the telemetry server. The verbosity ranges from 0 to 9, where 0 is the least verbose and 9 is the most verbose.
+  - `"address"` is a string containing the address of the telemetry server. The address can be specified in the URL format, or in the multi address format.  
+  - `"verbosity_level"` is an unsigned integer indicating the verbosity level of the telemetry server. The verbosity ranges from 0 to 9, where 0 is the least verbose and 9 is the most verbose.
 
-- `protocolId` is an _optional_ string containing the network protocol id that identifies the chain.
+- `networkProperties` is an _optional_ JSON object containing the network properties of the chain. The object has the following format:
 
-- `forkId` is an _optional_ string containing the fork id that identifies the chain. In the case where two chains have the same genesis, this field can be used to signal a fork on the networking level.
+    ```json
+    {
+        "protocolId": "...",
+        "forkId": "...",
+    }
+    ```
+
+  - `protocolId` is an _optional_ string containing the network protocol id that identifies the chain.
+  - `forkId` is an _optional_ string containing the fork id that identifies the chain. In the case where two chains have the same genesis, this field can be used to signal a fork on the networking level.
 
 - `checkpoint` is an _optional_ JSON object containing the checkpoint of the chain. This information could be used to synchronize the client with the head of the chain.  
 The `"trustedBlocks"` field is an array of JSON objects representing the expected hashes of blocks at given heights. This can be used to set trusted checkpoints. The client should refuse to import blocks with a different hash at the given height.
@@ -145,7 +154,7 @@ The `"trustedBlocks"` field is an array of JSON objects representing the expecte
         ]
     ```
 
-  - The `"blockNumber"` is an unsigned integer represented as string indicating the block number.
-  - The `"blockHash"` is a hexadecimal-encoded string representing the hash of the block at the given height.
+  - `"blockNumber"` is an unsigned integer represented as string indicating the block number.
+  - `"blockHash"` is a hexadecimal-encoded string representing the hash of the block at the given height.
 
-The `"badBlocks"` field is an array of hexadecimal-encoded strings representing the hashes of blocks that should be considered invalid. These hashes represent known and unwanted blocks on forks that have been pruned.
+  The `"badBlocks"` field is an array of hexadecimal-encoded strings representing the hashes of blocks that should be considered invalid. These hashes represent known and unwanted blocks on forks that have been pruned.
