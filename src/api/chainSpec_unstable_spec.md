@@ -30,6 +30,12 @@ The JSON object returned by this function has the following format:
             "verbosity_level": 0,
         }
     ],
+
+    "properties": {
+        "ss58Format": 0,
+        "tokenDecimals": 0,
+        "tokenSymbol": "...",
+    }
 }
 ```
 
@@ -93,3 +99,8 @@ Each object has the following format:
 
   The `"address"` is a string containing the address of the telemetry server. The address can be specified in the URL format, or in the multiaddr format.  
   The `"verbosity_level"` is an unsigned integer indicating the verbosity level of the telemetry server.
+
+- `properties` is an object containing the properties of the chain.  
+  The `"ss58Format"` field is an unsigned integer indicating the designated SS58 prefix of the addresses of the chain. For more details see [Polkadot Accounts In-Depth](https://wiki.polkadot.network/docs/learn-account-advanced).  
+  The `"tokenDecimals` field is an unsigned integer indicating the number of decimals of the native token of the chain.  
+  The `"tokenSymbol"` field is a string containing the symbol of the native token of the chain.
