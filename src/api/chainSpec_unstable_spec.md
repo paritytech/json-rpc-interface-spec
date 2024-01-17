@@ -44,6 +44,15 @@ The JSON object returned by this function has the following format:
     "protocolId": "...",
 
     "forkId": "...",
+
+    "checkpoint": {
+        "trustedBlocks": [
+            {
+                "blockNumber": "...",
+                "blockHash": "0x...",
+            }
+        ]
+    }
 }
 ```
 
@@ -120,3 +129,18 @@ Each object has the following format:
 - `protocolId` is an _optional_ string containing the network protocol id that identifies the chain.
 
 - `forkId` is an _optional_ string containing the fork id that identifies the chain. In the case where two chains have the same genesis, this field can be used to signal a fork on the networking level.
+
+- `checkpoint` is an _optional_ JSON object containing the checkpoint of the chain. This information could be used to synchronize the client with the head of the chain.  
+The `"trustedBlocks"` field is an array of JSON objects representing the expected hashes of blocks at given heights. This can be used to set trusted checkpoints. The client should refuse to import blocks with a different hash at the given height.
+
+    ```json
+        "trustedBlocks": [
+            {
+                "blockNumber": "...",
+                "blockHash": "0x...",
+            }
+        ]
+    ```
+
+  The `"blockNumber"` is an unsigned integer represented as string indicating the block number.  
+  The `"blockHash"` is a hexadecimal-encoded string representing the hash of the block at the given height.
