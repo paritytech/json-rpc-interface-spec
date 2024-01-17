@@ -24,6 +24,10 @@ The JSON object returned by this function has the following format:
         "stateRootHash": "0x...",
     },
 
+    "properties": {
+        ...
+    },
+
     // Optional fields:
 
     "telemetryEndpoints": [
@@ -32,12 +36,6 @@ The JSON object returned by this function has the following format:
             "verbosity_level": 0,
         }
     ],
-
-    "properties": {
-        "ss58Format": 0,
-        "tokenDecimals": 0,
-        "tokenSymbol": "...",
-    },
 
     "protocolId": "...",
 
@@ -93,6 +91,13 @@ The servers are encouraged to provide at least one trusted bootnode.
 
     The `"stateRootHash"` contains a hexadecimal-encoded string representing the Merkle value of the genesis block.
 
+
+- `properties` is a JSON object containing a key-value map of properties of the chain.  
+  The following are examples of possible properties, although implementations are free to diverge from this list:  
+  The `"ss58Format"` field is an unsigned integer indicating the designated SS58 prefix of the addresses of the chain. For more details see [Polkadot Accounts In-Depth](https://wiki.polkadot.network/docs/learn-account-advanced).  
+  The `"tokenDecimals` field is an unsigned integer indicating the number of decimals of the native token of the chain.  
+  The `"tokenSymbol"` field is a string containing the symbol of the native token of the chain.
+
 - `telemetryEndpoints` is an _optional_ array of objects containing the telemetry endpoints of the chain.  
 Each object has the following format:
 
@@ -105,11 +110,6 @@ Each object has the following format:
 
   The `"address"` is a string containing the address of the telemetry server. The address can be specified in the URL format, or in the multi address format.  
   The `"verbosity_level"` is an unsigned integer indicating the verbosity level of the telemetry server. The verbosity ranges from 0 to 9, where 0 is the least verbose and 9 is the most verbose.
-
-- `properties` is an _optional_ object containing the properties of the chain.  
-  The `"ss58Format"` field is an unsigned integer indicating the designated SS58 prefix of the addresses of the chain. For more details see [Polkadot Accounts In-Depth](https://wiki.polkadot.network/docs/learn-account-advanced).  
-  The `"tokenDecimals` field is an unsigned integer indicating the number of decimals of the native token of the chain.  
-  The `"tokenSymbol"` field is a string containing the symbol of the native token of the chain.
 
 - `protocolId` is an _optional_ string containing the network protocol id that identifies the chain.
 
