@@ -30,6 +30,10 @@ The JSON object returned by this function has the following format:
 
     // Optional fields:
 
+    "codeSubstitutes": {
+        "...": "0x...",
+    },
+
     "telemetryEndpoints": [
         {
             "address": "...",
@@ -60,7 +64,7 @@ For example, the `"/dns/polkadot-bootnode-0.polkadot.io/tcp/30333/p2p/12D3KooWSz
 To establish a connection to the chain at least one bootnode is needed.  
 The servers are encouraged to provide at least one trusted bootnode.
 
-- `genesis` is an object containing the genesis storage of the chain. This field has the following formats, depending on the provided `rawGenesis` parameter.
+- `genesis` is a JSON object containing the genesis storage of the chain. This field has the following formats, depending on the provided `rawGenesis` parameter.
   - If `rawGenesis` is `true`, then the `genesis` field is a JSON object containing the raw genesis storage of the chain. The object has the following format:
 
     ```json
@@ -71,7 +75,6 @@ The servers are encouraged to provide at least one trusted bootnode.
                 ...
             },
         }
-        ...
     }
     ```
 
@@ -91,12 +94,15 @@ The servers are encouraged to provide at least one trusted bootnode.
 
     The `"stateRootHash"` contains a hexadecimal-encoded string representing the Merkle value of the genesis block.
 
-
 - `properties` is a JSON object containing a key-value map of properties of the chain.  
   The following are examples of possible properties, although implementations are free to diverge from this list:  
   The `"ss58Format"` field is an unsigned integer indicating the designated SS58 prefix of the addresses of the chain. For more details see [Polkadot Accounts In-Depth](https://wiki.polkadot.network/docs/learn-account-advanced).  
   The `"tokenDecimals` field is an unsigned integer indicating the number of decimals of the native token of the chain.  
   The `"tokenSymbol"` field is a string containing the symbol of the native token of the chain.
+
+- `codeSubstitutes` is an _optional_ JSON object containing a key-value map of code substitutes of the chain. The key is an unsigned integer represented as string indicating the block number at which the code substitute is applied. The value is a hexadecimal-encoded string representing the wasm runtime code, which is normally found under `b:code:` key.  
+The given wasm runtime code is used to substitute the runtime code starting from the provided block number and until the spec-version of the chain changes.  
+A substitute should be used when runtime upgrades cannot fix an underlying issue. For example, when the runtime upgrade panics.
 
 - `telemetryEndpoints` is an _optional_ array of objects containing the telemetry endpoints of the chain.  
 Each object has the following format:
