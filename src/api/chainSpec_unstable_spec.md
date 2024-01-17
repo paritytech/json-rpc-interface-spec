@@ -87,7 +87,7 @@ The servers are encouraged to provide at least one trusted bootnode.
 
     The `"stateRootHash"` contains a hexadecimal-encoded string representing the Merkle value of the genesis block.
 
-- `telemetryEndpoints` is an array of objects containing the telemetry endpoints of the chain.  
+- `telemetryEndpoints` is an _optional_ array of objects containing the telemetry endpoints of the chain.  
 Each object has the following format:
 
     ```json
@@ -98,7 +98,7 @@ Each object has the following format:
     ```
 
   The `"address"` is a string containing the address of the telemetry server. The address can be specified in the URL format, or in the multi address format.  
-  The `"verbosity_level"` is an unsigned integer indicating the verbosity level of the telemetry server.
+  The `"verbosity_level"` is an unsigned integer indicating the verbosity level of the telemetry server. The verbosity ranges from 0 to 9, where 0 is the least verbose and 9 is the most verbose.
 
 - `properties` is an object containing the properties of the chain.  
   The `"ss58Format"` field is an unsigned integer indicating the designated SS58 prefix of the addresses of the chain. For more details see [Polkadot Accounts In-Depth](https://wiki.polkadot.network/docs/learn-account-advanced).  
