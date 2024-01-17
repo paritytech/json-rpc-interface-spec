@@ -51,7 +51,10 @@ The JSON object returned by this function has the following format:
                 "blockNumber": "...",
                 "blockHash": "0x...",
             }
-        ]
+        ],
+        "badBlocks": [
+            "0x...",
+        ],
     }
 }
 ```
@@ -142,5 +145,7 @@ The `"trustedBlocks"` field is an array of JSON objects representing the expecte
         ]
     ```
 
-  The `"blockNumber"` is an unsigned integer represented as string indicating the block number.  
-  The `"blockHash"` is a hexadecimal-encoded string representing the hash of the block at the given height.
+  - The `"blockNumber"` is an unsigned integer represented as string indicating the block number.
+  - The `"blockHash"` is a hexadecimal-encoded string representing the hash of the block at the given height.
+
+The `"badBlocks"` field is an array of hexadecimal-encoded strings representing the hashes of blocks that should be considered invalid. These hashes represent known and unwanted blocks on forks that have been pruned.
