@@ -34,7 +34,9 @@ The JSON object returned by this function has the following format:
 ```
 
 - `name` is a string containing the name of the chain, identical to the result of `chainSpec_v1_chainName`.
+
 - `id` is a string containing the identifier of the chain.
+
 - `chainType` is an object containing the type of the chain.  
 This information can be used by tools to display additional information to the user.  
 This fields can be one of the following values:
@@ -42,10 +44,12 @@ This fields can be one of the following values:
   - `"Local"`: A string indicating the chain is a local chain that runs on multiple nodes for testing purposes.
   - `"Development"`: A string indicating the chain is a development chain that runs mainly on one node.
   - `{ "Custom": "..." }`: A JSON object indicating the chain is a custom chain. The value of the `"Custom"` field is a string.
+
 - `bootnodes` is an array of strings containing the [p2p multiaddr](https://github.com/libp2p/specs/blob/master/addressing/README.md#the-p2p-multiaddr) of the bootnodes of the chain.  
 For example, the `"/dns/polkadot-bootnode-0.polkadot.io/tcp/30333/p2p/12D3KooWSz8r2WyCdsfWHgPyvD8GKQdJ1UAiRmrcrs8sQB3fe2KU"` is a valid p2p multiaddr, where `12D3KooWSz8r2WyCdsfWHgPyvD8GKQdJ1UAiRmrcrs8sQB3fe2KU` represents the peer ID of the bootnode.
 To establish a connection to the chain at least one bootnode is needed.  
 The servers are encouraged to provide at least one trusted bootnode.
+
 - `genesis` is an object containing the genesis storage of the chain. This field has the following formats, depending on the provided `rawGenesis` parameter.
   - If `rawGenesis` is `true`, then the `genesis` field is a JSON object containing the raw genesis storage of the chain. The object has the following format:
 
@@ -89,4 +93,3 @@ Each object has the following format:
 
   The `"address"` is a string containing the address of the telemetry server. The address can be specified in the URL format, or in the multiaddr format.  
   The `"verbosity_level"` is an unsigned integer indicating the verbosity level of the telemetry server.
-
