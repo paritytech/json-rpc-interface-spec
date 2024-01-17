@@ -51,7 +51,7 @@ This fields can be one of the following values:
   - `"Development"`: A string indicating the chain is a development chain that runs mainly on one node.
   - `{ "Custom": "..." }`: A JSON object indicating the chain is a custom chain. The value of the `"Custom"` field is a string.
 
-- `bootnodes` is an array of strings containing the [p2p multiaddr](https://github.com/libp2p/specs/blob/master/addressing/README.md#the-p2p-multiaddr) of the bootnodes of the chain.  
+- `bootnodes` is an array of strings containing the [multi adresss format](https://github.com/multiformats/multiaddr) of the bootnodes of the chain.  
 For example, the `"/dns/polkadot-bootnode-0.polkadot.io/tcp/30333/p2p/12D3KooWSz8r2WyCdsfWHgPyvD8GKQdJ1UAiRmrcrs8sQB3fe2KU"` is a valid p2p multiaddr, where `12D3KooWSz8r2WyCdsfWHgPyvD8GKQdJ1UAiRmrcrs8sQB3fe2KU` represents the peer ID of the bootnode.
 To establish a connection to the chain at least one bootnode is needed.  
 The servers are encouraged to provide at least one trusted bootnode.
@@ -97,7 +97,7 @@ Each object has the following format:
     }
     ```
 
-  The `"address"` is a string containing the address of the telemetry server. The address can be specified in the URL format, or in the multiaddr format.  
+  The `"address"` is a string containing the address of the telemetry server. The address can be specified in the URL format, or in the multi address format.  
   The `"verbosity_level"` is an unsigned integer indicating the verbosity level of the telemetry server.
 
 - `properties` is an object containing the properties of the chain.  
