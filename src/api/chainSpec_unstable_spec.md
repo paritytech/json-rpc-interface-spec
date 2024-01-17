@@ -14,6 +14,8 @@ The JSON object returned by this function has the following format:
 
     "id": "...",
 
+    "protocolId": "...",
+
     "chainType": "Live" | "Local" | "Development" | { "Custom": "..." },
 
     "bootnodes": [
@@ -42,6 +44,8 @@ The JSON object returned by this function has the following format:
 - `name` is a string containing the name of the chain, identical to the result of `chainSpec_v1_chainName`.
 
 - `id` is a string containing the identifier of the chain.
+
+- `protocolId` is an _optional_ string containing the network protocol id that identifies the chain.
 
 - `chainType` is an object containing the type of the chain.  
 This information can be used by tools to display additional information to the user.  
