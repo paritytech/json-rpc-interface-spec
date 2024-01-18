@@ -1,4 +1,4 @@
-# chainSpec_unstable_clientSpec
+# chainSpec_unstable_spec
 
 **Parameters**:
 
