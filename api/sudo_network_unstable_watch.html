@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>sudo_network_unstable_watch</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../objectives.html"><strong aria-hidden="true">1.1.</strong> Objectives</a></li><li class="chapter-item expanded "><a href="../why-json-rpc.html"><strong aria-hidden="true">1.2.</strong> Why JSON-RPC?</a></li><li class="chapter-item expanded "><a href="../grouping-functions-and-node-capabilities.html"><strong aria-hidden="true">1.3.</strong> Grouping functions and node capabilities</a></li><li class="chapter-item expanded "><a href="../dos-attacks-resilience.html"><strong aria-hidden="true">1.4.</strong> DoS attacks resilience</a></li><li class="chapter-item expanded "><a href="../load-balancers.html"><strong aria-hidden="true">1.5.</strong> Load balancers</a></li></ol></li><li class="chapter-item expanded "><a href="../api.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive_unstable_body.html"><strong aria-hidden="true">2.1.1.</strong> archive_unstable_body</a></li><li class="chapter-item expanded "><a href="../api/archive_unstable_call.html"><strong aria-hidden="true">2.1.2.</strong> archive_unstable_call</a></li><li class="chapter-item expanded "><a href="../api/archive_unstable_finalizedHeight.html"><strong aria-hidden="true">2.1.3.</strong> archive_unstable_finalizedHeight</a></li><li class="chapter-item expanded "><a href="../api/archive_unstable_genesisHash.html"><strong aria-hidden="true">2.1.4.</strong> archive_unstable_genesisHash</a></li><li class="chapter-item expanded "><a href="../api/archive_unstable_hashByHeight.html"><strong aria-hidden="true">2.1.5.</strong> archive_unstable_hashByHeight</a></li><li class="chapter-item expanded "><a href="../api/archive_unstable_header.html"><strong aria-hidden="true">2.1.6.</strong> archive_unstable_header</a></li><li class="chapter-item expanded "><a href="../api/archive_unstable_storage.html"><strong aria-hidden="true">2.1.7.</strong> archive_unstable_storage</a></li></ol></li><li class="chapter-item expanded "><a href="../api/chainHead.html"><strong aria-hidden="true">2.2.</strong> chainHead</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/chainHead_unstable_body.html"><strong aria-hidden="true">2.2.1.</strong> chainHead_unstable_body</a></li><li class="chapter-item expanded "><a href="../api/chainHead_unstable_call.html"><strong aria-hidden="true">2.2.2.</strong> chainHead_unstable_call</a></li><li class="chapter-item expanded "><a href="../api/chainHead_unstable_continue.html"><strong aria-hidden="true">2.2.3.</strong> chainHead_unstable_continue</a></li><li class="chapter-item expanded "><a href="../api/chainHead_unstable_follow.html"><strong aria-hidden="true">2.2.4.</strong> chainHead_unstable_follow</a></li><li class="chapter-item expanded "><a href="../api/chainHead_unstable_header.html"><strong aria-hidden="true">2.2.5.</strong> chainHead_unstable_header</a></li><li class="chapter-item expanded "><a href="../api/chainHead_unstable_stopOperation.html"><strong aria-hidden="true">2.2.6.</strong> chainHead_unstable_stopOperation</a></li><li class="chapter-item expanded "><a href="../api/chainHead_unstable_storage.html"><strong aria-hidden="true">2.2.7.</strong> chainHead_unstable_storage</a></li><li class="chapter-item expanded "><a href="../api/chainHead_unstable_unfollow.html"><strong aria-hidden="true">2.2.8.</strong> chainHead_unstable_unfollow</a></li><li class="chapter-item expanded "><a href="../api/chainHead_unstable_unpin.html"><strong aria-hidden="true">2.2.9.</strong> chainHead_unstable_unpin</a></li></ol></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.3.</strong> chainSpec</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/chainSpec_v1_chainName.html"><strong aria-hidden="true">2.3.1.</strong> chainSpec_v1_chainName</a></li><li class="chapter-item expanded "><a href="../api/chainSpec_v1_genesisHash.html"><strong aria-hidden="true">2.3.2.</strong> chainSpec_v1_genesisHash</a></li><li class="chapter-item expanded "><a href="../api/chainSpec_v1_properties.html"><strong aria-hidden="true">2.3.3.</strong> chainSpec_v1_properties</a></li></ol></li><li class="chapter-item expanded "><a href="../api/rpc.html"><strong aria-hidden="true">2.4.</strong> rpc</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/rpc_methods.html"><strong aria-hidden="true">2.4.1.</strong> rpc_methods</a></li></ol></li><li class="chapter-item expanded "><a href="../api/sudo.html"><strong aria-hidden="true">2.5.</strong> sudo</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/sudo_unstable_p2pDiscover.html"><strong aria-hidden="true">2.5.1.</strong> sudo_unstable_p2pDiscover</a></li><li class="chapter-item expanded "><a href="../api/sudo_unstable_pendingTransactions.html"><strong aria-hidden="true">2.5.2.</strong> sudo_unstable_pendingTransactions</a></li><li class="chapter-item expanded "><a href="../api/sudo_unstable_version.html"><strong aria-hidden="true">2.5.3.</strong> sudo_unstable_version</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.6.</strong> sudo_network</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/sudo_network_unstable_unwatch.html"><strong aria-hidden="true">2.6.1.</strong> sudo_network_unstable_unwatch</a></li><li class="chapter-item expanded "><a href="../api/sudo_network_unstable_watch.html" class="active"><strong aria-hidden="true">2.6.2.</strong> sudo_network_unstable_watch</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.7.</strong> sudo_sessionKeys</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/sudo_sessionKeys_unstable_generate.html"><strong aria-hidden="true">2.7.1.</strong> sudo_sessionKeys_unstable_generate</a></li></ol></li><li class="chapter-item expanded "><a href="../api/transaction.html"><strong aria-hidden="true">2.8.</strong> transaction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/transaction_unstable_submitAndWatch.html"><strong aria-hidden="true">2.8.1.</strong> transaction_unstable_submitAndWatch</a></li><li class="chapter-item expanded "><a href="../api/transaction_unstable_unwatch.html"><strong aria-hidden="true">2.8.2.</strong> transaction_unstable_unwatch</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="sudo_network_unstable_watch"><a class="header" href="#sudo_network_unstable_watch">sudo_network_unstable_watch</a></h1>
+<p><strong>Parameters</strong>: <em>none</em></p>
+<p><strong>Return value</strong>: String containing an opaque value representing the subscription.</p>
+<p>This functions lets the JSON-RPC client track the state of the peer-to-peer networking of the blockchain node associated to the JSON-RPC server.</p>
+<p>The subscription can later be stopped by calling <code>sudo_network_unstable_unwatch</code>.</p>
+<p>When this function is called, a <code>connectionState</code> event is generated for each connection that already exists, and a <code>substreamState</code> event is generated for each substream that already exists. In other words, the JSON-RPC server must send its current networking state to the JSON-RPC client.
+In addition, the JSON-RPC server is encouraged to notify the JSON-RPC client of connections and substreams that have recently been closed.</p>
+<p>The JSON-RPC server must accept at least one <code>sudo_network_unstable_watch</code> subscriptions per JSON-RPC client. Trying to open more might lead to a JSON-RPC error when calling <code>sudo_network_unstable_watch</code>. In other words, as long as a JSON-RPC client only starts one <code>sudo_network_unstable_watch</code> subscriptions, it is guaranteed that this return value will never happen.</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>This function will later generate one or more notifications in the following format:</p>
+<pre><code class="language-json">{
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+    &quot;method&quot;: &quot;sudo_networkState_event&quot;,
+    &quot;params&quot;: {
+        &quot;subscription&quot;: &quot;...&quot;,
+        &quot;result&quot;: ...
+    }
+}
+</code></pre>
+<p>Where <code>subscription</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<h3 id="connectionstate"><a class="header" href="#connectionstate">connectionState</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;connectionState&quot;,
+    &quot;connectionId&quot;: &quot;...&quot;,
+    &quot;targetPeerId&quot;: &quot;...&quot;,
+    &quot;targetMultiaddr&quot;: &quot;...&quot;,
+    &quot;status&quot;: &quot;connecting&quot; | &quot;open&quot; | &quot;closed&quot;,
+    &quot;direction&quot;: &quot;in&quot; | &quot;out&quot;,
+    &quot;when&quot;: ...
+}
+</code></pre>
+<p>A <code>connectionState</code> event is generated when a new connection attempt is started, when a connection has finished its handshaking phase, or when a connection is terminated.</p>
+<p><code>connectionId</code> is an opaque string representing this specific connection.</p>
+<p><code>status</code> indicates the state of the connection: <code>connecting</code> if the connection hasn't finished its handshake phase (including the libp2p-specific handshakes), <code>open</code> if the connection is fully established and can open substreams, or <code>closed</code> if the connection is now dead.</p>
+<p>Each <code>connectionId</code> must follow one of the follow <code>status</code> transitions: <code>connecting</code> then <code>open</code> then <code>closed</code>, or <code>connecting</code> then <code>closed</code> (if an error happend during the handshake). The JSON-RPC server is not allowed to omit events such as the <code>connecting</code> event.</p>
+<p>Once a <code>connectionState</code> event with <code>status</code> equal to <code>closed</code> is generated, the <code>connectionId</code> is unallocated. Any further usage of the same <code>connectionId</code> designates a different connection instead.</p>
+<p>If <code>status</code> is <code>closed</code>, the connection must not have any associated substream still alive. A <code>substreamEvent</code> of <code>status</code> equal to <code>closed</code> must have been generated earlier for each substream that corresponds to this connection.</p>
+<p>If <code>status</code> is <code>open</code> or <code>closed</code>, the <code>targetPeerId</code> is a string containing the string representation of the PeerId of the remote side of the connection. If <code>status</code> is <code>connecting</code> and <code>direction</code> is <code>in</code>, the <code>targetPeerId</code> must be omitted. If <code>status</code> is <code>connecting</code>, the <code>targetPeerId</code> contains the string representation of the PeerId that the remote is expected to have, which might end up being different from the actual PeerId.</p>
+<p><code>targetMultiaddr</code> is a string containing the string representation of the multiaddress of the remote side of the connection. The value in the <code>targetMultiaddr</code> field must always be the same for all the events related to a specific connection. In other words, a the multiaddress of the remote never changes during the lifetime of the connection.</p>
+<p><code>direction</code> indicates whether the connection was initiated locally (<code>out</code>) or by the remote (<code>in</code>). The value in the <code>direction</code> field must always be the same for all the events related to a specific connection. In other words, a connection never changes direction during its lifetime.</p>
+<p><code>when</code> is an integer containing the UNIX timestamp in milliseconds, in other words the number of milliseconds since the UNIX epoch ignoring leap seconds.</p>
+<h3 id="substreamstate"><a class="header" href="#substreamstate">substreamState</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;substreamState&quot;,
+    &quot;connectionId&quot;: &quot;...&quot;,
+    &quot;substreamId&quot;: &quot;...&quot;,
+    &quot;status&quot;: &quot;open&quot; | &quot;closed&quot;,
+    &quot;protocolName&quot;: &quot;...&quot;,
+    &quot;direction&quot;: &quot;in&quot; | &quot;out&quot;,
+    &quot;when&quot;: ...
+}
+</code></pre>
+<p>A <code>substreamState</code> event is generated when a new connection attempt is started, when a connection has finished its handshaking phase, or when a connection is terminated.</p>
+<p><code>connectionId</code> is an opaque string representing this specific connection. It must always correspond to a connection whose latest <code>status</code> is <code>open</code>.</p>
+<p><code>substreamId</code> is an opaque string representing this specific substream within the connection. Each substream is identified by the <code>connectionId</code> + <code>substreamId</code> tuple rather than just the <code>substreamId</code> alone. The JSON-RPC server is allowed to use the same value of <code>substreamId</code> for two different substreams belonging to two different connections.</p>
+<p><code>status</code> indicates the state of the substream: <code>open</code> if the substream is &quot;alive&quot;, or <code>closed</code> if the substream is dead. A substream is considered &quot;alive&quot; if the JSON-RPC server allocates resources for this substream, even if the remote isn't aware of said substream.</p>
+<p>Each <code>substreamState</code> event where <code>status</code> equal to <code>closed</code> must follow a previous <code>substreamState</code> even for that same substream where <code>status</code> was <code>open</code>. In other words, the JSON-RPC server is not allowed to omit event the <code>open</code> event.</p>
+<p>Once a <code>substreamState</code> event with <code>status</code> equal to <code>closed</code> is generated, the <code>substreamId</code> is unallocated. Any further usage of the same <code>substreamId</code> in the context of that <code>connectionId</code> designates a different substream instead.</p>
+<p><code>protocolName</code> is a string indicating the multistream-select protocol name that was negotiated.</p>
+<p><code>direction</code> indicates whether the substream was initiated locally (<code>out</code>) or by the remote (<code>in</code>). Note that this is not the same thing as the <code>direction</code> of the corresponding connection. The value in the <code>direction</code> field must always be the same for all the events related to a specific substream. In other words, a substream never changes direction during its lifetime.</p>
+<p><code>when</code> is an integer containing the UNIX timestamp in milliseconds, in other words the number of milliseconds since the UNIX epoch ignoring leap seconds.</p>
+<h3 id="missedevents"><a class="header" href="#missedevents">missedEvents</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;missedEvents&quot;
+}
+</code></pre>
+<p>The <code>missedEvents</code> event is generated in order to inform the JSON-RPC client that it has not been informed of the existence of all connections or substreams due to it being too slow to pull JSON-RPC notifications from the JSON-RPC server.</p>
+<p>See the <code>Guarantee of delivery</code> section for more details.</p>
+<h2 id="guarantee-of-delivery"><a class="header" href="#guarantee-of-delivery">Guarantee of delivery</a></h2>
+<p>JSON-RPC server implementations must be aware of the fact that JSON-RPC clients might pull notifications from the JSON-RPC server at a slower rate than networking events are generated. If this function is implemented naively, a slow or malicious JSON-RPC client can cause the JSON-RPC server to allocate ever-increasing buffers, which could in turn lead to a DoS attack on the JSON-RPC server.</p>
+<p>JSON-RPC server implementations are also allowed to completely omit events about connections and substreams whose existence is unknown to the JSON-RPC client. For example, when a connection gets closed, the JSON-RPC server is allowed to not notify the JSON-RPC client if the client wasn't yet notified of the fact that the new-closed connection existed. When that happens, the JSON-RPC server must send a <code>missedEvents</code> event to the JSON-RPC client in the nearby future.</p>
+<p>JSON-RPC clients must be aware that they aren't guaranteed to see the list of all connections and all substreams that the peer-to-peer endpoint of the node associated to the JSON-RPC server performs. The JSON-RPC client is only guaranteed to be aware of what is currently happening.</p>
+<p>Assuming that the number of total active <code>sudo_network_unstable_watch</code> subscriptions on any given JSON-RPC server is bounded, and that the number of total active connections and substreams is bounded, the size of the buffer of notifications to send back to JSON-RPC clients is also bounded.</p>
+<h2 id="about-timestamps"><a class="header" href="#about-timestamps">About timestamps</a></h2>
+<p>The <code>connectionState</code> and <code>substreamState</code> events contain a <code>when</code> field indicating when the event happened.</p>
+<p>The JSON-RPC server isn't required to order events by the value in their <code>when</code> field. The JSON-RPC is only required to order events so that they don't lose their logical meaning. For example, when two different connections open, the JSON-RPC server can send the two <code>connectionState</code> events in any order. When a connection opens then closes, the JSON-RPC server must send a <code>connectionState</code> with a <code>status</code> equal to <code>open</code> before the <code>connectionState</code> with a <code>status</code> equal to <code>closed</code>.</p>
+<h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
+<ul>
+<li>A JSON-RPC error with error code <code>-32100</code> can be generated if the JSON-RPC client has already opened a <code>sudo_network_unstable_watch</code> subscription.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../api/sudo_network_unstable_unwatch.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../api/sudo_sessionKeys_unstable_generate.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../api/sudo_network_unstable_unwatch.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../api/sudo_sessionKeys_unstable_generate.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
