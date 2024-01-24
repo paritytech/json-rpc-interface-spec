@@ -34,10 +34,10 @@ This return value indicates that the request has successfully started.
 
 This return value indicates the call couldn't be started because the server is overloaded, or that the `followSubscription` is invalid or stale.
 
-The JSON-RPC client should try again after an on-going [`chainHead_unstable_storage`], [`chainHead_unstable_body`], or [`chainHead_unstable_call`] operation finishes.
+The JSON-RPC client should try again after an on-going `chainHead_unstable_storage`, `chainHead_unstable_body`, or `chainHead_unstable_call` operation finishes.
 
-The JSON-RPC server must accept at least 16 concurrent operations for any given [`chainHead_unstable_follow`] subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
-For this purpose, each item requested through [`chainHead_unstable_storage`] counts as one operation, and each call to [`chainHead_unstable_body`] and [`chainHead_unstable_call`] counts as one operation.
+The JSON-RPC server must accept at least 16 concurrent operations for any given `chainHead_unstable_follow` subscription. In other words, as long as the JSON-RPC client makes sure that no more than 16 operations are in progress at any given item, it is guaranteed that all of its operations will be accepted by the JSON-RPC server.
+For this purpose, each item requested through `chainHead_unstable_storage` counts as one operation, and each call to `chainHead_unstable_body` and `chainHead_unstable_call` counts as one operation.
 
 ## Overview
 
@@ -57,11 +57,11 @@ This function should be seen as a complement to `chainHead_unstable_follow`, all
 
 - If the networking part of the behaviour fails, then an `{"event": "operationInaccessible"}` notification is generated (as explained above).
 - If the `followSubscription` is invalid or stale, then `"result": "limitReached"` is returned (as explained above).
-- A JSON-RPC error is generated if the `followSubscription` corresponds to a follow where `withRuntime` was `̀false`.
-- A JSON-RPC error is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by `chainHead_unstable_follow`.
-- A JSON-RPC error is generated if the `followSubscription` is valid but the block hash passed as parameter has already been unpinned.
 - If the method to call doesn't exist in the Wasm runtime of the chain, then an `{"event": "operationError"}` notification is generated.
 - If the runtime call fails (e.g. because it triggers a panic in the runtime, running out of memory, etc., or if the runtime call takes too much time), then an `{"event": "operationError"}` notification is generated.
+- A JSON-RPC error with error code `-32801` is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by `chainHead_unstable_follow`, or the block hash has been unpinned.
+- A JSON-RPC error with error code `-32802` is generated if the `followSubscription` corresponds to a follow where `withRuntime` was `false`.
+- A JSON-RPC error with error code `-32602` is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).
 
 ## About `callParameters`
 

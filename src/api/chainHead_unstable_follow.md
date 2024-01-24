@@ -26,6 +26,8 @@ This function works as follows:
 
 **Note**: This list of notifications makes it very easy for a JSON-RPC client to follow just the best block updates (listening to just `bestBlockChanged` events) or follow just the finalized block updates (listening to just `initialized` and `finalized` events). It is however not possible to easily figure out whether the runtime has been modified when these updates happen. This is not problematic, as anyone using the JSON-RPC interface naively propably doesn't need to account for runtime changes anyway.
 
+Additionally, the `chainHead_unstable_body`, `chainHead_unstable_call`, and `chainHead_unstable_storage` JSON-RPC function might cause the subscription to produce additional notifications.
+
 ## The `withRuntime` parameter
 
 If the `withRuntime` parameter is `true`, then blocks shouldn't (and can't) be reported to JSON-RPC clients before the JSON-RPC server has finished obtaining the runtime specification of the blocks that it reports. This includes the finalized block reported in the `initialized` event.
@@ -198,7 +200,7 @@ The `value` field is set if this item corresponds to one of the requested items 
 
 The `hash` field is set if this item corresponds to one of the requested items whose `type` was `"hash"` or `"descendantsHashes"`. The `hash` field is a string containing the hexadecimal-encoded hash of the storage entry.
 
-The `closestDescendantMerkleValue` field is set if this item corresponds to one of the requested items whose `type` was `"closestDescendantMerkleValue"`. The trie node whose Merkle value is indicated in `closestDescendantMerkleValue` is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server.
+The `closestDescendantMerkleValue` field is set if this item corresponds to one of the requested items whose `type` was `"closestDescendantMerkleValue"`. The trie node whose Merkle value is indicated in `closestDescendantMerkleValue` is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server. The Merkle value is equal to either the node value or the hash of the node value, as defined in the [Polkadot specification](https://spec.polkadot.network/chap-state#defn-merkle-value).
 
 ### operationWaitingForContinue
 
@@ -211,9 +213,9 @@ The `closestDescendantMerkleValue` field is set if this item corresponds to one 
 
 `operationId` is a string returned by `chainHead_unstable_storage`.
 
-The `waiting-for-continue` event is generated after at least one `"operationStorageItems"` event has been generated, and indicates that the JSON-RPC client must call `chainHead_unstable_continue` before more events are generated.
+The `waitingForContinue` event is generated after at least one `"operationStorageItems"` event has been generated, and indicates that the JSON-RPC client must call `chainHead_unstable_continue` before more events are generated.
 
-This event only ever happens if the `type` parameter that was provided to `chainHead_unstable_storage` was `descendantsValues` or `descendantsHashes`.
+This event only ever happens if the `type` of one of the `items` provided as a parameter to `chainHead_unstable_storage` was `descendantsValues` or `descendantsHashes`.
 
 While the JSON-RPC server is waiting for a call to `chainHead_unstable_continue`, it can generate an `operationInaccessible` event in order to indicate that it can no longer proceed with the operation. If that is the case, the JSON-RPC client can simply try again.
 
@@ -245,7 +247,7 @@ No more event will be generated with this `operationId`.
 
 `operationId` is a string returned by `chainHead_unstable_body`, `chainHead_unstable_call`, or `chainHead_unstable_storage`.
 
-The `operationInaccessible` event is produced if the JSON-RPC server was incapable of obtaining the storage items necessary for the given operation.
+The `operationInaccessible` event is produced if the JSON-RPC server fails to retrieve either the block body or the necessary storage items for the given operation.
 
 Contrary to the `operationError` event, repeating the same operation in the future might succeed.
 
@@ -397,4 +399,5 @@ The runtime is of type `invalid` if the JSON-RPC server considers the runtime as
 
 ## Possible errors
 
-- A JSON-RPC error with error code `-32100` can be generated if the JSON-RPC client has already opened 2 or more `chainHead_unstable_follow` subscriptions.
+- A JSON-RPC error with error code `-32800` can be generated if the JSON-RPC client has already opened 2 or more `chainHead_unstable_follow` subscriptions.
+- A JSON-RPC error with error code `-32602` is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).
