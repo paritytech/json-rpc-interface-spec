@@ -987,7 +987,16 @@ For this purpose, each item requested through <code>chainHead_unstable_storage</
 <p>The <code>rpc_methods</code> function is the only one without a version number. It can be used by JSON-RPC clients in order to determine which functions the JSON-RPC server supports.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="rpc_methods"><a class="header" href="#rpc_methods">rpc_methods</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
-<p><strong>Return value</strong>: Array of strings indicating the names of all the JSON-RPC functions supported by the JSON-RPC server, including this one.</p>
+<p><strong>Return value</strong>: A JSON object.</p>
+<p>The JSON object returned by this function has the following format:</p>
+<pre><code>{
+    &quot;methods&quot;: [...]
+}
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>methods</code> contains an array of strings indicating the names of all the JSON-RPC functions supported by the JSON-RPC server, including <code>rpc_methods</code> itself.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-5"><a class="header" href="#introduction-5">Introduction</a></h1>
 <p>The functions with the <code>sudo</code> prefix are targeted at blockchain node operators who want to inspect the state of their blockchain node.</p>
 <p>Contrary to functions with other prefixes, functions with the <code>sudo</code> prefix are meant to be called on a specific JSON-RPC server, and not for example on a load balancer. When implementing a load balancer in front of multiple JSON-RPC servers, functions with the <code>sudo</code> prefix should be forbidden.</p>

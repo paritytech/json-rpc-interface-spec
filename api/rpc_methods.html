@@ -144,7 +144,16 @@
                     <main>
                         <h1 id="rpc_methods"><a class="header" href="#rpc_methods">rpc_methods</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
-<p><strong>Return value</strong>: Array of strings indicating the names of all the JSON-RPC functions supported by the JSON-RPC server, including this one.</p>
+<p><strong>Return value</strong>: A JSON object.</p>
+<p>The JSON object returned by this function has the following format:</p>
+<pre><code>{
+    &quot;methods&quot;: [...]
+}
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>methods</code> contains an array of strings indicating the names of all the JSON-RPC functions supported by the JSON-RPC server, including <code>rpc_methods</code> itself.</li>
+</ul>
 
                     </main>
 
