@@ -171,17 +171,6 @@
 <p>This transaction might still become invalid in the future, for example because a conflicting transaction is included in the chain in-between.</p>
 <p>Multiple <code>validated</code> events can be generated during the lifetime of a transaction. If multiple <code>validated</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last one.</p>
 <p><strong>Note</strong>: In theory, this event could include a field indicating the block against which this transaction was validated. It has been decided to not include this field for pragmatic reasons: implementing it might be complicated, and it is not very useful for a JSON-RPC client to know this information.</p>
-<h3 id="broadcasted"><a class="header" href="#broadcasted">broadcasted</a></h3>
-<pre><code class="language-json">{
-    &quot;event&quot;: &quot;broadcasted&quot;,
-    &quot;numPeers&quot;: ...
-}
-</code></pre>
-<p>The <code>broadcasted</code> event indicates the number of other peers this transaction has been broadcasted to.</p>
-<p><code>numPeers</code> is the total number of individual peers this transaction has been broadcasted to.</p>
-<p>The JSON-RPC server doesn't (and can't) offer any guarantee that these peers have received the transaction or have saved it in their own transactions pool. In other words, no matter how large the value in <code>numPeers</code> is, no guarantee is offered that shutting down the local node will lead to the transaction being included.</p>
-<p><strong>Note</strong>: In principle, a value of <code>numPeers</code> equal to 0 guarantees that shutting down the local node will lead to the transaction <em>not</em> being included, assuming that the JSON-RPC server isn't a block producer and that no other node has submitted the same transaction. However, because JSON-RPC servers are allowed to delay or skip events, the JSON-RPC client can never be sure that <code>numPeers</code> was still equal to 0 when shutting down the node.</p>
-<p>If multiple <code>broadcasted</code> events happen in a row, the JSON-RPC server is allowed to skip all but the last.</p>
 <h3 id="bestchainblockincluded"><a class="header" href="#bestchainblockincluded">bestChainBlockIncluded</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;bestChainBlockIncluded&quot;,
@@ -239,12 +228,10 @@
 <h3 id="dropped"><a class="header" href="#dropped">dropped</a></h3>
 <pre><code class="language-json">{
     &quot;event&quot;: &quot;dropped&quot;,
-    &quot;broadcasted&quot;: true,
     &quot;error&quot;: &quot;...&quot;
 }
 </code></pre>
 <p>The <code>dropped</code> event indicates that the client wasn't capable of keeping track of this transaction.</p>
-<p>If the <code>broadcasted</code> field is <code>true</code>, then this transaction has been sent to other peers and might still be included in the chain in the future. No guarantee is offered that the transaction will be included in the chain even if <code>broadcasted</code> is <code>true</code>. However, if <code>broadcasted</code> is <code>false</code>, then it is guaranteed that this transaction will not be included, unless it has been submitted in parallel on a different node.</p>
 <p>This can happen for example if the JSON-RPC server's transactions pool is full, if the JSON-RPC server's resources have reached their limit, if the block the transaction is included in takes too long to be finalized, or the syncing requires a gap in the chain that prevents the JSON-RPC server from knowing whether the transaction has been included and/or finalized.</p>
 <p><code>error</code> is a human-readable error message indicating why the transaction has been dropped. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p>No more event will be generated about this transaction.</p>
@@ -257,13 +244,10 @@
 <li>
 <p><code>bestChainBlockIncluded</code>: an optional block hash and index. A transaction is initially included in no block. It can automatically become included in a block of the best chain. A <code>bestChainBlockIncluded</code> event reports updates to this property.</p>
 </li>
-<li>
-<p><code>numBroadcastedPeers</code>: <em>integer</em>. A transaction is initially broadcasted to 0 other peers. After a transaction is in the <code>isValidated: yes</code> and <code>bestChainBlockIncluded: none</code> states, the number of broadcaster peers can increase. This number never decreases and is never reset to 0, even if a transaction becomes <code>isValidated: not-yet</code>. The <code>broadcasted</code> event is used to report about updates to this value.</p>
-</li>
 </ul>
-<p>Note that these three properties are orthogonal to each other, except for the fact that <code>numBroadcastedPeers</code> can only increase when <code>isValidated: yes</code> and <code>bestChainBlockIncluded: none</code>. In particular, a transaction can be included in a block before being validated or broadcasted.</p>
+<p>Note that these two properties are orthogonal. In particular, a transaction can be included in a block before being validated.</p>
 <p>The <code>finalized</code>, <code>error</code>, <code>invalid</code>, and <code>dropped</code> event indicate that the transaction is no longer being watched. The state of the transaction is entirely discarded.</p>
-<p>JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the transaction. In other words, multiple <code>validated</code>, <code>broadcasted</code>, or <code>bestChainBlockIncluded</code> events in a row might be merged into one.</p>
+<p>JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the transaction. In other words, multiple <code>validated</code> or <code>bestChainBlockIncluded</code> events in a row might be merged into one.</p>
 <p><strong>Note</strong>: In order to implement this properly, JSON-RPC servers should maintain a buffer of three notifications (one for each property), and overwrite any unsent notification with a more recent status update.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>transaction</code> parameter has an invalid format, but no error is produced if the bytes of the <code>transaction</code>, once decoded, are invalid. Instead, an <code>invalid</code> notification will be generated.</p>
