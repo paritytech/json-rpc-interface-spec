@@ -949,7 +949,7 @@ For this purpose, each item requested through <code>chainHead_unstable_storage</
 <p><strong>Parameters</strong>:</p>
 <ul>
 <li><code>followSubscription</code>: An opaque string that was returned by <code>chainHead_unstable_follow</code>.</li>
-<li><code>hashOrHashes</code>: String or array of strings containing the hexadecimal-encoded hash of the header of the block to unpin.</li>
+<li><code>hashOrHashes</code>: String or array of unique strings containing the hexadecimal-encoded hash of the header of the block to unpin.</li>
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>See explanations in the documentation of <code>chainHead_unstable_follow</code>.</p>
@@ -959,6 +959,7 @@ For this purpose, each item requested through <code>chainHead_unstable_storage</
 <h2 id="possible-errors-7"><a class="header" href="#possible-errors-7">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error with error code <code>-32801</code> is generated if the <code>followSubscription</code> is valid but at least one of the block hashes passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>, or at least one of the block hashes has been unpinned.</li>
+<li>A JSON-RPC error with error code <code>-32804</code> is generated if the <code>hashOrHashes</code> parameter is an array and at least one of the block hashes is duplicated.</li>
 <li>A JSON-RPC error with error code <code>-32602</code> is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).</li>
 <li>No error is generated if the <code>followSubscription</code> is invalid or stale. The call is simply ignored.</li>
 </ul>
