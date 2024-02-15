@@ -15,7 +15,7 @@ Has no effect if the `followSubscription` is invalid or stale.
 
 If this function returns an error, then no block has been unpinned. An JSON-RPC server implementation is expected to start unpinning the blocks only after it has made sure that all the blocks could be unpinned.
 
-This function can only be called from the same connection as the one that made the `chainHead_unstable_follow` subscription.
+This function must be called from the same connection as the corresponding `chainHead_unstable_follow` subscription.
 
 ## Possible errors
 

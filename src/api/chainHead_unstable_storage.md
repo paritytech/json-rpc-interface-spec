@@ -56,7 +56,7 @@ For the purpose of storage requests, the trie root hash of the child tries of th
 
 The progress of the operation is indicated through `operationStorageItems`, `operationWaitingForContinue`, `operationStorageDone`, `operationInaccessible`, or `operationError` notifications generated on the corresponding `chainHead_unstable_follow` subscription.
 
-This function can only be called from the same connection as the one that made the `chainHead_unstable_follow` subscription. The `operationId` is guaranteed to be generated before the `operationStorageItems`, `operationWaitingForContinue`, `operationStorageDone`, `operationInaccessible`, or `operationError` notifications are generated on the corresponding `chainHead_unstable_follow` subscription.
+This function must be called from the same connection as the corresponding `chainHead_unstable_follow` subscription. The `operationId` is guaranteed to be returned before any operation notifications on the corresponding `chainHead_unstable_follow` subscription.
 
 The operation continues even if the target block is unpinned with `chainHead_unstable_unpin`.
 
