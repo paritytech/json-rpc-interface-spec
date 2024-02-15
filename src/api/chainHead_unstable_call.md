@@ -47,7 +47,7 @@ The JSON-RPC server must invoke the entry point of the runtime of the given bloc
 
 The progress of the operation is indicated through `operationCallDone`, `operationInaccessible`, or `operationError` notifications generated on the corresponding `chainHead_unstable_follow` subscription.
 
-This function must be called from the same connection as the corresponding `chainHead_unstable_follow` subscription. The `operationId` is guaranteed to be returned before any operation notifications on the corresponding `chainHead_unstable_follow` subscription.
+This function must be called from the same connection as the corresponding `chainHead_unstable_follow` subscription. The `operationId` is guaranteed to be returned before any operation notification on the corresponding `chainHead_unstable_follow` subscription.
 
 The operation continues even if the target block is unpinned with `chainHead_unstable_unpin`.
 
