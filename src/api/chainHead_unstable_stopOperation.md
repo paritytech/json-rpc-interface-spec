@@ -13,4 +13,4 @@ Has no effect if the `followSubscription` is invalid or stale.
 
 JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client <-> server communication, they might still receive notifications about the operation, for example because a notification was already in the process of being sent back by the JSON-RPC server.
 
-This function can only be called from the same connection as the one that made the `chainHead_unstable_follow` subscription.
+This function must be called from the same connection as the one that made the `chainHead_unstable_follow` subscription.
