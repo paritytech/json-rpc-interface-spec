@@ -47,8 +47,6 @@ The JSON-RPC server must invoke the entry point of the runtime of the given bloc
 
 The progress of the operation is indicated through `operationCallDone`, `operationInaccessible`, or `operationError` notifications generated on the corresponding `chainHead_unstable_follow` subscription.
 
-The `operationId` is guaranteed to be returned before any operation notifications on the corresponding `chainHead_unstable_follow` subscription.
-
 The operation continues even if the target block is unpinned with `chainHead_unstable_unpin`.
 
 This function should be seen as a complement to `chainHead_unstable_follow`, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use `archive_unstable_call` if instead you want to call the runtime of an arbitrary block.
