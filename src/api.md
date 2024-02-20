@@ -4,6 +4,8 @@ Note that all parameters are mandatory unless specified otherwise. All functions
 
 Any missing parameter, or parameter with an invalid format, should result in a JSON-RPC error being returned, as described in the JSON-RPC specification.
 
+Any function returning an opaque subscription or operation ID ensures that the value is returned before any subsequent notifications are generated.
+
 ## Glossary
 
 - "hexadecimal-encoded" designates a binary value encoded as hexadecimal. The value must either be empty, or start with `"0x"` and contain an even number of characters.
