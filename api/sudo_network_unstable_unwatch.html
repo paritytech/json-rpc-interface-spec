@@ -149,6 +149,8 @@
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive notifications concerning this subscription, for example because these notifications were already in the process of being sent back by the JSON-RPC server.</p>
+<h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
+<p>A JSON-RPC error is generated if the <code>subscription</code> doesn't correspond to any active subscription.</p>
 
                     </main>
 

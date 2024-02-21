@@ -1045,6 +1045,8 @@ The multiaddress passed as parameter should contain the address and identity of 
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive notifications concerning this subscription, for example because these notifications were already in the process of being sent back by the JSON-RPC server.</p>
+<h2 id="possible-errors-9"><a class="header" href="#possible-errors-9">Possible errors</a></h2>
+<p>A JSON-RPC error is generated if the <code>subscription</code> doesn't correspond to any active subscription.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sudo_network_unstable_watch"><a class="header" href="#sudo_network_unstable_watch">sudo_network_unstable_watch</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
 <p><strong>Return value</strong>: String containing an opaque value representing the subscription.</p>
@@ -1121,7 +1123,7 @@ In addition, the JSON-RPC server is encouraged to notify the JSON-RPC client of 
 <h2 id="about-timestamps"><a class="header" href="#about-timestamps">About timestamps</a></h2>
 <p>The <code>connectionState</code> and <code>substreamState</code> events contain a <code>when</code> field indicating when the event happened.</p>
 <p>The JSON-RPC server isn't required to order events by the value in their <code>when</code> field. The JSON-RPC is only required to order events so that they don't lose their logical meaning. For example, when two different connections open, the JSON-RPC server can send the two <code>connectionState</code> events in any order. When a connection opens then closes, the JSON-RPC server must send a <code>connectionState</code> with a <code>status</code> equal to <code>open</code> before the <code>connectionState</code> with a <code>status</code> equal to <code>closed</code>.</p>
-<h2 id="possible-errors-9"><a class="header" href="#possible-errors-9">Possible errors</a></h2>
+<h2 id="possible-errors-10"><a class="header" href="#possible-errors-10">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error with error code <code>-32100</code> can be generated if the JSON-RPC client has already opened a <code>sudo_network_unstable_watch</code> subscription.</li>
 </ul>
@@ -1140,7 +1142,7 @@ The runtime call is done against the current best block of the chain.</p>
 <p>If there is no <code>SessionKeys</code> API being supported, or if it is not at version 1, the JSON-RPC server is allowed to call an alternative version of this function if it is sensible to do so. For example, if the <code>SessionKeys</code> API is updated to version 2 without a substantial change in the logic of <code>SessionKeys_generate_session_keys</code>, then the JSON-RPC server is allowed to call it as well. This specification should be updated if that happens.</p>
 <p>Contrary to most other JSON-RPC functions that perform runtime function calls where side-effects are forbidden, this runtime must be allowed to call host functions that access the keys of the node (e.g. <code>ext_crypto_sr25519_generate_version_1</code>, <code>ext_crypto_ed25519_public_keys_version_1</code>, etc.).</p>
 <p><strong>Note</strong>: This can be used as a replacement for the legacy <code>author_rotateKeys</code> function.</p>
-<h2 id="possible-errors-10"><a class="header" href="#possible-errors-10">Possible errors</a></h2>
+<h2 id="possible-errors-11"><a class="header" href="#possible-errors-11">Possible errors</a></h2>
 <ul>
 <li><code>{&quot;error&quot;:&quot;...&quot;}</code> is returned if the runtime doesn't support the given API.</li>
 <li><code>{&quot;error&quot;:&quot;...&quot;}</code> is returned if a problem happens during the call, such as a Wasm trap.</li>
@@ -1171,7 +1173,7 @@ Any attempt to broadcast more than 4 transactions simultaneously might result in
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>The node will no longer try to broadcast the transaction over the peer-to-peer network.</p>
-<h2 id="possible-errors-11"><a class="header" href="#possible-errors-11">Possible errors</a></h2>
+<h2 id="possible-errors-12"><a class="header" href="#possible-errors-12">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>operationId</code> doesn't correspond to any active <code>transaction_unstable_broadcast</code> operation.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-7"><a class="header" href="#introduction-7">Introduction</a></h1>
 <p>The <code>transactionWatch</code> functions allow submitting a transaction for inclusion in the chain.</p>
@@ -1282,7 +1284,7 @@ Any attempt to broadcast more than 4 transactions simultaneously might result in
 <p>The <code>finalized</code>, <code>error</code>, <code>invalid</code>, and <code>dropped</code> event indicate that the transaction is no longer being watched. The state of the transaction is entirely discarded.</p>
 <p>JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the transaction. In other words, multiple <code>validated</code> or <code>bestChainBlockIncluded</code> events in a row might be merged into one.</p>
 <p><strong>Note</strong>: In order to implement this properly, JSON-RPC servers should maintain a buffer of three notifications (one for each property), and overwrite any unsent notification with a more recent status update.</p>
-<h2 id="possible-errors-12"><a class="header" href="#possible-errors-12">Possible errors</a></h2>
+<h2 id="possible-errors-13"><a class="header" href="#possible-errors-13">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>transaction</code> parameter has an invalid format, but no error is produced if the bytes of the <code>transaction</code>, once decoded, are invalid. Instead, an <code>invalid</code> notification will be generated.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="transactionwatch_unstable_unwatch"><a class="header" href="#transactionwatch_unstable_unwatch">transactionWatch_unstable_unwatch</a></h1>
 <p><strong>Parameters</strong>:</p>
@@ -1291,7 +1293,7 @@ Any attempt to broadcast more than 4 transactions simultaneously might result in
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p><strong>Note</strong>: This function does not remove the transaction from the pool. In other words, the node will still try to include the transaction in the chain. Having a function that removes the transaction from the pool would be almost useless, as the node might have already gossiped it to the rest of the network.</p>
-<h2 id="possible-errors-13"><a class="header" href="#possible-errors-13">Possible errors</a></h2>
+<h2 id="possible-errors-14"><a class="header" href="#possible-errors-14">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>subscription</code> doesn't correspond to any active subscription.</p>
 
                     </main>
