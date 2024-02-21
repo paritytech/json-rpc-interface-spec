@@ -4,4 +4,4 @@ The functions with the `sudo` prefix are targeted at blockchain node operators w
 
 Contrary to functions with other prefixes, functions with the `sudo` prefix are meant to be called on a specific JSON-RPC server, and not for example on a load balancer. When implementing a load balancer in front of multiple JSON-RPC servers, functions with the `sudo` prefix should be forbidden.
 
-In case of a JSON-RPC server that accepts multiple different client connections, the `sudo` functions must be called from the same connection.
+The `sudo` functions must be called from the same connection in order to work together.
