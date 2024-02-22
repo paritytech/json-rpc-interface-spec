@@ -8,9 +8,9 @@
 
 **Return value**:
 
-- If no block with that `hash` exists, returns `null`.
-- If the call was successful, `{"result": ... }` where the `result` is a string containing the hexadecimal-encoded SCALE-encoded value returned by the runtime.
-- If the call wasn't successful, `{"error": ... }` where the `error` is a human-readable message indicating the problem.
+- If no block with that `hash` exists, `null`.
+- If the call was successful, `{ "success": true, "value": ... }` where the `value` is a string containing the hexadecimal-encoded SCALE-encoded value returned by the runtime.
+- If the call wasn't successful, `{ "success": false, "error": ... }` where the `error` is a human-readable message indicating the problem.
 
 The JSON-RPC server must invoke the entry point of the runtime of the given block using the storage of the given block.
 
@@ -23,4 +23,4 @@ If the height of the block hash provided is greater than the current finalized b
 ## Possible errors
 
 - A JSON-RPC error if the provided parameters are invalid.
-- `{"error":"..."}` is returned if a problem happens during the call, such as a Wasm trap, runtime panics, function not supported etc.
+- `{ "success": false, "error": ... }` is returned if a problem happens during the call, such as a Wasm trap, runtime panics, function not supported etc.
