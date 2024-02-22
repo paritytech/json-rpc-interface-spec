@@ -6,8 +6,6 @@ The most important function in this category is `chainHead_unstable_follow`. It 
 
 These functions are the functions most of the JSON-RPC clients will most commonly use. A JSON-RPC server implementation is encouraged to prioritize serving these functions over other functions, and to put pinned blocks in a quickly-accessible cache.
 
-The `chainHead` functions must be called from the same connection in order to work together.
-
 ## Usage
 
 _This section contains a small beginner guide destined for JSON-RPC client users._

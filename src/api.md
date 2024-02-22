@@ -6,6 +6,8 @@ Any missing parameter, or parameter with an invalid format, should result in a J
 
 Any function returning an opaque subscription or operation ID ensures that this is returned before any related notifications are generated.
 
+The functions within each respective category must be called from the same connection in order to work together.
+
 ## Glossary
 
 - "hexadecimal-encoded" designates a binary value encoded as hexadecimal. The value must either be empty, or start with `"0x"` and contain an even number of characters.
