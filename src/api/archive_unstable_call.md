@@ -23,4 +23,4 @@ If the height of the block hash provided is greater than the current finalized b
 ## Possible errors
 
 - A JSON-RPC error if the provided parameters are invalid.
-- `{ "success": false, "error": ... }` is returned if a problem happens during the call, such as a Wasm trap, runtime panics, function not supported etc.
+- `{ "success": false, "error": ... }` is returned if a problem happens during the call, such as a Wasm trap, runtime panics, function not supported etc. The `error` isn't meant to be shown to end users, but is for developers to understand the problem.
