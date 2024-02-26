@@ -41,7 +41,7 @@
   - [sudo_sessionKeys]()
     - [sudo_sessionKeys_unstable_generate](api/sudo_sessionKeys_unstable_generate.md)
   - [transaction](api/transaction.md)
-    - [transaction_unstable_broadcast](api/transaction_unstable_broadcast.md)
+    - [transaction_v1_broadcast](api/transaction_v1_broadcast.md)
     - [transaction_unstable_stop](api/transaction_unstable_stop.md)
   - [transactionWatch](api/transactionWatch.md)
     - [transactionWatch_unstable_submitAndWatch](api/transactionWatch_unstable_submitAndWatch.md)
