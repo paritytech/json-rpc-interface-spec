@@ -1,4 +1,4 @@
-# transactionWatch_unstable_submitAndWatch
+# transactionWatch_v1_submitAndWatch
 
 **Parameters**:
 
@@ -17,7 +17,7 @@ This function will later generate one or more notifications in the following for
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "transactionWatch_unstable_watchEvent",
+    "method": "transactionWatch_v1_watchEvent",
     "params": {
         "subscription": "...",
         "result": ...
