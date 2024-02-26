@@ -149,8 +149,8 @@
 </ul>
 <p><strong>Return value</strong>: </p>
 <ul>
-<li>If the runtime supports the function call (see below), an object of the form <code>{&quot;result&quot;:&quot;...&quot;}</code> where <code>result</code> contains a string containing the hexadecimal-encoded output of the runtime function call.</li>
-<li>Otherwise, an object of the form <code>{&quot;error&quot;:&quot;...&quot;}</code> where <code>error</code> is a human-readable error message indicating the problem. This string isn't meant to be shown to end users, but is for developers to understand the problem.</li>
+<li>If the runtime supports the function call (see below), an object of the form <code>{ &quot;success&quot;: true, &quot;value&quot;: ... }</code> where <code>value</code> contains a string containing the hexadecimal-encoded output of the runtime function call.</li>
+<li>Otherwise, an object of the form <code>{ &quot;success&quot;: false, &quot;error&quot;: ... }</code> where <code>error</code> is a human-readable error message indicating the problem. This string isn't meant to be shown to end users, but is for developers to understand the problem.</li>
 </ul>
 <p>The JSON-RPC server must check that the runtime supports the <code>SessionKeys</code> API (64bits blake2 hash: <code>0xab3c0572291feb8b</code>) at version 1, and call the <code>SessionKeys_generate_session_keys</code> runtime function.
 The runtime call is done against the current best block of the chain.</p>
@@ -159,9 +159,9 @@ The runtime call is done against the current best block of the chain.</p>
 <p><strong>Note</strong>: This can be used as a replacement for the legacy <code>author_rotateKeys</code> function.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>
-<li><code>{&quot;error&quot;:&quot;...&quot;}</code> is returned if the runtime doesn't support the given API.</li>
-<li><code>{&quot;error&quot;:&quot;...&quot;}</code> is returned if a problem happens during the call, such as a Wasm trap.</li>
-<li><code>{&quot;error&quot;:&quot;...&quot;}</code> is returned if the runtime attempts to modify the storage of the block.</li>
+<li><code>{ &quot;success&quot;: false, &quot;error&quot;: ... }</code> is returned if the runtime doesn't support the given API.</li>
+<li><code>{ &quot;success&quot;: false, &quot;error&quot;: ... }</code> is returned if a problem happens during the call, such as a Wasm trap.</li>
+<li><code>{ &quot;success&quot;: false, &quot;error&quot;: ... }</code> is returned if the runtime attempts to modify the storage of the block.</li>
 </ul>
 <h2 id="about-the-behavior-of-sessionkeys_generate_session_keys"><a class="header" href="#about-the-behavior-of-sessionkeys_generate_session_keys">About the behavior of <code>SessionKeys_generate_session_keys</code></a></h2>
 <p>The objective of this JSON-RPC function is to call the <code>SessionKeys_generate_session_keys</code> runtime function. This paragraph describes how this runtime function behaves.</p>

@@ -298,9 +298,13 @@ The JSON-RPC client can then call <code>archive_unstable_header</code>, <code>ar
 </ul>
 <p>The JSON-RPC server must invoke the entry point of the runtime of the given block using the storage of the given block.</p>
 <p><strong>Note</strong>: The runtime is still allowed to call host functions with side effects, however these side effects must be discarded. For example, a runtime function call can try to modify the storage of the chain, but this modification must not be actually applied. The only motivation for performing a call is to obtain the return value.</p>
-<p>In situations where the provided runtime function doesn't exist, or the runtime crashes, or similar, an error is returned. The <code>error</code> isn't meant to be shown to end users, but is for developers to understand the problem.</p>
-<p>If the block was previously returned by <code>archive_unstable_hashByHeight</code> at a height inferior or equal to the current finalized block height (as indicated by <code>archive_unstable_finalizedHeight</code>), then calling this method multiple times is guaranteed to always return non-null and always the same result (except for the <code>error</code> message which is allowed to change).</p>
-<p>If the block was previously returned by <code>archive_unstable_hashByHeight</code> at a height strictly superior to the current finalized block height (as indicated by <code>archive_unstable_finalizedHeight</code>), then the block might &quot;disappear&quot; and calling this function might return <code>null</code> at any point.</p>
+<p>If the height of the block hash provided is less than or equal to the current finalized block height (which can be obtained via <code>archive_unstable_finalizedHeight</code>), then calling this method multiple times is guaranteed to always return non-null and always the same result (except for the <code>error</code> message which is allowed to change).</p>
+<p>If the height of the block hash provided is greater than the current finalized block height, then the block might be pruned at any time and calling this method may return null.</p>
+<h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
+<ul>
+<li>A JSON-RPC error if the provided parameters are invalid.</li>
+<li><code>{ &quot;success&quot;: false, &quot;error&quot;: ... }</code> is returned if a problem happens during the call, such as a Wasm trap, runtime panics, function not supported etc. The <code>error</code> isn't meant to be shown to end users, but is for developers to understand the problem.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="archive_unstable_finalizedheight"><a class="header" href="#archive_unstable_finalizedheight">archive_unstable_finalizedHeight</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
 <p><strong>Return value</strong>: An integer height of the current finalized block of the chain.</p>
@@ -418,7 +422,7 @@ If the height of the block hash provided is greater than the current finalized b
 Use <code>chainHead_unstable_storage</code> if instead you want to retrieve the storage of a block obtained by the <code>chainHead_unstable_follow</code>.</p>
 <p>If <code>items</code> contains multiple identical or overlapping queries, the JSON-RPC server can choose whether to merge or not the items in the result. For example, if the request contains two items with the same key, one with <code>hash</code> and one with <code>value</code>, the JSON-RPC server can choose whether to generate two <code>item</code> objects, one with the value and one with the hash, or only a single <code>item</code> object with both <code>hash</code> and <code>value</code> set.</p>
 <p>It is allowed (but discouraged) for the JSON-RPC server to provide the same information multiple times in the result, for example providing the <code>value</code> field of the same <code>key</code> twice. Forcing the JSON-RPC server to de-duplicate items in the result might lead to unnecessary overhead.</p>
-<h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
+<h2 id="possible-errors-1"><a class="header" href="#possible-errors-1">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if <code>type</code> isn't one of the allowed values (similarly to a missing parameter or an invalid parameter type).</li>
 </ul>
@@ -490,7 +494,7 @@ For this purpose, each item requested through <code>chainHead_unstable_storage</
 <p>The progress of the operation is indicated through <code>operationBodyDone</code>, <code>operationInaccessible</code>, or <code>operationError</code> notifications generated on the corresponding <code>chainHead_unstable_follow</code> subscription.</p>
 <p>The operation continues even if the target block is unpinned with <code>chainHead_unstable_unpin</code>.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_body</code> if instead you want to retrieve the body of an arbitrary block.</p>
-<h2 id="possible-errors-1"><a class="header" href="#possible-errors-1">Possible errors</a></h2>
+<h2 id="possible-errors-2"><a class="header" href="#possible-errors-2">Possible errors</a></h2>
 <ul>
 <li>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;operationInaccessible&quot;}</code> notification is generated (as explained above).</li>
 <li>If the <code>followSubscription</code> is invalid or stale, then <code>&quot;result&quot;: &quot;limitReached&quot;</code> is returned (as explained above).</li>
@@ -532,7 +536,7 @@ For this purpose, each item requested through <code>chainHead_unstable_storage</
 <p>The operation continues even if the target block is unpinned with <code>chainHead_unstable_unpin</code>.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_call</code> if instead you want to call the runtime of an arbitrary block.</p>
 <p><strong>Note</strong>: This can be used as a replacement for the legacy <code>state_getMetadata</code>, <code>system_accountNextIndex</code>, and <code>payment_queryInfo</code> functions.</p>
-<h2 id="possible-errors-2"><a class="header" href="#possible-errors-2">Possible errors</a></h2>
+<h2 id="possible-errors-3"><a class="header" href="#possible-errors-3">Possible errors</a></h2>
 <ul>
 <li>If the networking part of the behaviour fails, then an <code>{&quot;event&quot;: &quot;operationInaccessible&quot;}</code> notification is generated (as explained above).</li>
 <li>If the <code>followSubscription</code> is invalid or stale, then <code>&quot;result&quot;: &quot;limitReached&quot;</code> is returned (as explained above).</li>
@@ -553,7 +557,7 @@ For this purpose, each item requested through <code>chainHead_unstable_storage</
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>Resumes a storage fetch started with <code>chainHead_unstable_storage</code> after it has generated an <code>operationWaitingForContinue</code> event.</p>
 <p>Has no effect if the <code>operationId</code> is invalid or refers to an operation that has emitted a <code>{&quot;event&quot;: &quot;operationInaccessible&quot;}</code> event, or if the <code>followSubscription</code> is invalid or stale.</p>
-<h2 id="possible-errors-3"><a class="header" href="#possible-errors-3">Possible errors</a></h2>
+<h2 id="possible-errors-4"><a class="header" href="#possible-errors-4">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error with error code <code>-32803</code> is generated if the <code>followSubscription</code> and <code>operationId</code> are valid but haven't generated a <code>operationWaitingForContinue</code> event.</li>
 <li>A JSON-RPC error with error code <code>-32602</code> is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).</li>
@@ -843,7 +847,7 @@ This specification does not mention any specific limit, but it must be large eno
 <p>The runtime is of type <code>invalid</code> if the JSON-RPC server considers the runtime as invalid, for example because the WebAssembly runtime code doesn't match its expectations.</p>
 <p><code>error</code> is a human-readable string indicating why the node considers it as invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p><strong>Note</strong>: The typical situation where a node could consider the runtime as invalid is a light client after a warp syncing. The light client knows that it's its fault for considering the runtime as invalid, but it has no better way to handle this situation than to return an error through the JSON-RPC interface for the error to get shown to the user.</p>
-<h2 id="possible-errors-4"><a class="header" href="#possible-errors-4">Possible errors</a></h2>
+<h2 id="possible-errors-5"><a class="header" href="#possible-errors-5">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error with error code <code>-32800</code> can be generated if the JSON-RPC client has already opened 2 or more <code>chainHead_unstable_follow</code> subscriptions.</li>
 <li>A JSON-RPC error with error code <code>-32602</code> is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).</li>
@@ -862,7 +866,7 @@ This specification does not mention any specific limit, but it must be large eno
 <p>Retrieves the header of a pinned block.</p>
 <p>This function should be seen as a complement to <code>chainHead_unstable_follow</code>, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use <code>archive_unstable_header</code> if instead you want to retrieve the header of an arbitrary block.</p>
 <p><strong>Note</strong>: As explained in the documentation of <code>chainHead_unstable_follow</code>, the JSON-RPC server reserves the right to kill an existing subscription and unpin all its blocks at any moment in case it is overloaded or incapable of following the chain. If that happens, <code>chainHead_unstable_header</code> will return <code>null</code>.</p>
-<h2 id="possible-errors-5"><a class="header" href="#possible-errors-5">Possible errors</a></h2>
+<h2 id="possible-errors-6"><a class="header" href="#possible-errors-6">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error with error code <code>-32801</code> is generated if the block hash passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>, or the block hash has been unpinned.</li>
 <li>A JSON-RPC error with error code <code>-32602</code> is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).</li>
@@ -929,7 +933,7 @@ For this purpose, each item requested through <code>chainHead_unstable_storage</
 <p>If <code>items</code> contains multiple identical or overlapping queries, the JSON-RPC server can choose whether to merge or not the items in the result. For example, if the request contains two items with the same key, one with <code>hash</code> and one with <code>value</code>, the JSON-RPC server can choose whether to generate two <code>item</code> objects, one with the value and one with the hash, or only a single <code>item</code> object with both <code>hash</code> and <code>value</code> set. The JSON-RPC server is encouraged to notify as soon as possible of the information at its disposal, without waiting for missing information.</p>
 <p>It is allowed (but discouraged) for the JSON-RPC server to provide the same information multiple times in the result, for example providing the <code>value</code> field of the same <code>key</code> twice. Forcing the JSON-RPC server to de-duplicate items in the result might lead to unnecessary overhead.</p>
 <p>If a <code>{&quot;event&quot;: &quot;operationWaitingForContinue&quot;}</code> notification is generated, the subscription will not generate any more notification unless the JSON-RPC client calls the <code>chainHead_unstable_continue</code> JSON-RPC function. The JSON-RPC server is encouraged to generate this event after having sent a certain number of bytes to the JSON-RPC client in order to avoid head-of-line-blocking issues.</p>
-<h2 id="possible-errors-6"><a class="header" href="#possible-errors-6">Possible errors</a></h2>
+<h2 id="possible-errors-7"><a class="header" href="#possible-errors-7">Possible errors</a></h2>
 <ul>
 <li>
 <p>If the networking part of the behaviour fails, then a <code>{&quot;event&quot;: &quot;operationInaccessible&quot;}</code> notification is generated (as explained above).</p>
@@ -963,7 +967,7 @@ For this purpose, each item requested through <code>chainHead_unstable_storage</
 <p>On-going calls to <code>chainHead_unstable_body</code>, <code>chainHead_unstable_call</code> and <code>chainHead_unstable_storage</code> against this block will still finish normally.</p>
 <p>Has no effect if the <code>followSubscription</code> is invalid or stale.</p>
 <p>If this function returns an error, then no block has been unpinned. An JSON-RPC server implementation is expected to start unpinning the blocks only after it has made sure that all the blocks could be unpinned.</p>
-<h2 id="possible-errors-7"><a class="header" href="#possible-errors-7">Possible errors</a></h2>
+<h2 id="possible-errors-8"><a class="header" href="#possible-errors-8">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error with error code <code>-32801</code> is generated if the <code>followSubscription</code> is valid but at least one of the block hashes passed as parameter doesn't correspond to any block that has been reported by <code>chainHead_unstable_follow</code>, or at least one of the block hashes has been unpinned.</li>
 <li>A JSON-RPC error with error code <code>-32804</code> is generated if the <code>hashOrHashes</code> parameter is an array and at least one of the block hashes is duplicated.</li>
@@ -1021,7 +1025,7 @@ The multiaddress passed as parameter should contain the address and identity of 
 <p>A JSON-RPC error should be returned if the JSON-RPC server doesn't support the protocols in the address. In this example, the JSON-RPC server should return an error if it doesn't support plain TCP connections.</p>
 <p>Because a JSON-RPC server is also free to completely ignore the address, it is not strictly mandatory to return a JSON-RPC error when its protocols are not supported.</p>
 <p>However, a JSON-RPC server must always return a JSON-RPC error if it couldn't parse the address. A JSON-RPC client can rely on this behavior to validate user-provided multiaddresses.</p>
-<h2 id="possible-errors-8"><a class="header" href="#possible-errors-8">Possible errors</a></h2>
+<h2 id="possible-errors-9"><a class="header" href="#possible-errors-9">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error is generated if the JSON-RPC server couldn't parse <code>multiaddr</code>.</li>
 <li>A JSON-RPC error is generated if the JSON-RPC server doesn't support some of the protocols in the <code>multiaddr</code>.</li>
@@ -1047,7 +1051,7 @@ The multiaddress passed as parameter should contain the address and identity of 
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>JSON-RPC client implementations must be aware that, due to the asynchronous nature of JSON-RPC client &lt;-&gt; server communication, they might still receive notifications concerning this subscription, for example because these notifications were already in the process of being sent back by the JSON-RPC server.</p>
-<h2 id="possible-errors-9"><a class="header" href="#possible-errors-9">Possible errors</a></h2>
+<h2 id="possible-errors-10"><a class="header" href="#possible-errors-10">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>subscription</code> doesn't correspond to any active subscription.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sudo_network_unstable_watch"><a class="header" href="#sudo_network_unstable_watch">sudo_network_unstable_watch</a></h1>
 <p><strong>Parameters</strong>: <em>none</em></p>
@@ -1125,7 +1129,7 @@ In addition, the JSON-RPC server is encouraged to notify the JSON-RPC client of 
 <h2 id="about-timestamps"><a class="header" href="#about-timestamps">About timestamps</a></h2>
 <p>The <code>connectionState</code> and <code>substreamState</code> events contain a <code>when</code> field indicating when the event happened.</p>
 <p>The JSON-RPC server isn't required to order events by the value in their <code>when</code> field. The JSON-RPC is only required to order events so that they don't lose their logical meaning. For example, when two different connections open, the JSON-RPC server can send the two <code>connectionState</code> events in any order. When a connection opens then closes, the JSON-RPC server must send a <code>connectionState</code> with a <code>status</code> equal to <code>open</code> before the <code>connectionState</code> with a <code>status</code> equal to <code>closed</code>.</p>
-<h2 id="possible-errors-10"><a class="header" href="#possible-errors-10">Possible errors</a></h2>
+<h2 id="possible-errors-11"><a class="header" href="#possible-errors-11">Possible errors</a></h2>
 <ul>
 <li>A JSON-RPC error with error code <code>-32100</code> can be generated if the JSON-RPC client has already opened a <code>sudo_network_unstable_watch</code> subscription.</li>
 </ul>
@@ -1136,19 +1140,19 @@ In addition, the JSON-RPC server is encouraged to notify the JSON-RPC client of 
 </ul>
 <p><strong>Return value</strong>: </p>
 <ul>
-<li>If the runtime supports the function call (see below), an object of the form <code>{&quot;result&quot;:&quot;...&quot;}</code> where <code>result</code> contains a string containing the hexadecimal-encoded output of the runtime function call.</li>
-<li>Otherwise, an object of the form <code>{&quot;error&quot;:&quot;...&quot;}</code> where <code>error</code> is a human-readable error message indicating the problem. This string isn't meant to be shown to end users, but is for developers to understand the problem.</li>
+<li>If the runtime supports the function call (see below), an object of the form <code>{ &quot;success&quot;: true, &quot;value&quot;: ... }</code> where <code>value</code> contains a string containing the hexadecimal-encoded output of the runtime function call.</li>
+<li>Otherwise, an object of the form <code>{ &quot;success&quot;: false, &quot;error&quot;: ... }</code> where <code>error</code> is a human-readable error message indicating the problem. This string isn't meant to be shown to end users, but is for developers to understand the problem.</li>
 </ul>
 <p>The JSON-RPC server must check that the runtime supports the <code>SessionKeys</code> API (64bits blake2 hash: <code>0xab3c0572291feb8b</code>) at version 1, and call the <code>SessionKeys_generate_session_keys</code> runtime function.
 The runtime call is done against the current best block of the chain.</p>
 <p>If there is no <code>SessionKeys</code> API being supported, or if it is not at version 1, the JSON-RPC server is allowed to call an alternative version of this function if it is sensible to do so. For example, if the <code>SessionKeys</code> API is updated to version 2 without a substantial change in the logic of <code>SessionKeys_generate_session_keys</code>, then the JSON-RPC server is allowed to call it as well. This specification should be updated if that happens.</p>
 <p>Contrary to most other JSON-RPC functions that perform runtime function calls where side-effects are forbidden, this runtime must be allowed to call host functions that access the keys of the node (e.g. <code>ext_crypto_sr25519_generate_version_1</code>, <code>ext_crypto_ed25519_public_keys_version_1</code>, etc.).</p>
 <p><strong>Note</strong>: This can be used as a replacement for the legacy <code>author_rotateKeys</code> function.</p>
-<h2 id="possible-errors-11"><a class="header" href="#possible-errors-11">Possible errors</a></h2>
+<h2 id="possible-errors-12"><a class="header" href="#possible-errors-12">Possible errors</a></h2>
 <ul>
-<li><code>{&quot;error&quot;:&quot;...&quot;}</code> is returned if the runtime doesn't support the given API.</li>
-<li><code>{&quot;error&quot;:&quot;...&quot;}</code> is returned if a problem happens during the call, such as a Wasm trap.</li>
-<li><code>{&quot;error&quot;:&quot;...&quot;}</code> is returned if the runtime attempts to modify the storage of the block.</li>
+<li><code>{ &quot;success&quot;: false, &quot;error&quot;: ... }</code> is returned if the runtime doesn't support the given API.</li>
+<li><code>{ &quot;success&quot;: false, &quot;error&quot;: ... }</code> is returned if a problem happens during the call, such as a Wasm trap.</li>
+<li><code>{ &quot;success&quot;: false, &quot;error&quot;: ... }</code> is returned if the runtime attempts to modify the storage of the block.</li>
 </ul>
 <h2 id="about-the-behavior-of-sessionkeys_generate_session_keys"><a class="header" href="#about-the-behavior-of-sessionkeys_generate_session_keys">About the behavior of <code>SessionKeys_generate_session_keys</code></a></h2>
 <p>The objective of this JSON-RPC function is to call the <code>SessionKeys_generate_session_keys</code> runtime function. This paragraph describes how this runtime function behaves.</p>
@@ -1175,7 +1179,7 @@ Any attempt to broadcast more than 4 transactions simultaneously might result in
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p>The node will no longer try to broadcast the transaction over the peer-to-peer network.</p>
-<h2 id="possible-errors-12"><a class="header" href="#possible-errors-12">Possible errors</a></h2>
+<h2 id="possible-errors-13"><a class="header" href="#possible-errors-13">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>operationId</code> doesn't correspond to any active <code>transaction_unstable_broadcast</code> operation.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-7"><a class="header" href="#introduction-7">Introduction</a></h1>
 <p>The <code>transactionWatch</code> functions allow submitting a transaction for inclusion in the chain.</p>
@@ -1286,7 +1290,7 @@ Any attempt to broadcast more than 4 transactions simultaneously might result in
 <p>The <code>finalized</code>, <code>error</code>, <code>invalid</code>, and <code>dropped</code> event indicate that the transaction is no longer being watched. The state of the transaction is entirely discarded.</p>
 <p>JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the transaction. In other words, multiple <code>validated</code> or <code>bestChainBlockIncluded</code> events in a row might be merged into one.</p>
 <p><strong>Note</strong>: In order to implement this properly, JSON-RPC servers should maintain a buffer of three notifications (one for each property), and overwrite any unsent notification with a more recent status update.</p>
-<h2 id="possible-errors-13"><a class="header" href="#possible-errors-13">Possible errors</a></h2>
+<h2 id="possible-errors-14"><a class="header" href="#possible-errors-14">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>transaction</code> parameter has an invalid format, but no error is produced if the bytes of the <code>transaction</code>, once decoded, are invalid. Instead, an <code>invalid</code> notification will be generated.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="transactionwatch_unstable_unwatch"><a class="header" href="#transactionwatch_unstable_unwatch">transactionWatch_unstable_unwatch</a></h1>
 <p><strong>Parameters</strong>:</p>
@@ -1295,7 +1299,7 @@ Any attempt to broadcast more than 4 transactions simultaneously might result in
 </ul>
 <p><strong>Return value</strong>: <em>null</em></p>
 <p><strong>Note</strong>: This function does not remove the transaction from the pool. In other words, the node will still try to include the transaction in the chain. Having a function that removes the transaction from the pool would be almost useless, as the node might have already gossiped it to the rest of the network.</p>
-<h2 id="possible-errors-14"><a class="header" href="#possible-errors-14">Possible errors</a></h2>
+<h2 id="possible-errors-15"><a class="header" href="#possible-errors-15">Possible errors</a></h2>
 <p>A JSON-RPC error is generated if the <code>subscription</code> doesn't correspond to any active subscription.</p>
 
                     </main>
