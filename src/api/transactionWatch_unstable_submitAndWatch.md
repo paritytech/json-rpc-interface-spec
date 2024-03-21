@@ -169,4 +169,4 @@ JSON-RPC servers are allowed to skip sending events as long as it properly keeps
 ## Possible errors
 
 - A JSON-RPC error with error code `-32800` can be generated if the JSON-RPC client has already opened 4 or more `transactionWatch_unstable_submitAndWatch` subscriptions.
-- A JSON-RPC error is generated if the `transaction` parameter has an invalid format, but no error is produced if the bytes of the `transaction`, once decoded, are invalid. Instead, an `invalid` notification will be generated.
+- A JSON-RPC error with error code `-32602` is generated if the `transaction` parameter has an invalid format, but no error is produced if the bytes of the `transaction`, once decoded, are invalid. Instead, an `invalid` notification will be generated.
