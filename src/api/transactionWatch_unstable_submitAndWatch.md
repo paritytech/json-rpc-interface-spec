@@ -10,6 +10,9 @@ The string returned by this function is opaque and its meaning can't be interpre
 
 Once this function has been called, the server will try to propagate this transaction over the peer-to-peer network and/or include it onto the chain even if `transactionWatch_unstable_unwatch` is called or that the JSON-RPC client disconnects. In other words, it is not possible to cancel submitting a transaction.
 
+The JSON-RPC server must accept at least 4 `transactionWatch_unstable_submitAndWatch` subscriptions per JSON-RPC client.
+Trying to open more might lead to a JSON-RPC error when calling `transactionWatch_unstable_submitAndWatch`.
+
 ## Notifications format
 
 This function will later generate one or more notifications in the following format:
@@ -165,4 +168,5 @@ JSON-RPC servers are allowed to skip sending events as long as it properly keeps
 
 ## Possible errors
 
-A JSON-RPC error is generated if the `transaction` parameter has an invalid format, but no error is produced if the bytes of the `transaction`, once decoded, are invalid. Instead, an `invalid` notification will be generated.
+- A JSON-RPC error with error code `-32800` can be generated if the JSON-RPC client has already opened 4 or more `transactionWatch_unstable_submitAndWatch` subscriptions.
+- A JSON-RPC error is generated if the `transaction` parameter has an invalid format, but no error is produced if the bytes of the `transaction`, once decoded, are invalid. Instead, an `invalid` notification will be generated.
