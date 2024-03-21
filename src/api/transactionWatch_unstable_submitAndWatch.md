@@ -127,7 +127,7 @@ No more event will be generated about this transaction.
 
 The `invalid` event indicates that the runtime has marked the transaction as invalid.
 
-This can happen for a variety of reasons specific to the chain, such as a bad signature, bad nonce, not enough balance for fees, etc.
+This can happen for a variety of reasons specific to the chain, such as a bad signature, bad nonce, not enough balance for fees, invalid decoded transaction bytes etc.
 
 `error` is a human-readable error message indicating why the transaction is invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.
 
