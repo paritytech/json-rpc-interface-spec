@@ -1191,6 +1191,8 @@ Any attempt to broadcast more than 4 transactions simultaneously might result in
 <p><strong>Return value</strong>: String representing the subscription.</p>
 <p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be matched with the <code>subscription</code> field of events and potentially passed to <code>transactionWatch_unstable_unwatch</code>.</p>
 <p>Once this function has been called, the server will try to propagate this transaction over the peer-to-peer network and/or include it onto the chain even if <code>transactionWatch_unstable_unwatch</code> is called or that the JSON-RPC client disconnects. In other words, it is not possible to cancel submitting a transaction.</p>
+<p>The JSON-RPC server must accept at least 4 <code>transactionWatch_unstable_submitAndWatch</code> subscriptions per JSON-RPC client.
+Trying to open more might lead to a JSON-RPC error when calling <code>transactionWatch_unstable_submitAndWatch</code>.</p>
 <h2 id="notifications-format-2"><a class="header" href="#notifications-format-2">Notifications format</a></h2>
 <p>This function will later generate one or more notifications in the following format:</p>
 <pre><code class="language-json">{
@@ -1263,7 +1265,7 @@ Any attempt to broadcast more than 4 transactions simultaneously might result in
 }
 </code></pre>
 <p>The <code>invalid</code> event indicates that the runtime has marked the transaction as invalid.</p>
-<p>This can happen for a variety of reasons specific to the chain, such as a bad signature, bad nonce, not enough balance for fees, etc.</p>
+<p>This can happen for a variety of reasons specific to the chain, such as a bad signature, bad nonce, not enough balance for fees, invalid decoded transaction bytes etc.</p>
 <p><code>error</code> is a human-readable error message indicating why the transaction is invalid. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
 <p>No more event will be generated about this transaction.</p>
 <h3 id="dropped"><a class="header" href="#dropped">dropped</a></h3>
@@ -1291,7 +1293,10 @@ Any attempt to broadcast more than 4 transactions simultaneously might result in
 <p>JSON-RPC servers are allowed to skip sending events as long as it properly keeps the JSON-RPC client up to date with the state of the transaction. In other words, multiple <code>validated</code> or <code>bestChainBlockIncluded</code> events in a row might be merged into one.</p>
 <p><strong>Note</strong>: In order to implement this properly, JSON-RPC servers should maintain a buffer of three notifications (one for each property), and overwrite any unsent notification with a more recent status update.</p>
 <h2 id="possible-errors-14"><a class="header" href="#possible-errors-14">Possible errors</a></h2>
-<p>A JSON-RPC error is generated if the <code>transaction</code> parameter has an invalid format, but no error is produced if the bytes of the <code>transaction</code>, once decoded, are invalid. Instead, an <code>invalid</code> notification will be generated.</p>
+<ul>
+<li>A JSON-RPC error with error code <code>-32800</code> can be generated if the JSON-RPC client has already opened 4 or more <code>transactionWatch_unstable_submitAndWatch</code> subscriptions.</li>
+<li>A JSON-RPC error with error code <code>-32602</code> is generated if the <code>transaction</code> parameter is not a valid hex string. Note that no error is produced if the bytes of the <code>transaction</code>, once decoded, are invalid. Instead, an <code>invalid</code> notification will be generated.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="transactionwatch_unstable_unwatch"><a class="header" href="#transactionwatch_unstable_unwatch">transactionWatch_unstable_unwatch</a></h1>
 <p><strong>Parameters</strong>:</p>
 <ul>
