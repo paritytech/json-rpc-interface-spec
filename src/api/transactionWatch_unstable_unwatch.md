@@ -1,8 +1,8 @@
-# transactionWatch_v1_unwatch
+# transactionWatch_unstable_unwatch
 
 **Parameters**:
 
-- `subscription`: Opaque string equal to the value returned by `transactionWatch_v1_submitAndWatch`
+- `subscription`: Opaque string equal to the value returned by `transactionWatch_unstable_submitAndWatch`
 
 **Return value**: *null*
 
