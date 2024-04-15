@@ -1,4 +1,4 @@
-# transactionWatch_unstable_submitAndWatch
+# transactionWatch_v1_submitAndWatch
 
 **Parameters**:
 
@@ -6,9 +6,9 @@
 
 **Return value**: String representing the subscription.
 
-The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be matched with the `subscription` field of events and potentially passed to `transactionWatch_unstable_unwatch`.
+The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be matched with the `subscription` field of events and potentially passed to `transactionWatch_v1_unwatch`.
 
-Once this function has been called, the server will try to propagate this transaction over the peer-to-peer network and/or include it onto the chain even if `transactionWatch_unstable_unwatch` is called or that the JSON-RPC client disconnects. In other words, it is not possible to cancel submitting a transaction.
+Once this function has been called, the server will try to propagate this transaction over the peer-to-peer network and/or include it onto the chain even if `transactionWatch_v1_unwatch` is called or that the JSON-RPC client disconnects. In other words, it is not possible to cancel submitting a transaction.
 
 The JSON-RPC server must accept at least 4 `transactionWatch_unstable_submitAndWatch` subscriptions per JSON-RPC client.
 Trying to open more might lead to a JSON-RPC error when calling `transactionWatch_unstable_submitAndWatch`.
@@ -20,7 +20,7 @@ This function will later generate one or more notifications in the following for
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "transactionWatch_unstable_watchEvent",
+    "method": "transactionWatch_v1_watchEvent",
     "params": {
         "subscription": "...",
         "result": ...
