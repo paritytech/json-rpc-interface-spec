@@ -34,7 +34,7 @@ The events coming from the blockchain node can be seen as a stream. This stream 
 
 However, sending a message to a JSON-RPC client might take a long time, in case the client has (intentionally or not) little bandwidth. The threads that are receiving the stream of events should never wait for a client to be ready to accept more data before sending a notification to it. If the client isn't ready, then the notification must either be added to a send queue or simply discarded. Because queues must be bounded, it is unavoidable to sometimes have to discard some notifications.
 
-Consequently, all functions that consist in sending notifications must be designed having in mind that the queue of notifications to send out must be bounded to a certain value. For example, the queue of notifications for `transaction_unstable_submitAndWatch` must have a size of 3. When the queue is full, new notifications must overwrite the notifications already in the queue. The design of all JSON-RPC functions should take into account the fact that this shouldn't result in a loss of important information for the JSON-RPC client.
+Consequently, all functions that consist in sending notifications must be designed having in mind that the queue of notifications to send out must be bounded to a certain value. For example, the queue of notifications for `transactionWatch_v1_submitAndWatch` must have a size of 3. When the queue is full, new notifications must overwrite the notifications already in the queue. The design of all JSON-RPC functions should take into account the fact that this shouldn't result in a loss of important information for the JSON-RPC client.
 
 ## Distinguishing between light and heavy calls
 
@@ -54,7 +54,7 @@ In particular:
 
 - The number of JSON-RPC clients simultaneously connected must be bounded.
 - The number of active subscriptions (i.e. where the server sends a notification to the client when something happens) must be bounded.
-- The number of pinned blocks (in the context of `chainHead_unstable_follow`) must be bounded.
+- The number of pinned blocks (in the context of `chainHead_v1_follow`) must be bounded.
 
 The limits on the number of active subscriptions and pinned block should be enforced per client, as it would be undesirable to limit the number of subscriptions/pinned blocks available to some clients just because other clients are using a lot of them. Since the number of clients is bounded, enforcing these limits per client also automatically enforces these limits globally.
 
