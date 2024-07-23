@@ -52,12 +52,17 @@ The JSON object returned by this function has the following format:
     },
 
     "checkpoint": {
+        "chainInformation": {
+            ...
+        },
+
         "trustedBlocks": [
             {
                 "blockNumber": "...",
                 "blockHash": "0x...",
             }
         ],
+
         "badBlocks": [
             "0x...",
         ],
@@ -159,8 +164,95 @@ Each object has the following format:
   - `id` is an unsigned integer indicating the id of the parachain.
   - `relayChain` is a string containing the identifier of the relay chain.
 
-- `checkpoint` is an _optional_ JSON object containing the checkpoint of the chain. This information could be used to synchronize the client with the head of the chain.  
-The `"trustedBlocks"` field is an array of JSON objects representing the expected hashes of blocks at given heights. This can be used to set trusted checkpoints. The client should refuse to import blocks with a different hash at the given height.
+- `checkpoint` is an _optional_ JSON object containing the checkpoint of the chain. This information could be used to synchronize the client with the head of the chain.
+  - The `"chainInformation"` field is a JSON object. This object has the following format:
+
+    ```json
+    {
+        "finalized_block_header": "0x...",
+
+        "consensus": {
+            "consensusType": "Aura" | "Babe" | "AllAuthorized",
+
+            "aura": {
+                "authorities": [
+                    {
+                        "publicKey": "0x...",
+                    },
+                ],
+
+                "slot_duration": 0,
+            },
+
+            "babe": {
+                "slotPerEpoch": 0,
+
+                "finalizedCurrentEpoch": {
+                    "epochIndex": 0,
+                    "startSlotNumber": 0,
+                    "authorities": [
+                        {
+                            "publicKey": "0x...",
+                            "weight": 0,
+                        },
+                    ],
+                    "randomness": "0x...",
+                    "constant": {
+                        "numerator": 0,
+                        "denominator": 0,
+                    },
+                    "allowedSlots": "PrimarySlots" | "PrimaryAndSecondaryPlainSlots" | "PrimaryAndSecondaryVRFSlots",
+                },
+
+                "finalizedNextEpoch": {
+                    "epochIndex": 0,
+                    "startSlotNumber": 0,
+                    "authorities": [
+                        {
+                            "publicKey": "0x...",
+                            "weight": 0,
+                        },
+                    ],
+                    "randomness": "0x...",
+                    "constant": {
+                        "numerator": 0,
+                        "denominator": 0,
+                    },
+                    "allowedSlots": "PrimarySlots" | "PrimaryAndSecondaryPlainSlots" | "PrimaryAndSecondaryVRFSlots",
+                }
+            }
+
+        },
+
+        "finality": {
+            "finalityType": "Grandpa" | "Outsourced",
+
+            "grandpa": {
+                "authoritiesSetId": 0,
+
+                "authorities": [
+                    {
+                        "publicKey": "0x...",
+                        "weight": 0,
+                    },
+                ],
+
+                "scheduledChange": {
+                    "delay": 0,
+                    "authorities": [
+                        {
+                            "publicKey": "0x...",
+                            "weight": 0,
+                        },
+                    ],
+                },
+            }
+        }
+    }
+    ```
+
+
+  - The `"trustedBlocks"` field is an array of JSON objects representing the expected hashes of blocks at given heights. This can be used to set trusted checkpoints. The client should refuse to import blocks with a different hash at the given height.
 
     ```json
         "trustedBlocks": [
@@ -171,7 +263,7 @@ The `"trustedBlocks"` field is an array of JSON objects representing the expecte
         ]
     ```
 
-  - `"blockNumber"` is an unsigned integer represented as string indicating the block number.
-  - `"blockHash"` is a hexadecimal-encoded string representing the hash of the block at the given height.
+    - `"blockNumber"` is an unsigned integer represented as string indicating the block number.
+    - `"blockHash"` is a hexadecimal-encoded string representing the hash of the block at the given height.
 
-  The `"badBlocks"` field is an array of hexadecimal-encoded strings representing the hashes of blocks that should be considered invalid. These hashes represent known and unwanted blocks on forks that have been pruned.
+  - The `"badBlocks"` field is an array of hexadecimal-encoded strings representing the hashes of blocks that should be considered invalid. These hashes represent known and unwanted blocks on forks that have been pruned.
