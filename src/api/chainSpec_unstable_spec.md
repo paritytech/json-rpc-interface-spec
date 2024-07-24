@@ -95,7 +95,8 @@ The `genesis` is a JSON object containing the genesis storage of the chain. This
 ```
 
 This format is used when the node has access to the raw genesis storage and chooses to provide it.
-The `"top"` field contains a map of keys to values for the top-level storage entries of the genesis. Both the keys and the values are hexadecimal-encoded strings.  
+If the node has provided a different format, the raw genesis storage can be reconstructed by iterating over the storage entries of the genesis block using the `archive` methods if available.  
+The `"top"` field contains a map of keys to values for the top-level storage entries of the genesis. Both the keys and the values are hexadecimal-encoded strings.
 The provided keys are guaranteed to be unique and to not be a default storage child key. A default storage child key is a key that is prefixed with `b":child_storage:default:"`. For example, the wasm code of the runtime is stored under the key `b":code"`.
 
 #### State Root Hash
@@ -107,6 +108,7 @@ The provided keys are guaranteed to be unique and to not be a default storage ch
 ```
 
 This format is used when the node does not have access to the raw genesis storage, or chooses to provide only the state root hash.
+If the node has provided a different format, the state root hash can be reconstructed by calculating the Merkle root of the genesis storage entries, or by directly fetching the Merkle value of the genesis block using the `archive` methods if available.  
 The `"stateRootHash"` contains a hexadecimal-encoded string representing the Merkle value of the genesis block.
 
 ### Code Substitues
