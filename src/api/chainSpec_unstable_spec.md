@@ -10,8 +10,6 @@ The JSON object returned by this function has the following format:
 
 ```json
 {
-    "name": "...",
-
     "id": "...",
 
     "bootnodes": [
@@ -67,10 +65,6 @@ The JSON object returned by this function has the following format:
 ```
 
 ## Parameters
-
-### Name
-
-The `name` is a string containing the name of the chain, identical to the result of `chainSpec_v1_chainName`.
 
 ### Id
 
