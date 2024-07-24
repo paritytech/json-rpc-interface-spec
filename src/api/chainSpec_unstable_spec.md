@@ -22,16 +22,12 @@ The JSON object returned by this function has the following format:
         "stateRootHash": "0x...",
     },
 
-    "properties": {
-        ...
-    },
-
-    // Optional fields:
-
+    // Optional
     "codeSubstitutes": {
         "...": "0x...",
     },
 
+    // Optional
     "telemetryEndpoints": [
         {
             "address": "...",
@@ -39,16 +35,18 @@ The JSON object returned by this function has the following format:
         }
     ],
 
+    // Optional
     "networkProperties": {
         "protocolId": "...",
         "forkId": "...",
     },
 
+    // Optional
     "parachain": {
         "id": 0,
-        "relayChain": "..."
     },
 
+    // Optional
     "checkpoint": {
         "chainInformation": {
             ...
@@ -83,7 +81,6 @@ The `id` is a string containing the identifier of the chain.
 The `bootnodes` is an array of strings containing the [multi adresss format](https://github.com/multiformats/multiaddr) of the bootnodes of the chain.  
 For example, the `"/dns/polkadot-bootnode-0.polkadot.io/tcp/30333/p2p/12D3KooWSz8r2WyCdsfWHgPyvD8GKQdJ1UAiRmrcrs8sQB3fe2KU"` is a valid p2p multiaddr, where `12D3KooWSz8r2WyCdsfWHgPyvD8GKQdJ1UAiRmrcrs8sQB3fe2KU` represents the peer ID of the bootnode.
 To establish a connection to the chain at least one bootnode is needed.  
-The servers are encouraged to provide at least one trusted bootnode.
 
 ### Genesis
 
@@ -117,14 +114,6 @@ The object has the following format:
 ```
 
 The `"stateRootHash"` contains a hexadecimal-encoded string representing the Merkle value of the genesis block.
-
-### Properties
-
-The `properties` is a JSON object containing a key-value map of properties of the chain.  
-The following are examples of possible properties, although implementations are free to diverge from this list:  
-The `"ss58Format"` field is an unsigned integer indicating the designated SS58 prefix of the addresses of the chain. For more details see [Polkadot Accounts In-Depth](https://wiki.polkadot.network/docs/learn-account-advanced).  
-The `"tokenDecimals` field is an unsigned integer indicating the number of decimals of the native token of the chain.  
-The `"tokenSymbol"` field is a string containing the symbol of the native token of the chain.
 
 ### Code Substitues
 
