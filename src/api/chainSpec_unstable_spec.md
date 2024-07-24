@@ -14,8 +14,6 @@ The JSON object returned by this function has the following format:
 
     "id": "...",
 
-    "chainType": "Live" | "Local" | "Development" | { "Custom": "..." },
-
     "bootnodes": [
         "...",
     ],
@@ -79,14 +77,6 @@ The `name` is a string containing the name of the chain, identical to the result
 ### Id
 
 The `id` is a string containing the identifier of the chain.
-
-- `chainType` is an object containing the type of the chain.  
-This information can be used by tools to display additional information to the user.  
-This fields can be one of the following values:
-  - `"Live"`: A string indicating the chain is a live chain.
-  - `"Local"`: A string indicating the chain is a local chain that runs on multiple nodes for testing purposes.
-  - `"Development"`: A string indicating the chain is a development chain that runs mainly on one node.
-  - `{ "Custom": "..." }`: A JSON object indicating the chain is a custom chain. The value of the `"Custom"` field is a string.
 
 ### Bootnodes
 
