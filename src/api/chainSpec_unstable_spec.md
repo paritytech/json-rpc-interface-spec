@@ -1,8 +1,6 @@
 # chainSpec_unstable_spec
 
-**Parameters**:
-
-- `rawGenesis`: A boolean indicating whether the genesis block should be returned in raw format or not.
+**Parameters**: *none*
 
 **Return value**: A JSON object.
 
@@ -17,6 +15,9 @@ The JSON object returned by this function has the following format:
     ],
 
     "genesis": {
+        "raw": {
+            ..
+        },
         "stateRootHash": "0x...",
     },
 
@@ -64,7 +65,7 @@ The JSON object returned by this function has the following format:
 }
 ```
 
-## Parameters
+## Description
 
 ### Id
 
@@ -78,9 +79,9 @@ To establish a connection to the chain at least one bootnode is needed.
 
 ### Genesis
 
-The `genesis` is a JSON object containing the genesis storage of the chain. This field has the following formats, depending on the provided `rawGenesis` parameter.
+The `genesis` is a JSON object containing the genesis storage of the chain. This field has the following formats, depending on the information available to the node.
 
-When `rawGenesis` is `true`, then the `genesis` field is a JSON object containing the raw genesis storage of the chain. The object has the following format:
+#### Raw Format
 
 ```json
 {
@@ -93,13 +94,11 @@ When `rawGenesis` is `true`, then the `genesis` field is a JSON object containin
 }
 ```
 
-The `"top"` field contains a map of keys to values for the top-level storage entries of the genesis.  
-Both the keys and the values are hexadecimal-encoded strings.  
-The provided keys are guaranteed to be unique and to not be a default storage child key. A default storage child key is a key that is prefixed with `b":child_storage:default:"`.  
-For example, the wasm code of the runtime is stored under the key `b":code"`.
+This format is used when the node has access to the raw genesis storage and chooses to provide it.
+The `"top"` field contains a map of keys to values for the top-level storage entries of the genesis. Both the keys and the values are hexadecimal-encoded strings.  
+The provided keys are guaranteed to be unique and to not be a default storage child key. A default storage child key is a key that is prefixed with `b":child_storage:default:"`. For example, the wasm code of the runtime is stored under the key `b":code"`.
 
-When `rawGenesis` is `false`, then the `genesis` field is a JSON object containing the Merkle value of the genesis block.
-The object has the following format:
+#### State Root Hash
 
 ```json
 {
@@ -107,6 +106,7 @@ The object has the following format:
 }
 ```
 
+This format is used when the node does not have access to the raw genesis storage, or chooses to provide only the state root hash.
 The `"stateRootHash"` contains a hexadecimal-encoded string representing the Merkle value of the genesis block.
 
 ### Code Substitues
