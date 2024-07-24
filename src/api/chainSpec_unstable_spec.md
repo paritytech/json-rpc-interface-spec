@@ -36,7 +36,6 @@ The JSON object returned by this function has the following format:
 
     // Optional
     "networkProperties": {
-        "protocolId": "...",
         "forkId": "...",
     },
 
