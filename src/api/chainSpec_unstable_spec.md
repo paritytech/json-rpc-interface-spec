@@ -151,12 +151,10 @@ The `networkProperties` is an _optional_ JSON object containing the network prop
 ```json
 {
     "id": 0,
-    "relayChain": "..."
 }
 ```
 
 - `id` is an unsigned integer indicating the id of the parachain.
-- `relayChain` is a string containing the identifier of the relay chain.
 
 ### Checkpoint
 
