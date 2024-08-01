@@ -7,7 +7,7 @@
 - `fromHash` (optional): String containing a hexadecimal-encoded hash of the header of the block from which the storage difference will be calculated. When this parameter is provided, the storage difference is calculated between the `currentHash` block and the `fromHash` block. If this parameter is not provided, the storage difference is calculated between the `currentHash` block and the parent of the `currentHash` block.
 
 - `items` (optional): JSON object containing the following fields:
-  
+
     ```json
     "items": {
         "prefixes": [
