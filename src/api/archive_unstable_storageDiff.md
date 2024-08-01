@@ -88,6 +88,16 @@ The `type` field indicates the type of the storage difference. The possible valu
 - `modified`: The storage entry was modified.
 - `deleted`: The storage entry was deleted.
 
+### continue
+
+```json
+{
+    "event": "continue",
+}
+```
+
+This notification is sent when the storage difference calculation is paused and needs to be resumed. The user must call `archive_unstable_storageDiffContinue` with the subscription value to continue the calculation.
+
 ### done
 
 ```json
