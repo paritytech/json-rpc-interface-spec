@@ -2,9 +2,9 @@
 
 **Parameters**:
 
-- `currentHash`: String containing a hexadecimal-encoded hash of the header of the block whose storage difference will be retrieved. The storage difference is calculated between the `currentHash` block and the parent of the `currentHash` block.
+- `hash`: String containing a hexadecimal-encoded hash of the header of the block whose storage difference will be retrieved. The storage difference is calculated between the `hash` block and the parent of the `hash` block.
 
-- `fromHash` (optional): String containing a hexadecimal-encoded hash of the header of the block from which the storage difference will be calculated. When this parameter is provided, the storage difference is calculated between the `currentHash` block and the `fromHash` block. If this parameter is not provided, the storage difference is calculated between the `currentHash` block and the parent of the `currentHash` block.
+- `previousHash` (optional): String containing a hexadecimal-encoded hash of the header of the block from which the storage difference will be calculated. When this parameter is provided, the storage difference is calculated between the `hash` block and the `previousHash` block. If this parameter is not provided, the storage difference is calculated between the `hash` block and the parent of the `hash` block.
 
 - `items` (optional): JSON object containing the following fields:
 
@@ -33,7 +33,7 @@
 
 **Return value**: String containing an opaque value representing the operation.
 
-This function calculates the storage difference between two blocks. The storage difference is calculated by comparing the storage of the `fromHash` block with the storage of the `currentHash` block. If the `fromHash` parameter is not provided, the storage difference is calculated between the parent of the `currentHash` block and the `currentHash` block.
+This function calculates the storage difference between two blocks. The storage difference is calculated by comparing the storage of the `previousHash` block with the storage of the `hash` block. If the `previousHash` parameter is not provided, the storage difference is calculated between the parent of the `hash` block and the `hash` block.
 
 The storage difference is calculated for the main storage trie by default. The `items` parameter can be used to specify the key prefixes for which the storage difference will be calculated. The `prefixes` field contains an array of objects, each describing a key prefix and the type of the storage difference to calculate. The `excludeKeyPrefixes` field contains an array of key prefixes for which the storage difference will not be calculated. The `childTrie` field specifies the child trie for which the storage difference will be calculated.
 
