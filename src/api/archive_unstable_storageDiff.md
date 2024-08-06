@@ -29,7 +29,7 @@
   Each element in `items` must be an object containing the following fields:
 
   - `prefixes` (optional): Array of JSON objects describing how the storage difference will be calculated. Each object contains the following fields:
-    - `key`: String containing the hexadecimal-encoded key prefix under which the storage difference is calculated.
+    - `key`: String containing a hexadecimal-encoded key prefix. Only the storage entries whose key starts with the provided prefix are returned.
     - `type`: String equal to one of: `value`, `hash`, `none`.
 
   - `trieType`: A string indicating the trie type for which the storage difference will be calculated. The possible values are:
@@ -87,6 +87,8 @@ This function calculates the storage difference between two blocks. The storage 
 
 The JSON-RPC server is encouraged to accept at least one `archive_unstable_storageDiff` subscription per JSON-RPC client. Trying to open more might lead to a JSON-RPC error when calling `archive_unstable_storageDiff`. The JSON-RPC server must return an error code if the server is overloaded and cannot accept new subscriptions.
 
+Users that want to obtain the storage difference between two blocks should use this function instead of calling `archive_unstable_storage` for each block and comparing the results.
+When users are interested in the main trie storage differences, as well as in a child storage difference, they can call this function with `items: [ { "trieType": "mainTrie" }, { "trieType": "childTrie", "childTrieKey": "0x..." } ]`.
 
 ## Possible errors
 
