@@ -2,7 +2,7 @@
 
 **Parameters**:
 
-- `hash`: String containing a hexadecimal-encoded hash of the header of the block whose storage difference will be retrieved. The storage difference is calculated between the `hash` block and the parent of the `hash` block.
+- `hash`: String containing a hexadecimal-encoded hash of the header of the block whose storage difference will be retrieved.
 
 - `previousHash` (optional): String containing a hexadecimal-encoded hash of the header of the block from which the storage difference will be calculated. When this parameter is provided, the storage difference is calculated between the `hash` block and the `previousHash` block. If this parameter is not provided, the storage difference is calculated between the `hash` block and the parent of the `hash` block.
 
