@@ -26,36 +26,12 @@
     - `type`: String equal to one of: `value`, `hash`, `none`.
   - `childTrie` (optional): A string containing the hexadecimal-encoded key of the child trie of the "default" namespace. If this parameter is not provided, the storage difference is calculated for the main storage.
 
-**Return value**: String containing an opaque value representing the operation.
+**Return value**: A JSON object.
 
-This function calculates the storage difference between two blocks. The storage difference is calculated by comparing the storage of the `previousHash` block with the storage of the `hash` block. If the `previousHash` parameter is not provided, the storage difference is calculated between the parent of the `hash` block and the `hash` block.
-
-The storage difference is calculated for the main storage trie by default. The `items` parameter can be used to specify the key prefixes for which the storage difference will be calculated. The `prefixes` field contains an array of objects, each describing a key prefix and the type of the storage difference to calculate.
-
-The JSON-RPC server is encouraged to accept at least one `archive_unstable_storageDiff` subscription per JSON-RPC client. Trying to open more might lead to a JSON-RPC error when calling `archive_unstable_storageDiff`. The JSON-RPC server must return an error code if the server is overloaded and cannot accept new subscriptions.
-
-## Notifications format
-
-This function will later generate notifications with the following format:
+The JSON object returned by this function has the following format:
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "method": "archive_unstable_storageDiffEvent",
-    "params": {
-        "subscription": "...",
-        "result": ...
-    }
-}
-```
-
-Where `subscription` is the value returned by this function, and `result` can be one of the following:
-
-### differences
-
-```json
-{
-    "event": "differences",
     "differences": [
         {
             "key": "0x...",
@@ -69,7 +45,7 @@ Where `subscription` is the value returned by this function, and `result` can be
 
 The `differences` field contains an array of objects, each describing a storage difference.
 
-The `key` field contains the hexadecimal-encoded key of the storage entry. If the a key prefix was provided in the `items` parameter, the `key` field is guaranteed to start with one of the key prefixes provided.
+The `key` field contains the hexadecimal-encoded key of the storage entry. If the key prefix was provided in the `items` parameter, the `key` field is guaranteed to start with one of the key prefixes provided.
 
 The `value` field contains the hexadecimal-encoded value of the storage entry. This field is present when prefixes are not provided or when the `type` field in the `items` parameter is set to `value`.
 
@@ -83,25 +59,12 @@ The `type` field indicates the type of the storage difference. The possible valu
 - `modified`: The storage entry was modified.
 - `deleted`: The storage entry was deleted.
 
-### continue
 
-```json
-{
-    "event": "continue",
-}
-```
+## Overview
 
-This notification is sent when the storage difference calculation is paused and needs to be resumed. The user must call `archive_unstable_storageDiffContinue` with the subscription value to continue the calculation.
+This function calculates the storage difference between two blocks. The storage difference is calculated by comparing the storage of the `previousHash` block with the storage of the `hash` block. If the `previousHash` parameter is not provided, the storage difference is calculated between the parent of the `hash` block and the `hash` block.
 
-### done
-
-```json
-{
-    "event": "done",
-}
-```
-
-This notification is sent when the storage difference calculation is complete.
+The JSON-RPC server is encouraged to accept at least one `archive_unstable_storageDiff` subscription per JSON-RPC client. Trying to open more might lead to a JSON-RPC error when calling `archive_unstable_storageDiff`. The JSON-RPC server must return an error code if the server is overloaded and cannot accept new subscriptions.
 
 ## Possible errors
 
