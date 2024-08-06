@@ -27,7 +27,6 @@
   - `prefixes` (optional): Array of JSON objects describing how the storage difference will be calculated. Each object contains the following fields:
     - `key`: String containing the hexadecimal-encoded key prefix under which the storage difference is calculated.
     - `type`: String equal to one of: `value`, `hash`, `none`.
-  - containing the key prefixes for which the storage difference will be calculated. If this parameter is not provided, the storage difference is calculated for all keys.
   - `excludeKeyPrefixes` (optional): Array of strings containing the key prefixes for which the storage difference will not be calculated. If this parameter is not provided, the storage difference is calculated for all keys.
   - `childTrie` (optional): A string containing the hexadecimal-encoded key of the child trie of the "default" namespace. If this parameter is not provided, the storage difference is calculated for the main storage.
 
