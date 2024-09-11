@@ -66,14 +66,14 @@ The `result` field contains an array of objects, each containing a JSON object:
 
 This function calculates the storage difference between two blocks. The storage difference is calculated by comparing the storage of the `previousHash` block with the storage of the `hash` block. If the `previousHash` parameter is not provided, the storage difference is calculated between the parent of the `hash` block and the `hash` block.
 
-The JSON-RPC server is encouraged to accept at least one `archive_unstable_storageDiff` subscription per JSON-RPC client. Trying to open more might lead to a JSON-RPC error when calling `archive_unstable_storageDiff`. The JSON-RPC server must return an error code if the server is overloaded and cannot accept new subscriptions.
+The JSON-RPC server is encouraged to accept at least one `archive_unstable_storageDiff` method per JSON-RPC client. Trying to make more calls might lead to a JSON-RPC error when calling `archive_unstable_storageDiff`. The JSON-RPC server must return an error code if the server is overloaded and cannot accept new method call.
 
 Users that want to obtain the storage difference between two blocks should use this function instead of calling `archive_unstable_storage` for each block and comparing the results.
 When users are interested in the main trie storage differences, as well as in a child storage difference, they can call this function with `items: [ { "trieType": "mainTrie" }, { "trieType": "childTrie", "childTrieKey": "0x..." } ]`.
 
 ## Possible errors
 
-- A JSON-RPC error can be generated if the JSON-RPC client has to many active subscriptions to `archive_unstable_storageDiff`.
+- A JSON-RPC error can be generated if the JSON-RPC client has to many active calls to `archive_unstable_storageDiff`.
 - A JSON-RPC error can be generated if the `previousHash` parameter is provided, but the `previousHash` block is not an ancestor of the `hash` block.
 - A JSON-RPC error can be generated if one of the hashes provided does not correspond to a known block header hash.
 - A JSON-RPC error with error code `-32602` is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).
