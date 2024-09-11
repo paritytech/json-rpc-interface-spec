@@ -12,7 +12,7 @@
     "items": [
         {
             "key": "0x...",
-            "returnType": "value" | "hash" | "none",
+            "returnType": "value" | "hash",
             "childTrieKey": "0x...",
         },
     ]
@@ -23,10 +23,9 @@
   Each element in `items` must be an object containing the following fields:
 
   - `key` (optional): String containing a hexadecimal-encoded key prefix. Only the storage entries whose key starts with the provided prefix are returned. If this field is not present, the storage difference is calculated for all keys of the trie.
-  - `returnType`: String equal to one of: `value`, `hash`, `none`.
-    - When `value` is provided, the `value` field is present in the result.
-    - When `hash` is provided, the `hash` field is present in the result.
-    - When `none` is provided, neither the `value` nor the `hash` field is present in the result.
+  - `returnType`: String indicating the return type of the storage under the given `key`. The possible values are:
+    - `value`: The result contains the hexadecimal-encoded value of the storage entry.
+    - `hash`: The result contains the hexadecimal-encoded hash of the storage entry.
   - `childTrieKey` (optional): String containing the hexadecimal-encoded key of the child trie of the "default" namespace. If this field is not present, the storage difference is calculated for the main storage trie.
 
 **Return value**: A JSON object.
