@@ -11,14 +11,8 @@
     ```json
     "items": [
         {
-            "prefixes": [
-                {
-                    "key": "0x...",
-                    "type": "value" | "hash" | "none",
-                },
-            ],
-
-            "trieType": "mainTrie" | "childTrie",
+            "key": "0x...",
+            "type": "value" | "hash" | "none",
             "childTrieKey": "0x...",
         },
     ]
@@ -28,15 +22,9 @@
 
   Each element in `items` must be an object containing the following fields:
 
-  - `prefixes` (optional): Array of JSON objects describing how the storage difference will be calculated. Each object contains the following fields:
-    - `key`: String containing a hexadecimal-encoded key prefix. Only the storage entries whose key starts with the provided prefix are returned.
-    - `type`: String equal to one of: `value`, `hash`, `none`.
-
-  - `trieType`: A string indicating the trie type for which the storage difference will be calculated. The possible values are:
-    - `mainTrie`: The storage difference is calculated for the main storage.
-    - `childTrie`: The storage difference is calculated for the child trie of the "default" namespace. If this type is provided, the `childTrieKey` field must be provided.
-
-  - `childTrieKey`: String containing the hexadecimal-encoded key of the child trie of the "default" namespace. This field is only present when the `trieType` field is set to `childTrie`.
+  - `key` (optional): String containing a hexadecimal-encoded key prefix. Only the storage entries whose key starts with the provided prefix are returned. If this field is not present, the storage difference is calculated for all keys of the trie.
+  - `returnType`: String equal to one of: `value`, `hash`, `none`.
+  - `childTrieKey` (optional): String containing the hexadecimal-encoded key of the child trie of the "default" namespace. This field is only present when the `trieType` field is set to `childTrie`. If this field is not present, the storage difference is calculated for the main storage trie.
 
 **Return value**: A JSON object.
 
