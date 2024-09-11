@@ -40,7 +40,7 @@ The JSON object returned by this function has the following format:
             "value": "0x...",
             "hash": "0x...",
             "type": "added" | "modified" | "deleted",
-            "childTrieKey": "0x..." | null,
+            "childTrieKey": "0x...",
         }
     ],
 }
@@ -59,7 +59,7 @@ The `result` field contains an array of objects, each containing a JSON object:
   - `modified`: The storage entry was modified.
   - `deleted`: The storage entry was deleted.
 
-- `childTrieKey` field is a string containing the hexadecimal-encoded key of the child trie of the "default" namespace if the storage entry is part of a child trie. If the storage entry is part of the main trie, this field is `null`.
+- `childTrieKey` (optional): String containing the hexadecimal-encoded key of the child trie of the "default" namespace if the storage entry is part of a child trie. If the storage entry is part of the main trie, this field is not present.
 
 ## Overview
 
