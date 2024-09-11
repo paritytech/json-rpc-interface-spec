@@ -12,7 +12,7 @@
     "items": [
         {
             "key": "0x...",
-            "type": "value" | "hash" | "none",
+            "returnType": "value" | "hash" | "none",
             "childTrieKey": "0x...",
         },
     ]
@@ -24,7 +24,10 @@
 
   - `key` (optional): String containing a hexadecimal-encoded key prefix. Only the storage entries whose key starts with the provided prefix are returned. If this field is not present, the storage difference is calculated for all keys of the trie.
   - `returnType`: String equal to one of: `value`, `hash`, `none`.
-  - `childTrieKey` (optional): String containing the hexadecimal-encoded key of the child trie of the "default" namespace. This field is only present when the `trieType` field is set to `childTrie`. If this field is not present, the storage difference is calculated for the main storage trie.
+    - When `value` is provided, the `value` field is present in the result.
+    - When `hash` is provided, the `hash` field is present in the result.
+    - When `none` is provided, neither the `value` nor the `hash` field is present in the result.
+  - `childTrieKey` (optional): String containing the hexadecimal-encoded key of the child trie of the "default" namespace. If this field is not present, the storage difference is calculated for the main storage trie.
 
 **Return value**: A JSON object.
 
@@ -34,17 +37,11 @@ The JSON object returned by this function has the following format:
 {
     "result": [
         {
-            "differences": [
-                {
-                    "key": "0x...",
-                    "value": "0x...",
-                    "hash": "0x...",
-                    "type": "added" | "modified" | "deleted",
-                },
-            ],
-
-            "trieType": "mainTrie" | "childTrie",
-            "childTrieKey": "0x...",
+            "key": "0x...",
+            "value": "0x...",
+            "hash": "0x...",
+            "type": "added" | "modified" | "deleted",
+            "childTrieKey": "0x..." | null,
         }
     ],
 }
@@ -52,22 +49,18 @@ The JSON object returned by this function has the following format:
 
 The `result` field contains an array of objects, each containing a JSON object:
 
-The `differences` field is an array of objects describing storage differences. Each element contains the following fields:
+- `key`: String containing the hexadecimal-encoded key of the storage entry. A prefix of this key may have been provided in the items input.
 
-- `key`: String containing the hexadecimal-encoded key of the storage entry. If the key prefix was provided in the `items` parameter, the `key` field is guaranteed to start with one of the key prefixes provided.
+- `value` (optional): String containing the hexadecimal-encoded value of the storage entry. This field is present when the `returnType` field in the `items` parameter is set to `value`.
 
-- `value`: String containing the hexadecimal-encoded value of the storage entry. This field is present when prefixes are not provided or when the `type` field in the `items` parameter is set to `value`.
-
-- `hash`: String containing the hexadecimal-encoded hash of the storage entry. This field is only present when the `type` field in the `items` parameter is set to `hash`.
+- `hash` (optional): String containing the hexadecimal-encoded hash of the storage entry. This field is present when the `returnType` field in the `items` parameter is set to `hash`.
 
 - `type`: String indicating the type of the storage difference. The possible values are:
   - `added`: The storage entry was added.
   - `modified`: The storage entry was modified.
   - `deleted`: The storage entry was deleted.
 
-The `trieType` field is a string indicating the trie type for which the storage difference was calculated. The possible values are `mainTrie` and `childTrie`. These have the same meaning as in the `items` parameter.
-
-The `childTrieKey` field is a string containing the hexadecimal-encoded key of the child trie of the "default" namespace. This field is only present when the `trieType` field is set to `childTrie`.
+- `childTrieKey` field is a string containing the hexadecimal-encoded key of the child trie of the "default" namespace if the storage entry is part of a child trie. If the storage entry is part of the main trie, this field is `null`.
 
 ## Overview
 
