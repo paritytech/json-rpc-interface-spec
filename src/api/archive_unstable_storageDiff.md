@@ -68,7 +68,7 @@ This function calculates the storage difference between two blocks. The storage 
 The JSON-RPC server is encouraged to accept at least one `archive_unstable_storageDiff` method per JSON-RPC client. Trying to make more calls might lead to a JSON-RPC error when calling `archive_unstable_storageDiff`. The JSON-RPC server must return an error code if the server is overloaded and cannot accept new method call.
 
 Users that want to obtain the storage difference between two blocks should use this function instead of calling `archive_unstable_storage` for each block and comparing the results.
-When users are interested in the main trie storage differences, as well as in a child storage difference, they can call this function with `items: [ { "trieType": "mainTrie" }, { "trieType": "childTrie", "childTrieKey": "0x..." } ]`.
+When users are interested in the main trie storage differences, as well as in a child storage difference, they can call this function with `items: [ { "returnType": "value" }, { "returnType": "value", "childTrieKey": "0x..." } ]`.
 
 ## Possible errors
 
