@@ -28,25 +28,41 @@
     - `hash`: The result contains the hexadecimal-encoded hash of the storage entry.
   - `childTrieKey` (optional): String containing the hexadecimal-encoded key of the child trie of the "default" namespace. If this field is not present, the storage difference is calculated for the main storage trie.
 
-**Return value**: A JSON object.
+**Return value**: String containing an opaque value representing the operation.
+
+## Notifications format
+
+This function will later generate one or more notifications in the following format:
+
+```json
+{
+    "jsonrpc": "2.0",
+    "method": "archive_unstable_storageDiffEvent",
+    "params": {
+        "subscription": "...",
+        "result": ...
+    }
+}
+```
+
+Where `subscription` is the value returned by this function, and `result` can be one of:
+
+### storageDiff
 
 The JSON object returned by this function has the following format:
 
 ```json
 {
-    "result": [
-        {
-            "key": "0x...",
-            "value": "0x...",
-            "hash": "0x...",
-            "type": "added" | "modified" | "deleted",
-            "childTrieKey": "0x...",
-        }
-    ],
+    "event": "storageDiff",
+    "key": "0x...",
+    "value": "0x...",
+    "hash": "0x...",
+    "type": "added" | "modified" | "deleted",
+    "childTrieKey": "0x...",
 }
 ```
 
-The `result` field contains an array of objects, each containing a JSON object:
+The `storageDiff` event is generated for each storage difference between the two blocks.
 
 - `key`: String containing the hexadecimal-encoded key of the storage entry. A prefix of this key may have been provided in the items input.
 
@@ -61,11 +77,23 @@ The `result` field contains an array of objects, each containing a JSON object:
 
 - `childTrieKey` (optional): String containing the hexadecimal-encoded key of the child trie of the "default" namespace if the storage entry is part of a child trie. If the storage entry is part of the main trie, this field is not present.
 
+### storageDiffDone
+
+The JSON object returned by this function has the following format:
+
+```json
+{
+    "event": "storageDiffDone",
+}
+```
+
+This event is always generated after all `storageDiff` events have been generated.
+
 ## Overview
 
 This function calculates the storage difference between two blocks. The storage difference is calculated by comparing the storage of the `previousHash` block with the storage of the `hash` block. If the `previousHash` parameter is not provided, the storage difference is calculated between the parent of the `hash` block and the `hash` block.
 
-The JSON-RPC server is encouraged to accept at least one `archive_unstable_storageDiff` method per JSON-RPC client. Trying to make more calls might lead to a JSON-RPC error when calling `archive_unstable_storageDiff`. The JSON-RPC server must return an error code if the server is overloaded and cannot accept new method call.
+The JSON-RPC server is encouraged to accept at least one `archive_unstable_storageDiff` subscription per JSON-RPC client. Trying to make more calls might lead to a JSON-RPC error when calling `archive_unstable_storageDiff`. The JSON-RPC server must return an error code if the server is overloaded and cannot accept new subscription call.
 
 Users that want to obtain the storage difference between two blocks should use this function instead of calling `archive_unstable_storage` for each block and comparing the results.
 When users are interested in the main trie storage differences, as well as in a child storage difference, they can call this function with `items: [ { "returnType": "value" }, { "returnType": "value", "childTrieKey": "0x..." } ]`.
