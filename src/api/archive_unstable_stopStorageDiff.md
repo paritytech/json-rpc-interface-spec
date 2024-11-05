@@ -2,7 +2,7 @@
 
 **Parameters**:
 
-- An opaque string that was returned by `archive_unstable_StorageDiff`.
+- An opaque string that was returned by `archive_unstable_storageDiff`.
 
 **Return value**: *null*
 
