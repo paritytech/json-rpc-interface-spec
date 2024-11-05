@@ -112,6 +112,4 @@ When users are interested in the main trie storage differences, as well as in a 
 ## Possible errors
 
 - A JSON-RPC error can be generated if the JSON-RPC client has to many active calls to `archive_unstable_storageDiff`.
-- A JSON-RPC error can be generated if the `previousHash` parameter is provided, but the `previousHash` block is not an ancestor of the `hash` block.
-- A JSON-RPC error can be generated if one of the hashes provided does not correspond to a known block header hash.
 - A JSON-RPC error with error code `-32602` is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).
