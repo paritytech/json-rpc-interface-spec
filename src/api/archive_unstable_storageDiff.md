@@ -4,7 +4,7 @@
 
 - `hash`: String containing a hexadecimal-encoded hash of the header of the block whose storage difference will be retrieved.
 
-- `items` (optional): Array of objects. The structure of these objects is found below.
+- `items`: Array of objects. The structure of these objects is found below.
 
 - `previousHash` (optional): String containing a hexadecimal-encoded hash of the header of the block from which the storage difference will be calculated. The `previousHash` must be an ancestor of the provided `hash`.  When this parameter is provided, the storage difference is calculated between the `hash` block and the `previousHash` block. If this parameter is not provided, the storage difference is calculated between the `hash` block and the parent of the `hash` block.
 
