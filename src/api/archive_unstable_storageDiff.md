@@ -49,8 +49,6 @@ Where `subscription` is the value returned by this function, and `result` can be
 
 ### storageDiff
 
-The JSON object returned by this function has the following format:
-
 ```json
 {
     "event": "storageDiff",
@@ -79,8 +77,6 @@ The `storageDiff` event is generated for each storage difference between the two
 
 ### storageDiffDone
 
-The JSON object returned by this function has the following format:
-
 ```json
 {
     "event": "storageDiffDone",
@@ -88,6 +84,21 @@ The JSON object returned by this function has the following format:
 ```
 
 This event is always generated after all `storageDiff` events have been generated.
+
+No more events will be generated after a `storageDiffDone` event.
+
+### storageDiffError
+
+```json
+{
+    "event": "storageDiffError",
+    "error": "...",
+}
+```
+
+`error` is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.
+
+No more events will be generated after a `storageDiffError` event.
 
 ## Overview
 
