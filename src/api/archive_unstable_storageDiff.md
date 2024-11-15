@@ -6,8 +6,6 @@
 
 - `items`: Array of objects. The structure of these objects is found below.
 
-- `previousHash` (optional): String containing a hexadecimal-encoded hash of the header of the block from which the storage difference will be calculated. The `previousHash` must be an ancestor of the provided `hash`.  When this parameter is provided, the storage difference is calculated between the `hash` block and the `previousHash` block. If this parameter is not provided, the storage difference is calculated between the `hash` block and the parent of the `hash` block.
-
     ```json
     "items": [
         {
@@ -27,6 +25,8 @@
     - `value`: The result contains the hexadecimal-encoded value of the storage entry.
     - `hash`: The result contains the hexadecimal-encoded hash of the storage entry.
   - `childTrieKey` (optional): String containing the hexadecimal-encoded key of the child trie of the "default" namespace. If this field is not present, the storage difference is calculated for the main storage trie.
+
+- `previousHash` (optional): String containing a hexadecimal-encoded hash of the header of the block from which the storage difference will be calculated. The `previousHash` must be an ancestor of the provided `hash`.  When this parameter is provided, the storage difference is calculated between the `hash` block and the `previousHash` block. If this parameter is not provided, the storage difference is calculated between the `hash` block and the parent of the `hash` block.
 
 **Return value**: String containing an opaque value representing the operation.
 
