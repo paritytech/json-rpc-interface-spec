@@ -12,93 +12,75 @@ Each element in `items` must be an object containing the following fields:
 - `type`: String equal to one of: `value`, `hash`, `closestDescendantMerkleValue`, `descendantsValues`, `descendantsHashes`.
 - `paginationStartKey`: This parameter is optional and should be a string containing the hexadecimal-encoded key from which the storage iteration should resume. This parameter is only valid in the context of `descendantsValues` and `descendantsHashes`.
 
-**Return value**: A JSON object.
+**Return value**: String containing an opaque value representing the operation.
 
-The JSON object returned by this function has the following format:
+## Notifications format
 
-```
+This function will later generate one or more notifications in the following format:
+
+```json
 {
-    "result": [
-        {
-            ...
-        },
-        ...
-    ],
-    "discardedItems": ...
+    "jsonrpc": "2.0",
+    "method": "archive_unstable_storageDiffEvent",
+    "params": {
+        "subscription": "...",
+        "result": ...
+    }
 }
 ```
 
-Where:
+Where `subscription` is the value returned by this function, and `result` can be one of:
 
-- `result` contains a vector of JSON objects (possibly empty) that were found in the storage.
-- `discardedItems` is an integer indicating the number of items at the back of the array of the `items` parameters that couldn't be processed.
+### storage
 
-The JSON objects in the `"result"` field can have one of the following formats based on their type:
-
-### Value
-
-```
+```json
 {
-    "key": "0x0000000...",
-    "value": "0x0000000...",
+    "event": "storage",
+    "key": "0x...",
+    "value": "0x...",
+    "hash": "0x...",
+    "closestDescendantMerkleValue": "0x...",
+    "childTrieKey": "0x...",
 }
 ```
 
-The JSON object corresponds to one of the requested items whose `type` was `"value"` or `"descendantsValues"`.
+The notification corresponds to a storage response for one of the requested items.
 
-If the `key` is not associated with a storage value in the trie, then no response is generated in the `"result"` vector for this item.
+- `key`: String containing the hexadecimal-encoded key of the storage entry. This is guaranteed to be equal to one of the `key`s provided for `type` equal to `value`, `hash` or `closestDescendantMerkleValue`. For queries of type `descendantsValues` or `descendantsHashes`, `key` is guaranteed to start with one of the `key`s provided.
 
-Returned when the `type` of the query was `"value"`:
+- `value` (optional): String containing the hexadecimal-encoded value of the storage entry. This field is present when the `type` of the query was `"value"` or `"descendantsValues"`.
 
-- `key` is guaranteed to be equal to one of the `key`s provided.
-- `value` is a string containing the hexadecimal-encoded value of the storage entry.
+- `hash` (optional): String containing the hexadecimal-encoded hash of the storage entry. This field is present when the `type` of the query was `"hash"` or `"descendantsHashes"`.
 
-Returned when the `type` of the query was `"descendantsValues"`:
+- `closestDescendantMerkleValue` (optional): String containing the hexadecimal-encoded Merkle value of the closest descendant of `key` (including branch nodes). This field is present when the `type` of the query was `"closestDescendantMerkleValue"`. The trie node whose Merkle value is indicated in `closestDescendantMerkleValue` is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server. The Merkle value is equal to either the node value or the hash of the node value, as defined in the [Polkadot specification](https://spec.polkadot.network/chap-state#defn-merkle-value).
 
-- `key` is guaranteed to start with one of the `key`s provided.
-- `value` is a string containing the hexadecimal-encoded value of the storage entry.
+- `childTrieKey` (optional): String containing the hexadecimal-encoded key of the child trie of the "default" namespace if the storage entry is part of a child trie. If the storage entry is part of the main trie, this field is not present.
 
-### Hash
+### storageDone
 
-```
+```json
 {
-    "key": "0x0000000...",
-    "hash": "0x0000000...",
+    "event": "storageDone",
 }
 ```
 
-The JSON object corresponds to one of the requested items whose `type` was `"hash"` or `"descendantsHashes"`.
+This event is always generated after all `storage` events have been generated.
 
-If the `key` is not associated with a storage value in the trie, then no response is generated in the `"result"` vector for this item.
+No more events will be generated after a `storageDone` event.
 
-Returned when the `type` of the query was `"hash"`:
+### storageError
 
-- `key` is guaranteed to be equal to one of the `key`s provided.
-- `hash` is a string containing the hexadecimal-encoded hash of the storage entry.
-
-Returned when the `type` of the query was `"descendantsHashes"`:
-
-- `key` is guaranteed to start with one of the `key`s provided.
-- `hash` is a string containing the hexadecimal-encoded cryptographic hash of the storage entry.
-
-
-### ClosestDescendantMerkleValue
-
-```
+```json
 {
-    "key": "0x0000000...",
-    "closestDescendantMerkleValue": "0x000000..."
+    "event": "storageError",
+    "error": "...",
 }
 ```
 
-The JSON object corresponds to one of the requested items whose `type` was `"closestDescendantMerkleValue"`.
+`error` is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.
 
-If the `key` doesn't exist in the trie, then the Merkle value of the closest descendant of `key` (including branch nodes) is provided. If `key` doesn't have any descendant in the trie, then no response is generated in the `"result"` vector for this item.
+No more events will be generated after a `storageError` event.
 
-- `key` is guaranteed to be equal to one of the `key`s provided.
-- `closestDescendantMerkleValue` is the closest trie Merkle value of the `key`.
-
-The trie node whose Merkle value is indicated in `closestDescendantMerkleValue` is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server. The Merkle value is equal to either the node value or the hash of the node value, as defined in the [Polkadot specification](https://spec.polkadot.network/chap-state#defn-merkle-value).
 
 ## Overview
 
@@ -118,4 +100,5 @@ It is allowed (but discouraged) for the JSON-RPC server to provide the same info
 
 ## Possible errors
 
-- A JSON-RPC error is generated if `type` isn't one of the allowed values (similarly to a missing parameter or an invalid parameter type).
+- A JSON-RPC error can be generated if the JSON-RPC client has to many active calls to `archive_unstable_storageDiff`.
+- A JSON-RPC error with error code `-32602` is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).
