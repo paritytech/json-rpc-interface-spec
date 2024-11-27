@@ -155,73 +155,62 @@
 <li><code>type</code>: String equal to one of: <code>value</code>, <code>hash</code>, <code>closestDescendantMerkleValue</code>, <code>descendantsValues</code>, <code>descendantsHashes</code>.</li>
 <li><code>paginationStartKey</code>: This parameter is optional and should be a string containing the hexadecimal-encoded key from which the storage iteration should resume. This parameter is only valid in the context of <code>descendantsValues</code> and <code>descendantsHashes</code>.</li>
 </ul>
-<p><strong>Return value</strong>: A JSON object.</p>
-<p>The JSON object returned by this function has the following format:</p>
-<pre><code>{
-    &quot;result&quot;: [
-        {
-            ...
-        },
-        ...
-    ],
-    &quot;discardedItems&quot;: ...
+<p><strong>Return value</strong>: String containing an opaque value representing the operation.</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>This function will later generate one or more notifications in the following format:</p>
+<pre><code class="language-json">{
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+    &quot;method&quot;: &quot;archive_unstable_storageDiffEvent&quot;,
+    &quot;params&quot;: {
+        &quot;subscription&quot;: &quot;...&quot;,
+        &quot;result&quot;: ...
+    }
 }
 </code></pre>
-<p>Where:</p>
-<ul>
-<li><code>result</code> contains a vector of JSON objects (possibly empty) that were found in the storage.</li>
-<li><code>discardedItems</code> is an integer indicating the number of items at the back of the array of the <code>items</code> parameters that couldn't be processed.</li>
-</ul>
-<p>The JSON objects in the <code>&quot;result&quot;</code> field can have one of the following formats based on their type:</p>
-<h3 id="value"><a class="header" href="#value">Value</a></h3>
-<pre><code>{
-    &quot;key&quot;: &quot;0x0000000...&quot;,
-    &quot;value&quot;: &quot;0x0000000...&quot;,
+<p>Where <code>subscription</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<h3 id="storage"><a class="header" href="#storage">storage</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;storage&quot;,
+    &quot;key&quot;: &quot;0x...&quot;,
+    &quot;value&quot;: &quot;0x...&quot;,
+    &quot;hash&quot;: &quot;0x...&quot;,
+    &quot;closestDescendantMerkleValue&quot;: &quot;0x...&quot;,
+    &quot;childTrieKey&quot;: &quot;0x...&quot;,
 }
 </code></pre>
-<p>The JSON object corresponds to one of the requested items whose <code>type</code> was <code>&quot;value&quot;</code> or <code>&quot;descendantsValues&quot;</code>.</p>
-<p>If the <code>key</code> is not associated with a storage value in the trie, then no response is generated in the <code>&quot;result&quot;</code> vector for this item.</p>
-<p>Returned when the <code>type</code> of the query was <code>&quot;value&quot;</code>:</p>
+<p>The notification corresponds to a storage response for one of the requested items.</p>
 <ul>
-<li><code>key</code> is guaranteed to be equal to one of the <code>key</code>s provided.</li>
-<li><code>value</code> is a string containing the hexadecimal-encoded value of the storage entry.</li>
+<li>
+<p><code>key</code>: String containing the hexadecimal-encoded key of the storage entry. This is guaranteed to be equal to one of the <code>key</code>s provided for <code>type</code> equal to <code>value</code>, <code>hash</code> or <code>closestDescendantMerkleValue</code>. For queries of type <code>descendantsValues</code> or <code>descendantsHashes</code>, <code>key</code> is guaranteed to start with one of the <code>key</code>s provided.</p>
+</li>
+<li>
+<p><code>value</code> (optional): String containing the hexadecimal-encoded value of the storage entry. This field is present when the <code>type</code> of the query was <code>&quot;value&quot;</code> or <code>&quot;descendantsValues&quot;</code>.</p>
+</li>
+<li>
+<p><code>hash</code> (optional): String containing the hexadecimal-encoded hash of the storage entry. This field is present when the <code>type</code> of the query was <code>&quot;hash&quot;</code> or <code>&quot;descendantsHashes&quot;</code>.</p>
+</li>
+<li>
+<p><code>closestDescendantMerkleValue</code> (optional): String containing the hexadecimal-encoded Merkle value of the closest descendant of <code>key</code> (including branch nodes). This field is present when the <code>type</code> of the query was <code>&quot;closestDescendantMerkleValue&quot;</code>. The trie node whose Merkle value is indicated in <code>closestDescendantMerkleValue</code> is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server. The Merkle value is equal to either the node value or the hash of the node value, as defined in the <a href="https://spec.polkadot.network/chap-state#defn-merkle-value">Polkadot specification</a>.</p>
+</li>
+<li>
+<p><code>childTrieKey</code> (optional): String containing the hexadecimal-encoded key of the child trie of the &quot;default&quot; namespace if the storage entry is part of a child trie. If the storage entry is part of the main trie, this field is not present.</p>
+</li>
 </ul>
-<p>Returned when the <code>type</code> of the query was <code>&quot;descendantsValues&quot;</code>:</p>
-<ul>
-<li><code>key</code> is guaranteed to start with one of the <code>key</code>s provided.</li>
-<li><code>value</code> is a string containing the hexadecimal-encoded value of the storage entry.</li>
-</ul>
-<h3 id="hash"><a class="header" href="#hash">Hash</a></h3>
-<pre><code>{
-    &quot;key&quot;: &quot;0x0000000...&quot;,
-    &quot;hash&quot;: &quot;0x0000000...&quot;,
+<h3 id="storagedone"><a class="header" href="#storagedone">storageDone</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;storageDone&quot;,
 }
 </code></pre>
-<p>The JSON object corresponds to one of the requested items whose <code>type</code> was <code>&quot;hash&quot;</code> or <code>&quot;descendantsHashes&quot;</code>.</p>
-<p>If the <code>key</code> is not associated with a storage value in the trie, then no response is generated in the <code>&quot;result&quot;</code> vector for this item.</p>
-<p>Returned when the <code>type</code> of the query was <code>&quot;hash&quot;</code>:</p>
-<ul>
-<li><code>key</code> is guaranteed to be equal to one of the <code>key</code>s provided.</li>
-<li><code>hash</code> is a string containing the hexadecimal-encoded hash of the storage entry.</li>
-</ul>
-<p>Returned when the <code>type</code> of the query was <code>&quot;descendantsHashes&quot;</code>:</p>
-<ul>
-<li><code>key</code> is guaranteed to start with one of the <code>key</code>s provided.</li>
-<li><code>hash</code> is a string containing the hexadecimal-encoded cryptographic hash of the storage entry.</li>
-</ul>
-<h3 id="closestdescendantmerklevalue"><a class="header" href="#closestdescendantmerklevalue">ClosestDescendantMerkleValue</a></h3>
-<pre><code>{
-    &quot;key&quot;: &quot;0x0000000...&quot;,
-    &quot;closestDescendantMerkleValue&quot;: &quot;0x000000...&quot;
+<p>This event is always generated after all <code>storage</code> events have been generated.</p>
+<p>No more events will be generated after a <code>storageDone</code> event.</p>
+<h3 id="storageerror"><a class="header" href="#storageerror">storageError</a></h3>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;storageError&quot;,
+    &quot;error&quot;: &quot;...&quot;,
 }
 </code></pre>
-<p>The JSON object corresponds to one of the requested items whose <code>type</code> was <code>&quot;closestDescendantMerkleValue&quot;</code>.</p>
-<p>If the <code>key</code> doesn't exist in the trie, then the Merkle value of the closest descendant of <code>key</code> (including branch nodes) is provided. If <code>key</code> doesn't have any descendant in the trie, then no response is generated in the <code>&quot;result&quot;</code> vector for this item.</p>
-<ul>
-<li><code>key</code> is guaranteed to be equal to one of the <code>key</code>s provided.</li>
-<li><code>closestDescendantMerkleValue</code> is the closest trie Merkle value of the <code>key</code>.</li>
-</ul>
-<p>The trie node whose Merkle value is indicated in <code>closestDescendantMerkleValue</code> is not indicated, as determining the key of this node might incur an overhead for the JSON-RPC server. The Merkle value is equal to either the node value or the hash of the node value, as defined in the <a href="https://spec.polkadot.network/chap-state#defn-merkle-value">Polkadot specification</a>.</p>
+<p><code>error</code> is a human-readable error message indicating why the call has failed. This string isn't meant to be shown to end users, but is for developers to understand the problem.</p>
+<p>No more events will be generated after a <code>storageError</code> event.</p>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p>For each item in <code>items</code>, the JSON-RPC server must start obtaining the value of the entry with the given <code>key</code> from the storage, either from the main trie or from <code>childTrie</code>. If <code>type</code> is <code>descendantsValues</code> or <code>descendantsHashes</code>, then it must also obtain the values of all the descendants of the entry.</p>
 <p>For the purpose of storage requests, the trie root hash of the child tries of the storage can be found in the main trie at keys starting the bytes of the ASCII string <code>:child_storage:</code>. This behaviour is consistent with all the other storage-request-alike mechanisms of Polkadot and Substrate-based chains, such as host functions or libp2p network requests.</p>
@@ -233,7 +222,8 @@ Use <code>chainHead_v1_storage</code> if instead you want to retrieve the storag
 <p>It is allowed (but discouraged) for the JSON-RPC server to provide the same information multiple times in the result, for example providing the <code>value</code> field of the same <code>key</code> twice. Forcing the JSON-RPC server to de-duplicate items in the result might lead to unnecessary overhead.</p>
 <h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
 <ul>
-<li>A JSON-RPC error is generated if <code>type</code> isn't one of the allowed values (similarly to a missing parameter or an invalid parameter type).</li>
+<li>A JSON-RPC error can be generated if the JSON-RPC client has to many active calls to <code>archive_unstable_storageDiff</code>.</li>
+<li>A JSON-RPC error with error code <code>-32602</code> is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).</li>
 </ul>
 
                     </main>
