@@ -21,7 +21,7 @@ This function will later generate one or more notifications in the following for
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "archive_unstable_storageDiffEvent",
+    "method": "archive_unstable_storageEvent",
     "params": {
         "subscription": "...",
         "result": ...
