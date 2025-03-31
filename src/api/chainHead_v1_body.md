@@ -45,7 +45,7 @@ The progress of the operation is indicated through `operationBodyDone`, `operati
 
 The operation continues even if the target block is unpinned with `chainHead_v1_unpin`.
 
-This function should be seen as a complement to `chainHead_v1_follow`, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use `archive_unstable_body` if instead you want to retrieve the body of an arbitrary block.
+This function should be seen as a complement to `chainHead_v1_follow`, allowing the JSON-RPC client to retrieve more information about a block that has been reported. Use `archive_v1_body` if instead you want to retrieve the body of an arbitrary block.
 
 ## Possible errors
 

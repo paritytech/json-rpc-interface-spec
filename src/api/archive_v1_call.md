@@ -1,4 +1,4 @@
-# archive_unstable_call
+# archive_v1_call
 
 **Parameters**:
 
@@ -16,7 +16,7 @@ The JSON-RPC server must invoke the entry point of the runtime of the given bloc
 
 **Note**: The runtime is still allowed to call host functions with side effects, however these side effects must be discarded. For example, a runtime function call can try to modify the storage of the chain, but this modification must not be actually applied. The only motivation for performing a call is to obtain the return value.
 
-If the height of the block hash provided is less than or equal to the current finalized block height (which can be obtained via `archive_unstable_finalizedHeight`), then calling this method multiple times is guaranteed to always return non-null and always the same result (except for the `error` message which is allowed to change).
+If the height of the block hash provided is less than or equal to the current finalized block height (which can be obtained via `archive_v1_finalizedHeight`), then calling this method multiple times is guaranteed to always return non-null and always the same result (except for the `error` message which is allowed to change).
 
 If the height of the block hash provided is greater than the current finalized block height, then the block might be pruned at any time and calling this method may return null.
 

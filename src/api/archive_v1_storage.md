@@ -1,4 +1,4 @@
-# archive_unstable_storage
+# archive_v1_storage
 
 **Parameters**:
 
@@ -21,7 +21,7 @@ This function will later generate one or more notifications in the following for
 ```json
 {
     "jsonrpc": "2.0",
-    "method": "archive_unstable_storageEvent",
+    "method": "archive_v1_storageEvent",
     "params": {
         "subscription": "...",
         "result": ...
@@ -88,7 +88,7 @@ For each item in `items`, the JSON-RPC server must start obtaining the value of 
 
 For the purpose of storage requests, the trie root hash of the child tries of the storage can be found in the main trie at keys starting the bytes of the ASCII string `:child_storage:`. This behaviour is consistent with all the other storage-request-alike mechanisms of Polkadot and Substrate-based chains, such as host functions or libp2p network requests.
 
-If the height of the block hash provided is less than or equal to the current finalized block height (which can be obtained via archive_unstable_finalizedHeight), then calling this method with the same parameters will always return the same response.
+If the height of the block hash provided is less than or equal to the current finalized block height (which can be obtained via archive_v1_finalizedHeight), then calling this method with the same parameters will always return the same response.
 If the height of the block hash provided is greater than the current finalized block height, then the block might be pruned at any time and calling this method may return null.
 
 This function should be used when the target block is older than the blocks reported by `chainHead_v1_follow`.
@@ -100,5 +100,5 @@ It is allowed (but discouraged) for the JSON-RPC server to provide the same info
 
 ## Possible errors
 
-- A JSON-RPC error can be generated if the JSON-RPC client has to many active calls to `archive_unstable_storageDiff`.
+- A JSON-RPC error can be generated if the JSON-RPC client has to many active calls to `archive_v1_storageDiff`.
 - A JSON-RPC error with error code `-32602` is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).

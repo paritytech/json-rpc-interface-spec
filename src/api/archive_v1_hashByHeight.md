@@ -1,4 +1,4 @@
-# archive_unstable_hashByHeight
+# archive_v1_hashByHeight
 
 **Parameters**:
 
