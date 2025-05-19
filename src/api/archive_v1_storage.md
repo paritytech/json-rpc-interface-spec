@@ -100,5 +100,5 @@ It is allowed (but discouraged) for the JSON-RPC server to provide the same info
 
 ## Possible errors
 
-- A JSON-RPC error can be generated if the JSON-RPC client has to many active calls to `archive_v1_storageDiff`.
+- A JSON-RPC error can be generated if the JSON-RPC client has to many active calls to `archive_v1_storage`.
 - A JSON-RPC error with error code `-32602` is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).
