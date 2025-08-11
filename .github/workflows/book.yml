@@ -12,7 +12,7 @@ jobs:
     container:
       image: michaelfbryan/mdbook-docker-image
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: mdbook build
     - uses: actions/upload-artifact@v4
       with:
