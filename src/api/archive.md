@@ -16,3 +16,17 @@ If the height passed to `archive_v1_hashByHeight` is inferior or equal to the va
 The JSON-RPC client can then call `archive_v1_header`, `archive_v1_body`, `archive_v1_storage`, and `archive_v1_call` in order to obtain details about the block with this hash. It is always guaranteed to return a value.
 
 If the height passed to `archive_v1_hashByHeight` is strictly superior to the value returned by `archive_v1_finalizedHeight`, then `archive_v1_hashByHeight` might return zero, one, or more blocks. Furthermore, the list of blocks being returned can change at any point. It is also possible to call `archive_v1_header`, `archive_v1_body`, `archive_v1_storage`, and `archive_v1_call` on these blocks, but these functions might return `null` even if their hash was previously returned by `archive_v1_hashByHeight`.
+
+## Transaction Location Queries
+
+The `archive_unstable_transactionReceipt` function allows efficiently finding where a transaction has been included in the blockchain without requiring full block downloads.
+
+This function addresses the need for:
+
+- **Efficient verification**: Quickly check if/when a transaction was included
+- **Fork-aware lookups**: Find transactions across multiple branches
+- **Stateless operation**: Works over simple HTTP without WebSockets
+
+Unlike higher-level receipt queries, this function focuses solely on locating transactions, leaving interpretation of events, fees, and status to client-side logic or additional RPC calls.
+
+**Note**: This is an unstable function and its API may change. It serves as a foundation for future stable versions (`archive_v2`) and informs the design of similar functionality in `chainHead_v2`.

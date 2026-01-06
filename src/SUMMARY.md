@@ -18,6 +18,7 @@
     - [archive_v1_stopStorageDiff](api/archive_v1_stopStorageDiff.md)
     - [archive_v1_storage](api/archive_v1_storage.md)
     - [archive_v1_storageDiff](api/archive_v1_storageDiff.md)
+    - [archive_unstable_transactionReceipt](api/archive_unstable_transactionReceipt.md)
   - [chainHead](api/chainHead.md)
     - [chainHead_v1_body](api/chainHead_v1_body.md)
     - [chainHead_v1_call](api/chainHead_v1_call.md)
