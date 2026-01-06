@@ -17,13 +17,16 @@ The JSON-RPC client can then call `archive_v1_header`, `archive_v1_body`, `archi
 
 If the height passed to `archive_v1_hashByHeight` is strictly superior to the value returned by `archive_v1_finalizedHeight`, then `archive_v1_hashByHeight` might return zero, one, or more blocks. Furthermore, the list of blocks being returned can change at any point. It is also possible to call `archive_v1_header`, `archive_v1_body`, `archive_v1_storage`, and `archive_v1_call` on these blocks, but these functions might return `null` even if their hash was previously returned by `archive_v1_hashByHeight`.
 
-## Transaction Receipts
+## Transaction Location Queries
 
-The `archive_v1_transactionReceipt` function allows retrieving comprehensive information about a specific transaction, including its execution status, emitted events, fees paid, and metadata. This is particularly useful for:
+The `archive_unstable_transactionReceipt` function allows efficiently finding where a transaction has been included in the blockchain without requiring full block downloads.
 
-- Verifying transaction outcomes in decentralized applications
-- Building blockchain explorers that need detailed transaction information
-- Light clients that need to verify transaction execution
-- Monitoring systems that track transaction status
+This function addresses the need for:
 
-Unlike the `archive_v1_body` function which returns all transactions in a block, `archive_v1_transactionReceipt` efficiently retrieves information about a single transaction without requiring the entire block to be processed.
+- **Efficient verification**: Quickly check if/when a transaction was included
+- **Fork-aware lookups**: Find transactions across multiple branches
+- **Stateless operation**: Works over simple HTTP without WebSockets
+
+Unlike higher-level receipt queries, this function focuses solely on locating transactions, leaving interpretation of events, fees, and status to client-side logic or additional RPC calls.
+
+**Note**: This is an unstable function and its API may change. It serves as a foundation for future stable versions (`archive_v2`) and informs the design of similar functionality in `chainHead_v2`.
