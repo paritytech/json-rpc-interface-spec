@@ -52,5 +52,6 @@ programmatically.
 {"code": -32812, "message": "No Bitswap peers connected", "data": {"variant": "NoPeers"}}
 ```
 
-Please note again that this information is provided for debugging purposes only, not stable, and
-must not be relied upon in business logic.
+Please note again that only the `code` and corresponding error retry categories in the table above
+are stable. Everything else is provided for debugging purposes only, subject to change, and must not
+be relied upon in business logic.
