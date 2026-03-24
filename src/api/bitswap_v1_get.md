@@ -2,9 +2,9 @@
 
 **Parameters**:
 
-- `cid`: CID of the data chunk requested serialized in a [string format](https://github.com/multiformats/cid/blob/edb1c5294ad2d8257812d7ded4941c3e0fafccf3/README.md#variant---stringified-form).
-  Only CIDv1 version in `base32` multibase encoding (string starting from `b...`) is supported.
-  Only `sha2-256` and `blake2b-256` hash functions are supported.
+- `cid`: CID of the data chunk requested serialized in a [string format](https://github.com/multiformats/cid/blob/edb1c5294ad2d8257812d7ded4941c3e0fafccf3/README.md#variant---stringified-form).  
+  Only CIDv1 version in `base32` multibase encoding (string starting from `b...`) is supported.  
+  Only `sha2-256` and `blake2b-256` hash functions are supported.  
   Example: `bafk2bzacec5lindttapqst35gv4767ig2vxmcaeherlaubtqhufg4tqqmeen4`.
 
 
