@@ -9,7 +9,8 @@
 
 
 **Return value**: String containing the requested data chunk, hexadecimal-encoded. Always starts with
-`0x...`.
+`0x...`. Because Bitswap chunks are limited by 2 MiB at the transport layer, the maximum returned
+string size is 4 MiB + 2 B.
 
 **Errors**: If the data chunk retrieval fails, JSON-RPC call fails. The error code
 indicates a possible retry strategy.
@@ -34,7 +35,7 @@ Error category `FailRetryBackoff` can be retried after a delay. For example, suc
 generated if no peers are currently connected to the light client. Recommended delay before retrying
 is 1-5 seconds.
 
-Detailed error information for debugging/logging purposes can be obtained from the JSON error
+Detailed error information for debugging/logging purposes can be obtained from the JSON-RPC error
 response. This information is implementation-specific and subject to change, so must not be used
 programmatically.
 
