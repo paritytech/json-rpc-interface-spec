@@ -41,11 +41,11 @@ programmatically.
 
 ### Detailed error information
 
-| Field          | Description                               | Example value                    |
-| -------------- | ----------------------------------------- | -------------------------------- |
-| `message`      | Human-readable error description          | `Request timeout.`               |
-| `data.variant` | Error variant for structured logging      | `Timeout`, `NoPeers`, `NotFound` |
-| `data.details` | Present only for `InvalidParams` category | `Unsupported multibase codec`    |
+| Field          | Description                               | Example value                         |
+| -------------- | ----------------------------------------- | ------------------------------------- |
+| `message`      | Human-readable error description          | `Request timeout.`                    |
+| `data.variant` | Error variant for structured logging      | `Timeout`, `NoPeers`, `NotFound`, ... |
+| `data.details` | Present only for `InvalidParams` category | `Unsupported multibase codec`         |
 
 ### Example JSON-RPC `error` field
 
