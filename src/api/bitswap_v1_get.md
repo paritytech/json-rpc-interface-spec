@@ -19,10 +19,13 @@ indicates a possible retry strategy.
 
 | Code   | Category            | Meaning                                                 |
 | ------ | ------------------- | ------------------------------------------------------- |
-| -32602 | `InvalidParams`     | Invalid/unsupported CID was passed. Must not retry      |
+| -32602 | `InvalidParams`     | Invalid/unsupported CID was passed                      |
 | -32810 | `Fail`              | Permanent failure for this request, e.g. data not found |
 | -32811 | `FailRetry`         | Transient failure, can retry immediately                |
 | -32812 | `FailRetryBackoff`  | Transient failure, can retry with a delay               |
+
+`InvalidParams` is a standard JSON-RPC error indicating invalid data passed to the method.
+The client must not call the method with the same argument again.
 
 For error category `Fail` retrying doesn't make sense unless the data has been added to the network
 after the failure.
@@ -41,11 +44,10 @@ programmatically.
 
 ### Detailed error information
 
-| Field          | Description                               | Example value                         |
-| -------------- | ----------------------------------------- | ------------------------------------- |
-| `message`      | Human-readable error description          | `Request timeout.`                    |
-| `data.variant` | Error variant for structured logging      | `Timeout`, `NoPeers`, `NotFound`, ... |
-| `data.details` | Present only for `InvalidParams` category | `Unsupported multibase codec`         |
+| Field          | Description                          | Example value                         |
+| -------------- | ------------------------------------ | ------------------------------------- |
+| `message`      | Human-readable error description     | `Request timeout.`                    |
+| `data.variant` | Error variant for structured logging | `Timeout`, `NoPeers`, `NotFound`, ... |
 
 ### Example JSON-RPC `error` field
 
