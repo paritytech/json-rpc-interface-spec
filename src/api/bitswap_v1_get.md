@@ -32,8 +32,8 @@ For error category `Fail` retrying doesn't make sense unless the data has been a
 after the failure.
 
 Error category `FailRetry` can be retried immediately. For example, request timeout falls into this
-category. Even though you can retry immediately, the implementations are encouraged to rate-limit
-the retry attempts.
+category. Even though the client can retry immediately, the implementations are encouraged to
+rate-limit the retry attempts and limit the total number of retries.
 
 Error category `FailRetryBackoff` can be retried after a delay. For example, such error can be
 generated if no peers are currently connected to the light client. Recommended delay before retrying
