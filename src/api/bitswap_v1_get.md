@@ -8,9 +8,10 @@
   Example: `bafk2bzacec5lindttapqst35gv4767ig2vxmcaeherlaubtqhufg4tqqmeen4`.
 
 
-**Return value**: String containing the requested data chunk, hexadecimal-encoded. Always starts with
-`0x...`. Because Bitswap chunks are limited by 2 MiB at the transport layer, the maximum returned
-string size is 4 MiB + 2 B.
+**Return value**: String containing the requested data chunk, hexadecimal-encoded. Always starts
+with `0x...`.  
+Because Bitswap chunks are limited by 2 MiB at the transport layer, the maximum returned string size
+is 4 MiB + 2 B.
 
 **Errors**: If the data chunk retrieval fails, JSON-RPC call fails. The error code
 indicates a possible retry strategy.
