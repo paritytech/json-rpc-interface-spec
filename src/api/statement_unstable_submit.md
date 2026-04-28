@@ -6,7 +6,7 @@
 
 **Return value**: An object indicating the outcome of the submission.
 
-This function submits a statement to the statement store. If the statement is accepted, it becomes eligible to be reported later through `statement_unstable_follow` notifications, and the JSON-RPC server can propagate it over the peer-to-peer network.
+This function submits a statement to the statement store. If the statement is accepted, it becomes eligible to be reported later through `statement_unstable_subscribe` notifications, and the JSON-RPC server can propagate it over the peer-to-peer network.
 
 The return value always contains a `"status"` field. Depending on the status, additional fields might be present.
 

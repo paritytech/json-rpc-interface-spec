@@ -4,7 +4,7 @@ The `statement` functions expose the statement store of the node associated to t
 
 Statement stores are weakly coherent. Different JSON-RPC servers can know different subsets of statements at any moment, and no guarantee is offered as to the time it takes for a statement to become visible everywhere.
 
-The `statement_unstable_follow` function creates the main source of notifications. Filters are later attached with successful calls to `statement_unstable_add`, and all notifications for all filters attached to the same follow are generated on that one follow subscription. If the server can't accept a filter on a follow, `statement_unstable_add` returns `{"result": "limitReached"}`. The `statement_unstable_submit` function is independent from follows and can be called at any time.
+The `statement_unstable_subscribe` function creates the main source of notifications. Filters are later attached with successful calls to `statement_unstable_add_filter`, and all notifications for all filters attached to the same subscription are generated on that one subscription. If the server can't accept a filter on a subscription, `statement_unstable_add_filter` returns `{"result": "limitReached"}`. The `statement_unstable_submit` function is independent from subscriptions and can be called at any time.
 
 ## Concepts
 
