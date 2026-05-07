@@ -44,6 +44,20 @@ The maximum returned size per individual chunk is 4 MiB + 2 B (same per-chunk li
 `bitswap_v1_get`); the total response size is bounded by the per-chunk limit times the implementation's
 maximum CID count.
 
+## Example response
+
+For an input array `["<cidA>", "<cidB>", "<cidC>"]` where retrieval of `<cidB>` times out:
+
+```json
+[
+  ["<cidA>", "0x4869"],
+  ["<cidB>", { "code": -32811, "message": "request timeout" }],
+  ["<cidC>", "0x6f6b"]
+]
+```
+
+The response array preserves input order. The caller can re-issue the call with just `<cidB>`.
+
 ## Possible errors
 
 See [error categories](bitswap_v1_get.md#error-categories).

@@ -64,6 +64,26 @@ A missing or invalid CID in the input produces an `Err` event for that CID and d
 rest of the stream. Because events are emitted in arrival order, an `Err` event for one CID may be
 emitted before, after, or interleaved with `Ok` events for other CIDs.
 
+## Example notifications
+
+For an input of three CIDs `["<cidA>", "<cidB>", "<cidC>"]`, the implementation might deliver
+`<cidC>` first, then `<cidA>`, then `<cidB>` as an `Err`. The `result` field of each notification,
+in arrival order:
+
+```json
+["<cidC>", "0x6f6b"]
+```
+
+```json
+["<cidA>", "0x4869"]
+```
+
+```json
+["<cidB>", { "code": -32811, "message": "request timeout" }]
+```
+
+After three events for three input CIDs, the stream is exhausted.
+
 ## End of stream
 
 After exactly one event per input CID has been emitted, the implementation has no further work to do.
