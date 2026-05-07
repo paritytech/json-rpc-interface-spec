@@ -46,19 +46,7 @@ maximum CID count.
 
 ## Possible errors
 
-A JSON-RPC error is raised at the call level (rather than per-CID) for whole-call failures.
-The error categories are the same four defined for
-[`bitswap_v1_get`](bitswap_v1_get.md#error-categories):
-
-- `-32602 InvalidParams` — the request is malformed in a way the implementation cannot satisfy at all
-  (for example, the input array exceeds the implementation's per-call limit).
-- `-32810 Fail` — permanent failure of the whole call.
-- `-32811 FailRetry` — transient failure of the whole call; the caller can retry immediately.
-- `-32812 FailRetryBackoff` — transient failure of the whole call; the caller should retry after a
-  short delay.
-
-Which conditions raise which category is implementation-specific and is documented per
-implementation. The same retry semantics defined for `bitswap_v1_get` apply.
+See [error categories](bitswap_v1_get.md#error-categories).
 
 ## Empty input
 

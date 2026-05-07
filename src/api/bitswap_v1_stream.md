@@ -53,7 +53,13 @@ Where `subscription` is the value returned by this function, and `result` is a 2
 [ "<cid>", { "code": -32810, "message": "..." } ]
 ```
 
-The same [error categories](bitswap_v1_get.md#error-categories) defined for `bitswap_v1_get` are used.
+`code` carries the same [error categories](bitswap_v1_get.md#error-categories) as the top-level error
+of [`bitswap_v1_get`](bitswap_v1_get.md). Clients that already know how to interpret `code` for
+`bitswap_v1_get` can reuse the same retry logic per-CID.
+
+`message` is a human-readable diagnostic string for logs and developer-facing tooling. Only `code` is
+stable for programmatic dispatch.
+
 A missing or invalid CID in the input produces an `Err` event for that CID and does not abort the
 rest of the stream. Because events are emitted in arrival order, an `Err` event for one CID may be
 emitted before, after, or interleaved with `Ok` events for other CIDs.
@@ -68,19 +74,7 @@ The client may then call `bitswap_v1_unstream` to release the subscription, or s
 
 ## Possible errors
 
-A JSON-RPC error is raised at the subscription level (the subscription is rejected, no events are
-emitted) for whole-call failures. The categories are the same four defined for
-[`bitswap_v1_get`](bitswap_v1_get.md#error-categories):
-
-- `-32602 InvalidParams` — the request is malformed in a way the implementation cannot satisfy at all
-  (for example, the input array exceeds the implementation's per-call limit).
-- `-32810 Fail` — permanent failure of the whole call.
-- `-32811 FailRetry` — transient failure of the whole call; the caller can retry immediately.
-- `-32812 FailRetryBackoff` — transient failure of the whole call; the caller should retry after a
-  short delay.
-
-Which conditions raise which category is implementation-specific and is documented per
-implementation.
+Whole-call failures cause the subscription to be rejected (no events are emitted). See [error categories](bitswap_v1_get.md#error-categories).
 
 ## Empty input
 
