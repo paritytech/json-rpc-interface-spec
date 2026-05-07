@@ -2,8 +2,8 @@
 
 **Parameters**:
 
-- `cids`: Array of CID strings, with the same constraints as the `cids` parameter of
-  [`bitswap_v1_getMany`](bitswap_v1_getMany.md). The implementation-defined maximum applies.
+- `cids`: Array of CID strings, with the same constraints as the `cids` parameter of [`bitswap_v1_getMany`](bitswap_v1_getMany.md).  
+  The implementation-defined maximum applies.
 
 **Return value**: String representing the subscription.
 
@@ -41,13 +41,13 @@ Where `subscription` is the value returned by this function, and `result` is a 2
 `[cid, BlockResult]`. The shape of `BlockResult` is identical to
 [`bitswap_v1_getMany`](bitswap_v1_getMany.md):
 
-### Ok
+**Ok**:
 
 ```json
 [ "<cid>", "0x..." ]
 ```
 
-### Err
+**Err**:
 
 ```json
 [ "<cid>", { "code": -32810, "message": "..." } ]

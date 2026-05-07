@@ -2,12 +2,9 @@
 
 **Parameters**:
 
-- `cids`: Array of CID strings, in [string format](https://github.com/multiformats/cid/blob/edb1c5294ad2d8257812d7ded4941c3e0fafccf3/README.md#variant---stringified-form).
-  Each entry must satisfy the same constraints as the `cid` parameter of [`bitswap_v1_get`](bitswap_v1_get.md):
-  CIDv1 in `base32` multibase encoding (string starting from `b...`),
-  with the `sha2-256` or `blake2b-256` hash function.
-  The maximum number of CIDs accepted in a single request is implementation-defined; an implementation
-  must accept at least 16 CIDs and may accept more.
+- `cids`: Array of CID strings, in [string format](https://github.com/multiformats/cid/blob/edb1c5294ad2d8257812d7ded4941c3e0fafccf3/README.md#variant---stringified-form).  
+  Each entry must satisfy the same constraints as the `cid` parameter of [`bitswap_v1_get`](bitswap_v1_get.md): CIDv1 in `base32` multibase encoding (string starting from `b...`), with the `sha2-256` or `blake2b-256` hash function.  
+  The maximum number of CIDs accepted in a single request is implementation-defined; an implementation must accept at least 16 CIDs and may accept more.
 
 **Return value**: Array of `[cid, BlockResult]` tuples, in the same order as the input. The i-th entry
 of the returned array corresponds to the i-th input CID.
@@ -17,7 +14,7 @@ without keeping the input array around.
 
 `BlockResult` is either:
 
-### Ok
+**Ok**:
 
 A hex-encoded string starting with `0x...` containing the chunk data, e.g.
 
@@ -27,7 +24,7 @@ A hex-encoded string starting with `0x...` containing the chunk data, e.g.
 
 Same encoding as the return value of [`bitswap_v1_get`](bitswap_v1_get.md).
 
-### Err
+**Err**:
 
 ```json
 { "code": -32810, "message": "..." }
