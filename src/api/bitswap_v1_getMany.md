@@ -35,7 +35,7 @@ of [`bitswap_v1_get`](bitswap_v1_get.md). Clients that already know how to inter
 `bitswap_v1_get` can reuse the same retry logic per-CID.
 
 `message` is a human-readable diagnostic string for logs and developer-facing tooling. Only `code` is
-stable for programmatic dispatch. 
+stable for programmatic dispatch.
 
 A missing or invalid CID at any index returns an `Err` at that index — it does **not** abort the rest
 of the batch. The caller can re-issue the call with just the failed CIDs.
