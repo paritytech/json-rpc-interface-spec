@@ -12,7 +12,7 @@ if it doesn't have the data locally (e.g., due to the block pruning settings).
 
 The namespace exposes three methods:
 
-- [`bitswap_v1_get`](bitswap_v1_get.md) — fetch a single chunk by CID. Errors are reported at the
+- [`bitswap_unstable_get`](bitswap_unstable_get.md) — fetch a single chunk by CID. Errors are reported at the
   JSON-RPC level.
 - [`bitswap_unstable_stream`](bitswap_unstable_stream.md) — fetch a batch of chunks via a JSON-RPC
   subscription. Per-CID outcomes are delivered as events as chunks arrive, so the client can start
@@ -20,6 +20,6 @@ The namespace exposes three methods:
 - [`bitswap_unstable_unstream`](bitswap_unstable_unstream.md) — cancel an active
   `bitswap_unstable_stream` subscription.
 
-`bitswap_unstable_stream` reuses the per-CID error categories of `bitswap_v1_get` for its
-`streamItemError` events, so a client that already handles `bitswap_v1_get` errors can route
+`bitswap_unstable_stream` reuses the per-CID error categories of `bitswap_unstable_get` for its
+`streamItemError` events, so a client that already handles `bitswap_unstable_get` errors can route
 per-item failures through the same retry logic.

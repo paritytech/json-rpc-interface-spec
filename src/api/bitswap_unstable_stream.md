@@ -3,7 +3,7 @@
 **Parameters**:
 
 - `cids`: Non-empty array of CID strings, in [string format](https://github.com/multiformats/cid/blob/edb1c5294ad2d8257812d7ded4941c3e0fafccf3/README.md#variant---stringified-form).  
-  Each entry must satisfy the same constraints as the `cid` parameter of [`bitswap_v1_get`](bitswap_v1_get.md): CIDv1 in `base32` multibase encoding (string starting from `b...`), with the `sha2-256` or `blake2b-256` hash function.  
+  Each entry must satisfy the same constraints as the `cid` parameter of [`bitswap_unstable_get`](bitswap_unstable_get.md): CIDv1 in `base32` multibase encoding (string starting from `b...`), with the `sha2-256` or `blake2b-256` hash function.  
   The maximum number of CIDs accepted in a single subscription is implementation-defined; an implementation must accept at least 16 CIDs and may accept more.
 
 **Return value**: String representing the subscription.
@@ -43,7 +43,7 @@ Emitted once per successfully retrieved CID.
 }
 ```
 
-`cid` is the input CID string, returned verbatim. `value` is the chunk data, hex-encoded, always starting with `0x...`. The encoding is the same as the return value of [`bitswap_v1_get`](bitswap_v1_get.md); the per-chunk size limit is 4 MiB + 2 B.
+`cid` is the input CID string, returned verbatim. `value` is the chunk data, hex-encoded, always starting with `0x...`. The encoding is the same as the return value of [`bitswap_unstable_get`](bitswap_unstable_get.md); the per-chunk size limit is 4 MiB + 2 B.
 
 ### streamItemError
 
@@ -60,7 +60,7 @@ Emitted once per CID that could not be retrieved. Emitting `streamItemError` for
 
 `cid` is the input CID string, returned verbatim.
 
-`code` and `message` mirror the standard JSON-RPC error-object fields. The same per-CID [error categories](bitswap_v1_get.md#error-categories) apply: `-32602 InvalidParams`, `-32810 Fail`, `-32811 FailRetry`, `-32812 FailRetryBackoff`. Clients that already know how to interpret `code` for `bitswap_v1_get` can reuse the same retry logic per-CID.
+`code` and `message` mirror the standard JSON-RPC error-object fields. The same per-CID [error categories](bitswap_unstable_get.md#error-categories) apply: `-32602 InvalidParams`, `-32810 Fail`, `-32811 FailRetry`, `-32812 FailRetryBackoff`. Clients that already know how to interpret `code` for `bitswap_unstable_get` can reuse the same retry logic per-CID.
 
 Only `code` is stable for programmatic dispatch. `message` is a human-readable diagnostic string for logs and developer-facing tooling, is implementation-specific, and must not be relied upon in business logic.
 
@@ -116,7 +116,7 @@ Top-level subscription rejection causes no events to be emitted. The following c
 | -32802 | `EmptyCids`       | Input array is empty                                                   |
 | -32803 | `DuplicateCids`   | Input array contains the same CID more than once (see "Duplicate input") |
 
-Per-CID failures (whether the CID is malformed, the chunk cannot be found, or retrieval failed transiently) are surfaced via `streamItemError` events, not top-level errors. See the [error categories](bitswap_v1_get.md#error-categories) of `bitswap_v1_get` for the codes used in those events.
+Per-CID failures (whether the CID is malformed, the chunk cannot be found, or retrieval failed transiently) are surfaced via `streamItemError` events, not top-level errors. See the [error categories](bitswap_unstable_get.md#error-categories) of `bitswap_unstable_get` for the codes used in those events.
 
 ## Empty input
 

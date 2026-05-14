@@ -1,4 +1,4 @@
-# bitswap_v1_get
+# bitswap_unstable_get
 
 **Parameters**:
 
@@ -39,23 +39,12 @@ Error category `FailRetryBackoff` can be retried after a delay. For example, suc
 generated if no peers are currently connected to the light client. Recommended delay before retrying
 is 1-5 seconds.
 
-Detailed error information for debugging/logging purposes can be obtained from the JSON-RPC error
-response. This information is implementation-specific and subject to change, so must not be used
-programmatically.
-
-### Detailed error information
-
-| Field          | Description                          | Example value                         |
-| -------------- | ------------------------------------ | ------------------------------------- |
-| `message`      | Human-readable error description     | `Request timeout.`                    |
-| `data.variant` | Error variant for structured logging | `Timeout`, `NoPeers`, `NotFound`, ... |
+Only `code` is stable for programmatic dispatch. `message` is a human-readable diagnostic string for
+logs and developer-facing tooling, is implementation-specific, and must not be relied upon in
+business logic.
 
 ### Example JSON-RPC `error` field
 
 ```json
-{"code": -32812, "message": "No Bitswap peers connected", "data": {"variant": "NoPeers"}}
+{ "code": -32812, "message": "No Bitswap peers connected" }
 ```
-
-Please note again that only the `code` and corresponding error retry categories in the table above
-are stable. Everything else is provided for debugging purposes only, subject to change, and must not
-be relied upon in business logic.

@@ -19,7 +19,7 @@
     - [archive_v1_storage](api/archive_v1_storage.md)
     - [archive_v1_storageDiff](api/archive_v1_storageDiff.md)
   - [bitswap](api/bitswap.md)
-    - [bitswap_v1_get](api/bitswap_v1_get.md)
+    - [bitswap_unstable_get](api/bitswap_unstable_get.md)
     - [bitswap_unstable_stream](api/bitswap_unstable_stream.md)
     - [bitswap_unstable_unstream](api/bitswap_unstable_unstream.md)
   - [chainHead](api/chainHead.md)
