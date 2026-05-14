@@ -107,13 +107,13 @@ For an input of three CIDs `["<cidA>", "<cidB>", "<cidC>"]`, the implementation 
 
 ## Possible errors
 
-Top-level subscription rejection causes no events to be emitted. The following codes apply to **structural** failures of the input array:
+Top-level subscription rejection causes no events to be emitted. The following codes apply:
 
-| Code   | Category          | Meaning                                                                |
-| ------ | ----------------- | ---------------------------------------------------------------------- |
-| -32602 | (standard)        | A parameter doesn't correspond to the expected type                    |
-| -32801 | `TooManyCids`     | Input array exceeded the implementation-defined maximum                |
-| -32802 | `EmptyCids`       | Input array is empty                                                   |
+| Code   | Category          | Meaning                                                                  |
+| ------ | ----------------- | ------------------------------------------------------------------------ |
+| -32602 | (standard)        | An RPC parameter doesn't correspond to the expected type                 |
+| -32801 | `TooManyCids`     | Input array exceeded the implementation-defined maximum                  |
+| -32802 | `EmptyCids`       | Input array is empty                                                     |
 | -32803 | `DuplicateCids`   | Input array contains the same CID more than once (see "Duplicate input") |
 
 Per-CID failures (whether the CID is malformed, the chunk cannot be found, or retrieval failed transiently) are surfaced via `streamItemError` events, not top-level errors. See the [error categories](bitswap_unstable_get.md#error-categories) of `bitswap_unstable_get` for the codes used in those events.
@@ -124,8 +124,7 @@ An empty input array (`cids: []`) is rejected at the top level with `-32802 Empt
 
 ## Duplicate input
 
-The implementation rejects subscriptions whose input contains the same CID more than once. Detection
-is two-stage:
+The implementation rejects subscriptions whose input contains the same CID more than once. Detection is two-stage:
 
 1. Two literally-identical input strings (regardless of whether they are valid CIDs) → rejected.
 2. Two cosmetically different CID strings that decode to the same 32-byte content digest → rejected.

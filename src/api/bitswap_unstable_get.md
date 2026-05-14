@@ -43,8 +43,14 @@ Only `code` is stable for programmatic dispatch. `message` is a human-readable d
 logs and developer-facing tooling, is implementation-specific, and must not be relied upon in
 business logic.
 
-### Example JSON-RPC `error` field
+### Example JSON-RPC success response
 
 ```json
-{ "code": -32812, "message": "No Bitswap peers connected" }
+{ "jsonrpc": "2.0", "id": 1, "result": "0x4869" }
+```
+
+### Example JSON-RPC error response
+
+```json
+{ "jsonrpc": "2.0", "id": 1, "error": { "code": -32812, "message": "No Bitswap peers connected" } }
 ```
