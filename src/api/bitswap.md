@@ -1,6 +1,6 @@
 # Introduction
 
-The functions with `bitswap` prefix allow fetching data chunks  given their CID, normally downloaded using Bitswap protocol.
+The functions with `bitswap` prefix allow fetching data chunks given their CID, normally downloaded using Bitswap protocol.
 
 Depending on type of node or implementation the data is returned from a local database or downloaded via Bitswap protocol from other peers.
 
