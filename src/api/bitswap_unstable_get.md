@@ -1,10 +1,10 @@
-# bitswap_v1_get
+# bitswap_unstable_get
 
 **Parameters**:
 
 - `cid`: CID of the data chunk requested serialized in a [string format](https://github.com/multiformats/cid/blob/edb1c5294ad2d8257812d7ded4941c3e0fafccf3/README.md#variant---stringified-form).  
   Only CIDv1 version in `base32` multibase encoding (string starting from `b...`) is supported.  
-  Only `sha2-256` and `blake2b-256` hash functions are supported.  
+  Only `sha2-256`, `blake2b-256` & `keccak-256` hash functions are supported.  
   Example: `bafk2bzacec5lindttapqst35gv4767ig2vxmcaeherlaubtqhufg4tqqmeen4`.
 
 
@@ -39,23 +39,18 @@ Error category `FailRetryBackoff` can be retried after a delay. For example, suc
 generated if no peers are currently connected to the light client. Recommended delay before retrying
 is 1-5 seconds.
 
-Detailed error information for debugging/logging purposes can be obtained from the JSON-RPC error
-response. This information is implementation-specific and subject to change, so must not be used
-programmatically.
+Only `code` is stable for programmatic dispatch. `message` is a human-readable diagnostic string for
+logs and developer-facing tooling, is implementation-specific, and must not be relied upon in
+business logic.
 
-### Detailed error information
-
-| Field          | Description                          | Example value                         |
-| -------------- | ------------------------------------ | ------------------------------------- |
-| `message`      | Human-readable error description     | `Request timeout.`                    |
-| `data.variant` | Error variant for structured logging | `Timeout`, `NoPeers`, `NotFound`, ... |
-
-### Example JSON-RPC `error` field
+### Example JSON-RPC success response
 
 ```json
-{"code": -32812, "message": "No Bitswap peers connected", "data": {"variant": "NoPeers"}}
+{ "jsonrpc": "2.0", "id": 1, "result": "0x4869" }
 ```
 
-Please note again that only the `code` and corresponding error retry categories in the table above
-are stable. Everything else is provided for debugging purposes only, subject to change, and must not
-be relied upon in business logic.
+### Example JSON-RPC error response
+
+```json
+{ "jsonrpc": "2.0", "id": 1, "error": { "code": -32812, "message": "No Bitswap peers connected" } }
+```
