@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>bitswap_unstable_stream</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../objectives.html"><strong aria-hidden="true">1.1.</strong> Objectives</a></li><li class="chapter-item expanded "><a href="../why-json-rpc.html"><strong aria-hidden="true">1.2.</strong> Why JSON-RPC?</a></li><li class="chapter-item expanded "><a href="../grouping-functions-and-node-capabilities.html"><strong aria-hidden="true">1.3.</strong> Grouping functions and node capabilities</a></li><li class="chapter-item expanded "><a href="../dos-attacks-resilience.html"><strong aria-hidden="true">1.4.</strong> DoS attacks resilience</a></li><li class="chapter-item expanded "><a href="../load-balancers.html"><strong aria-hidden="true">1.5.</strong> Load balancers</a></li></ol></li><li class="chapter-item expanded "><a href="../api.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive_v1_body.html"><strong aria-hidden="true">2.1.1.</strong> archive_v1_body</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_call.html"><strong aria-hidden="true">2.1.2.</strong> archive_v1_call</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_finalizedHeight.html"><strong aria-hidden="true">2.1.3.</strong> archive_v1_finalizedHeight</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_genesisHash.html"><strong aria-hidden="true">2.1.4.</strong> archive_v1_genesisHash</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_hashByHeight.html"><strong aria-hidden="true">2.1.5.</strong> archive_v1_hashByHeight</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_header.html"><strong aria-hidden="true">2.1.6.</strong> archive_v1_header</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_stopStorage.html"><strong aria-hidden="true">2.1.7.</strong> archive_v1_stopStorage</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_stopStorageDiff.html"><strong aria-hidden="true">2.1.8.</strong> archive_v1_stopStorageDiff</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_storage.html"><strong aria-hidden="true">2.1.9.</strong> archive_v1_storage</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_storageDiff.html"><strong aria-hidden="true">2.1.10.</strong> archive_v1_storageDiff</a></li></ol></li><li class="chapter-item expanded "><a href="../api/bitswap.html"><strong aria-hidden="true">2.2.</strong> bitswap</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/bitswap_unstable_get.html"><strong aria-hidden="true">2.2.1.</strong> bitswap_unstable_get</a></li><li class="chapter-item expanded "><a href="../api/bitswap_unstable_stream.html" class="active"><strong aria-hidden="true">2.2.2.</strong> bitswap_unstable_stream</a></li><li class="chapter-item expanded "><a href="../api/bitswap_unstable_unstream.html"><strong aria-hidden="true">2.2.3.</strong> bitswap_unstable_unstream</a></li></ol></li><li class="chapter-item expanded "><a href="../api/chainHead.html"><strong aria-hidden="true">2.3.</strong> chainHead</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/chainHead_v1_body.html"><strong aria-hidden="true">2.3.1.</strong> chainHead_v1_body</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_call.html"><strong aria-hidden="true">2.3.2.</strong> chainHead_v1_call</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_continue.html"><strong aria-hidden="true">2.3.3.</strong> chainHead_v1_continue</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_follow.html"><strong aria-hidden="true">2.3.4.</strong> chainHead_v1_follow</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_header.html"><strong aria-hidden="true">2.3.5.</strong> chainHead_v1_header</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_stopOperation.html"><strong aria-hidden="true">2.3.6.</strong> chainHead_v1_stopOperation</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_storage.html"><strong aria-hidden="true">2.3.7.</strong> chainHead_v1_storage</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_unfollow.html"><strong aria-hidden="true">2.3.8.</strong> chainHead_v1_unfollow</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_unpin.html"><strong aria-hidden="true">2.3.9.</strong> chainHead_v1_unpin</a></li></ol></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.4.</strong> chainSpec</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/chainSpec_v1_chainName.html"><strong aria-hidden="true">2.4.1.</strong> chainSpec_v1_chainName</a></li><li class="chapter-item expanded "><a href="../api/chainSpec_v1_genesisHash.html"><strong aria-hidden="true">2.4.2.</strong> chainSpec_v1_genesisHash</a></li><li class="chapter-item expanded "><a href="../api/chainSpec_v1_properties.html"><strong aria-hidden="true">2.4.3.</strong> chainSpec_v1_properties</a></li></ol></li><li class="chapter-item expanded "><a href="../api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/rpc_methods.html"><strong aria-hidden="true">2.5.1.</strong> rpc_methods</a></li></ol></li><li class="chapter-item expanded "><a href="../api/sudo.html"><strong aria-hidden="true">2.6.</strong> sudo</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/sudo_unstable_p2pDiscover.html"><strong aria-hidden="true">2.6.1.</strong> sudo_unstable_p2pDiscover</a></li><li class="chapter-item expanded "><a href="../api/sudo_unstable_pendingTransactions.html"><strong aria-hidden="true">2.6.2.</strong> sudo_unstable_pendingTransactions</a></li><li class="chapter-item expanded "><a href="../api/sudo_unstable_version.html"><strong aria-hidden="true">2.6.3.</strong> sudo_unstable_version</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.7.</strong> sudo_network</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/sudo_network_unstable_unwatch.html"><strong aria-hidden="true">2.7.1.</strong> sudo_network_unstable_unwatch</a></li><li class="chapter-item expanded "><a href="../api/sudo_network_unstable_watch.html"><strong aria-hidden="true">2.7.2.</strong> sudo_network_unstable_watch</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.8.</strong> sudo_sessionKeys</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/sudo_sessionKeys_unstable_generate.html"><strong aria-hidden="true">2.8.1.</strong> sudo_sessionKeys_unstable_generate</a></li></ol></li><li class="chapter-item expanded "><a href="../api/transaction.html"><strong aria-hidden="true">2.9.</strong> transaction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/transaction_v1_broadcast.html"><strong aria-hidden="true">2.9.1.</strong> transaction_v1_broadcast</a></li><li class="chapter-item expanded "><a href="../api/transaction_v1_stop.html"><strong aria-hidden="true">2.9.2.</strong> transaction_v1_stop</a></li></ol></li><li class="chapter-item expanded "><a href="../api/transactionWatch.html"><strong aria-hidden="true">2.10.</strong> transactionWatch</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/transactionWatch_v1_submitAndWatch.html"><strong aria-hidden="true">2.10.1.</strong> transactionWatch_v1_submitAndWatch</a></li><li class="chapter-item expanded "><a href="../api/transactionWatch_v1_unwatch.html"><strong aria-hidden="true">2.10.2.</strong> transactionWatch_v1_unwatch</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="bitswap_unstable_stream"><a class="header" href="#bitswap_unstable_stream">bitswap_unstable_stream</a></h1>
+<p><strong>Parameters</strong>:</p>
+<ul>
+<li><code>cids</code>: Non-empty array of CID strings, in <a href="https://github.com/multiformats/cid/blob/edb1c5294ad2d8257812d7ded4941c3e0fafccf3/README.md#variant---stringified-form">string format</a>.<br />
+Each entry must satisfy the same constraints as the <code>cid</code> parameter of <a href="bitswap_unstable_get.html"><code>bitswap_unstable_get</code></a>: CIDv1 in <code>base32</code> multibase encoding (string starting from <code>b...</code>), with the <code>sha2-256</code> or <code>blake2b-256</code> hash function.<br />
+The maximum number of CIDs accepted in a single subscription is implementation-defined; an implementation must accept at least 16 CIDs and may accept more.</li>
+</ul>
+<p><strong>Return value</strong>: String representing the subscription.</p>
+<p>The string returned by this function is opaque and its meaning can't be interpreted by the JSON-RPC client. It is only meant to be matched with the <code>subscription</code> field of events and potentially passed to <code>bitswap_unstable_unstream</code>.</p>
+<p><code>bitswap_unstable_stream</code> emits exactly one outcome per input CID, in the order results become available — <strong>not</strong> in input order. This lets the client begin processing the first chunks while later chunks are still in flight. The client correlates each event with its request via the <code>cid</code> field embedded in the event payload.</p>
+<p>If <code>bitswap_unstable_unstream</code> is called or the JSON-RPC client disconnects, the implementation cancels remaining work and stops emitting events. No further events are emitted after cancellation.</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>Notifications are emitted using the following JSON-RPC envelope:</p>
+<pre><code class="language-json">{
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+    &quot;method&quot;: &quot;bitswap_unstable_streamEvent&quot;,
+    &quot;params&quot;: {
+        &quot;subscription&quot;: &quot;...&quot;,
+        &quot;result&quot;: { &quot;event&quot;: &quot;...&quot;, ... }
+    }
+}
+</code></pre>
+<p>Where <code>subscription</code> is the value returned by this function, and <code>result</code> is one of the three event variants below, distinguished by the <code>event</code> field.</p>
+<h3 id="streamitem"><a class="header" href="#streamitem">streamItem</a></h3>
+<p>Emitted once per successfully retrieved CID.</p>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;streamItem&quot;,
+    &quot;cid&quot;: &quot;&lt;cid&gt;&quot;,
+    &quot;value&quot;: &quot;0x...&quot;
+}
+</code></pre>
+<p><code>cid</code> is the input CID string, returned verbatim. <code>value</code> is the chunk data, hex-encoded, always starting with <code>0x...</code>. The encoding is the same as the return value of <a href="bitswap_unstable_get.html"><code>bitswap_unstable_get</code></a>; the per-chunk size limit is 4 MiB + 2 B.</p>
+<h3 id="streamitemerror"><a class="header" href="#streamitemerror">streamItemError</a></h3>
+<p>Emitted once per CID that could not be retrieved. Emitting <code>streamItemError</code> for one CID does <strong>not</strong> abort the stream — outcomes for the remaining CIDs still arrive.</p>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;streamItemError&quot;,
+    &quot;cid&quot;: &quot;&lt;cid&gt;&quot;,
+    &quot;code&quot;: -32811,
+    &quot;message&quot;: &quot;request timeout&quot;
+}
+</code></pre>
+<p><code>cid</code> is the input CID string, returned verbatim.</p>
+<p><code>code</code> and <code>message</code> mirror the standard JSON-RPC error-object fields. The same per-CID <a href="bitswap_unstable_get.html#error-categories">error categories</a> apply: <code>-32602 InvalidParams</code>, <code>-32810 Fail</code>, <code>-32811 FailRetry</code>, <code>-32812 FailRetryBackoff</code>. Clients that already know how to interpret <code>code</code> for <code>bitswap_unstable_get</code> can reuse the same retry logic per-CID.</p>
+<p>Only <code>code</code> is stable for programmatic dispatch. <code>message</code> is a human-readable diagnostic string for logs and developer-facing tooling, is implementation-specific, and must not be relied upon in business logic.</p>
+<p>A missing or invalid CID in the input array produces a <code>streamItemError</code> event for that CID with <code>code: -32602</code> and does not abort the stream. Because events are emitted in arrival order, a <code>streamItemError</code> event for one CID may be emitted before, after, or interleaved with <code>streamItem</code> events for other CIDs.</p>
+<h3 id="streamdone"><a class="header" href="#streamdone">streamDone</a></h3>
+<p>Emitted exactly once, after exactly one <code>streamItem</code> or <code>streamItemError</code> event has been emitted per input CID. It is the explicit end-of-stream marker.</p>
+<pre><code class="language-json">{
+    &quot;event&quot;: &quot;streamDone&quot;
+}
+</code></pre>
+<p><code>streamDone</code> is not emitted when the client cancels via <a href="bitswap_unstable_unstream.html"><code>bitswap_unstable_unstream</code></a> or disconnects — in those cases the stream simply stops with no further events.</p>
+<p>If the implementation determines that it cannot serve any of the remaining CIDs (for example, all peers disconnected), it emits a <code>streamItemError</code> for each remaining CID with an appropriate <code>code</code>, then <code>streamDone</code>. There is no separate stream-wide abort event.</p>
+<h2 id="example-notifications"><a class="header" href="#example-notifications">Example notifications</a></h2>
+<p>For an input of three CIDs <code>[&quot;&lt;cidA&gt;&quot;, &quot;&lt;cidB&gt;&quot;, &quot;&lt;cidC&gt;&quot;]</code>, the implementation might deliver <code>&lt;cidC&gt;</code> first, then <code>&lt;cidA&gt;</code>, then <code>&lt;cidB&gt;</code> as an error, then the end-of-stream marker. The <code>result</code> field of each notification, in arrival order:</p>
+<pre><code class="language-json">{ &quot;event&quot;: &quot;streamItem&quot;, &quot;cid&quot;: &quot;&lt;cidC&gt;&quot;, &quot;value&quot;: &quot;0x6f6b&quot; }
+</code></pre>
+<pre><code class="language-json">{ &quot;event&quot;: &quot;streamItem&quot;, &quot;cid&quot;: &quot;&lt;cidA&gt;&quot;, &quot;value&quot;: &quot;0x4869&quot; }
+</code></pre>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;streamItemError&quot;,
+  &quot;cid&quot;: &quot;&lt;cidB&gt;&quot;,
+  &quot;code&quot;: -32811,
+  &quot;message&quot;: &quot;request timeout&quot;
+}
+</code></pre>
+<pre><code class="language-json">{ &quot;event&quot;: &quot;streamDone&quot; }
+</code></pre>
+<h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
+<p>Top-level subscription rejection causes no events to be emitted. The following codes apply:</p>
+<table><thead><tr><th>Code</th><th>Category</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>-32602</td><td>(standard)</td><td>An RPC parameter doesn't correspond to the expected type</td></tr>
+<tr><td>-32801</td><td><code>TooManyCids</code></td><td>Input array exceeded the implementation-defined maximum</td></tr>
+<tr><td>-32802</td><td><code>EmptyCids</code></td><td>Input array is empty</td></tr>
+<tr><td>-32803</td><td><code>DuplicateCids</code></td><td>Input array contains the same CID more than once (see &quot;Duplicate input&quot;)</td></tr>
+</tbody></table>
+<p>Per-CID failures (whether the CID is malformed, the chunk cannot be found, or retrieval failed transiently) are surfaced via <code>streamItemError</code> events, not top-level errors. See the <a href="bitswap_unstable_get.html#error-categories">error categories</a> of <code>bitswap_unstable_get</code> for the codes used in those events.</p>
+<h2 id="empty-input"><a class="header" href="#empty-input">Empty input</a></h2>
+<p>An empty input array (<code>cids: []</code>) is rejected at the top level with <code>-32802 EmptyCids</code> (no subscription is opened, no events are emitted).</p>
+<h2 id="duplicate-input"><a class="header" href="#duplicate-input">Duplicate input</a></h2>
+<p>The implementation rejects subscriptions whose input contains the same CID more than once. Detection is two-stage:</p>
+<ol>
+<li>Two literally-identical input strings (regardless of whether they are valid CIDs) → rejected.</li>
+<li>Two cosmetically different CID strings that decode to the same 32-byte content digest → rejected.</li>
+</ol>
+<p>In either case the subscription is rejected at the top level with <code>-32803 DuplicateCids</code> (no events are emitted). Callers must deduplicate input before subscribing.</p>
+<p>Duplicates are rejected so that <code>bitswap_unstable_stream</code> can guarantee exactly one <code>streamItem</code>/<code>streamItemError</code> event per input CID. The <code>streamDone</code> event is the authoritative end-of-stream marker, but the duplicate-rejection rule keeps a 1-to-1 mapping between input CIDs and per-item events.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../api/bitswap_unstable_get.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../api/bitswap_unstable_unstream.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../api/bitswap_unstable_get.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../api/bitswap_unstable_unstream.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
