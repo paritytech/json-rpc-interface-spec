@@ -9,7 +9,7 @@ The `topicFilter` parameter can be one of:
 
 - `"any"` — matches all statements regardless of their topics.
 
-- `{"matchAll": ["0x...", ...]}` — matches only statements that include all of the provided topics. Each topic is a hexadecimal-encoded 32-byte value. Up to 4 topics can be provided.
+- `{"matchAll": ["0x...", ...]}` — matches only statements that include all of the provided topics. Each topic is a hexadecimal-encoded 32-byte value. Between 1 and 4 topics must be provided.
 
 **Return value**: Either a string containing an opaque value representing the filter, or:
 
@@ -36,5 +36,5 @@ If, after accepting a filter, the JSON-RPC server can no longer preserve the gua
 ## Possible errors
 
 - A JSON-RPC error with error code `-32801` is generated if the `subscription` doesn't correspond to any active `statement_unstable_subscribe` subscription.
-- A JSON-RPC error with error code `-32602` is generated if `topicFilter` doesn't correspond to the expected format, if one of the topics isn't 32 bytes long, or if more than 4 topics are provided in `matchAll`.
+- A JSON-RPC error with error code `-32602` is generated if `topicFilter` doesn't correspond to the expected format, if `matchAll` contains fewer than 1 or more than 4 topics, or if one of the topics isn't 32 bytes long.
 - A JSON-RPC error with error code `-32603` is generated if the JSON-RPC server encounters an unexpected internal failure while creating the filter.
