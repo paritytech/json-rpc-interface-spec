@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>statement_unstable_subscribe</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../objectives.html"><strong aria-hidden="true">1.1.</strong> Objectives</a></li><li class="chapter-item expanded "><a href="../why-json-rpc.html"><strong aria-hidden="true">1.2.</strong> Why JSON-RPC?</a></li><li class="chapter-item expanded "><a href="../grouping-functions-and-node-capabilities.html"><strong aria-hidden="true">1.3.</strong> Grouping functions and node capabilities</a></li><li class="chapter-item expanded "><a href="../dos-attacks-resilience.html"><strong aria-hidden="true">1.4.</strong> DoS attacks resilience</a></li><li class="chapter-item expanded "><a href="../load-balancers.html"><strong aria-hidden="true">1.5.</strong> Load balancers</a></li></ol></li><li class="chapter-item expanded "><a href="../api.html"><strong aria-hidden="true">2.</strong> API specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive.html"><strong aria-hidden="true">2.1.</strong> archive</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/archive_v1_body.html"><strong aria-hidden="true">2.1.1.</strong> archive_v1_body</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_call.html"><strong aria-hidden="true">2.1.2.</strong> archive_v1_call</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_finalizedHeight.html"><strong aria-hidden="true">2.1.3.</strong> archive_v1_finalizedHeight</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_genesisHash.html"><strong aria-hidden="true">2.1.4.</strong> archive_v1_genesisHash</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_hashByHeight.html"><strong aria-hidden="true">2.1.5.</strong> archive_v1_hashByHeight</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_header.html"><strong aria-hidden="true">2.1.6.</strong> archive_v1_header</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_stopStorage.html"><strong aria-hidden="true">2.1.7.</strong> archive_v1_stopStorage</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_stopStorageDiff.html"><strong aria-hidden="true">2.1.8.</strong> archive_v1_stopStorageDiff</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_storage.html"><strong aria-hidden="true">2.1.9.</strong> archive_v1_storage</a></li><li class="chapter-item expanded "><a href="../api/archive_v1_storageDiff.html"><strong aria-hidden="true">2.1.10.</strong> archive_v1_storageDiff</a></li></ol></li><li class="chapter-item expanded "><a href="../api/bitswap.html"><strong aria-hidden="true">2.2.</strong> bitswap</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/bitswap_unstable_get.html"><strong aria-hidden="true">2.2.1.</strong> bitswap_unstable_get</a></li><li class="chapter-item expanded "><a href="../api/bitswap_unstable_stream.html"><strong aria-hidden="true">2.2.2.</strong> bitswap_unstable_stream</a></li><li class="chapter-item expanded "><a href="../api/bitswap_unstable_unstream.html"><strong aria-hidden="true">2.2.3.</strong> bitswap_unstable_unstream</a></li></ol></li><li class="chapter-item expanded "><a href="../api/chainHead.html"><strong aria-hidden="true">2.3.</strong> chainHead</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/chainHead_v1_body.html"><strong aria-hidden="true">2.3.1.</strong> chainHead_v1_body</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_call.html"><strong aria-hidden="true">2.3.2.</strong> chainHead_v1_call</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_continue.html"><strong aria-hidden="true">2.3.3.</strong> chainHead_v1_continue</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_follow.html"><strong aria-hidden="true">2.3.4.</strong> chainHead_v1_follow</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_header.html"><strong aria-hidden="true">2.3.5.</strong> chainHead_v1_header</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_stopOperation.html"><strong aria-hidden="true">2.3.6.</strong> chainHead_v1_stopOperation</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_storage.html"><strong aria-hidden="true">2.3.7.</strong> chainHead_v1_storage</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_unfollow.html"><strong aria-hidden="true">2.3.8.</strong> chainHead_v1_unfollow</a></li><li class="chapter-item expanded "><a href="../api/chainHead_v1_unpin.html"><strong aria-hidden="true">2.3.9.</strong> chainHead_v1_unpin</a></li></ol></li><li class="chapter-item expanded "><a href="../api/chainSpec.html"><strong aria-hidden="true">2.4.</strong> chainSpec</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/chainSpec_v1_chainName.html"><strong aria-hidden="true">2.4.1.</strong> chainSpec_v1_chainName</a></li><li class="chapter-item expanded "><a href="../api/chainSpec_v1_genesisHash.html"><strong aria-hidden="true">2.4.2.</strong> chainSpec_v1_genesisHash</a></li><li class="chapter-item expanded "><a href="../api/chainSpec_v1_properties.html"><strong aria-hidden="true">2.4.3.</strong> chainSpec_v1_properties</a></li></ol></li><li class="chapter-item expanded "><a href="../api/rpc.html"><strong aria-hidden="true">2.5.</strong> rpc</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/rpc_methods.html"><strong aria-hidden="true">2.5.1.</strong> rpc_methods</a></li></ol></li><li class="chapter-item expanded "><a href="../api/statement.html"><strong aria-hidden="true">2.6.</strong> statement</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/statement_unstable_subscribe.html" class="active"><strong aria-hidden="true">2.6.1.</strong> statement_unstable_subscribe</a></li><li class="chapter-item expanded "><a href="../api/statement_unstable_add_filter.html"><strong aria-hidden="true">2.6.2.</strong> statement_unstable_add_filter</a></li><li class="chapter-item expanded "><a href="../api/statement_unstable_remove_filter.html"><strong aria-hidden="true">2.6.3.</strong> statement_unstable_remove_filter</a></li><li class="chapter-item expanded "><a href="../api/statement_unstable_unsubscribe.html"><strong aria-hidden="true">2.6.4.</strong> statement_unstable_unsubscribe</a></li><li class="chapter-item expanded "><a href="../api/statement_unstable_submit.html"><strong aria-hidden="true">2.6.5.</strong> statement_unstable_submit</a></li></ol></li><li class="chapter-item expanded "><a href="../api/sudo.html"><strong aria-hidden="true">2.7.</strong> sudo</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/sudo_unstable_p2pDiscover.html"><strong aria-hidden="true">2.7.1.</strong> sudo_unstable_p2pDiscover</a></li><li class="chapter-item expanded "><a href="../api/sudo_unstable_pendingTransactions.html"><strong aria-hidden="true">2.7.2.</strong> sudo_unstable_pendingTransactions</a></li><li class="chapter-item expanded "><a href="../api/sudo_unstable_version.html"><strong aria-hidden="true">2.7.3.</strong> sudo_unstable_version</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.8.</strong> sudo_network</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/sudo_network_unstable_unwatch.html"><strong aria-hidden="true">2.8.1.</strong> sudo_network_unstable_unwatch</a></li><li class="chapter-item expanded "><a href="../api/sudo_network_unstable_watch.html"><strong aria-hidden="true">2.8.2.</strong> sudo_network_unstable_watch</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.9.</strong> sudo_sessionKeys</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/sudo_sessionKeys_unstable_generate.html"><strong aria-hidden="true">2.9.1.</strong> sudo_sessionKeys_unstable_generate</a></li></ol></li><li class="chapter-item expanded "><a href="../api/transaction.html"><strong aria-hidden="true">2.10.</strong> transaction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/transaction_v1_broadcast.html"><strong aria-hidden="true">2.10.1.</strong> transaction_v1_broadcast</a></li><li class="chapter-item expanded "><a href="../api/transaction_v1_stop.html"><strong aria-hidden="true">2.10.2.</strong> transaction_v1_stop</a></li></ol></li><li class="chapter-item expanded "><a href="../api/transactionWatch.html"><strong aria-hidden="true">2.11.</strong> transactionWatch</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../api/transactionWatch_v1_submitAndWatch.html"><strong aria-hidden="true">2.11.1.</strong> transactionWatch_v1_submitAndWatch</a></li><li class="chapter-item expanded "><a href="../api/transactionWatch_v1_unwatch.html"><strong aria-hidden="true">2.11.2.</strong> transactionWatch_v1_unwatch</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="statement_unstable_subscribe"><a class="header" href="#statement_unstable_subscribe">statement_unstable_subscribe</a></h1>
+<p><strong>Parameters</strong>: <em>none</em></p>
+<p><strong>Return value</strong>: String containing an opaque value representing the subscription.</p>
+<p>This function lets the JSON-RPC client subscribe to statements known to the statement store.</p>
+<p>This function works as follows:</p>
+<ul>
+<li>
+<p>When called, returns an opaque <code>subscription</code> that is later used to match notifications and to call <code>statement_unstable_add_filter</code>, <code>statement_unstable_remove_filter</code>, or <code>statement_unstable_unsubscribe</code>.</p>
+</li>
+<li>
+<p>The subscription starts with no filters attached. As such, this function doesn't immediately generate notifications.</p>
+</li>
+<li>
+<p>Later, each successful call to <code>statement_unstable_add_filter</code> on this <code>subscription</code> causes the subscription to generate <code>replayStatements</code> notifications for statements already present in the store and matching the newly-added filter, followed by a <code>replayDone</code> notification once that replay is complete. Calls to <code>statement_unstable_add_filter</code> that return <code>{&quot;result&quot;: &quot;limitReached&quot;}</code> mean that the requested filter wasn't accepted, and they don't generate notifications.</p>
+</li>
+<li>
+<p>Afterwards, whenever a new statement enters the store and matches at least one active filter on this subscription, the subscription eventually generates a <code>newStatements</code> notification once doing so wouldn't violate the replay guarantees below.</p>
+</li>
+<li>
+<p>If the JSON-RPC server can no longer preserve the guarantees of this page, it generates a <code>stop</code> notification indicating that the subscription is now dead and must be re-created. No more notifications will be sent out on this subscription.</p>
+</li>
+</ul>
+<p>The subscription can later be stopped by calling <code>statement_unstable_unsubscribe</code>.</p>
+<h2 id="notifications-format"><a class="header" href="#notifications-format">Notifications format</a></h2>
+<p>This function will later generate one or more notifications in the following format:</p>
+<pre><code class="language-json">{
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+    &quot;method&quot;: &quot;statement_unstable_subscribeEvent&quot;,
+    &quot;params&quot;: {
+        &quot;subscription&quot;: &quot;...&quot;,
+        &quot;result&quot;: ...
+    }
+}
+</code></pre>
+<p>Where <code>subscription</code> is the value returned by this function, and <code>result</code> can be one of:</p>
+<h3 id="replaystatements"><a class="header" href="#replaystatements">replayStatements</a></h3>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;replayStatements&quot;,
+  &quot;filterId&quot;: &quot;...&quot;,
+  &quot;statements&quot;: [&quot;0x...&quot;, &quot;0x...&quot;]
+}
+</code></pre>
+<p>The <code>replayStatements</code> event indicates statements emitted because of a specific successful call to <code>statement_unstable_add_filter</code>.</p>
+<p><code>filterId</code> is the opaque string returned by that call to <code>statement_unstable_add_filter</code>. It is only unique in the context of this <code>subscription</code>.</p>
+<p>Each entry in <code>statements</code> is a hexadecimal-encoded SCALE-encoded statement.</p>
+<p>The <code>statements</code> array always contains at least one entry.</p>
+<p>No guarantee is offered as to the order of the statements within the array.</p>
+<h3 id="replaydone"><a class="header" href="#replaydone">replayDone</a></h3>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;replayDone&quot;,
+  &quot;filterId&quot;: &quot;...&quot;
+}
+</code></pre>
+<p>The <code>replayDone</code> event indicates that the replay caused by a specific successful call to <code>statement_unstable_add_filter</code> is complete.</p>
+<p><code>filterId</code> is the opaque string returned by that call to <code>statement_unstable_add_filter</code>. It is only unique in the context of this <code>subscription</code>.</p>
+<p>If the subscription remains alive and the filter isn't removed before replay completion, then exactly one <code>replayDone</code> event is generated for each successful <code>statement_unstable_add_filter</code>, even if no <code>replayStatements</code> event was generated because no statement matched the filter.</p>
+<h3 id="newstatements"><a class="header" href="#newstatements">newStatements</a></h3>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;newStatements&quot;,
+  &quot;statements&quot;: [
+    {
+      &quot;statement&quot;: &quot;0x...&quot;,
+      &quot;filterIds&quot;: [&quot;...&quot;, &quot;...&quot;]
+    },
+    {
+      &quot;statement&quot;: &quot;0x...&quot;,
+      &quot;filterIds&quot;: [&quot;...&quot;]
+    }
+  ]
+}
+</code></pre>
+<p>Each entry in <code>statements</code> is an object with the following fields:</p>
+<ul>
+<li><code>statement</code>: hexadecimal-encoded SCALE-encoded statement.</li>
+<li><code>filterIds</code>: array containing the ids of the filters that are active on this subscription when the notification is emitted and that match this statement.</li>
+</ul>
+<p>Each <code>filterId</code> is opaque and is only unique in the context of this <code>subscription</code>.</p>
+<p>Each <code>statements</code> array always contains at least one entry.</p>
+<p>Each <code>filterIds</code> array always contains at least one entry.</p>
+<p>No guarantee is offered as to the order of the <code>statements</code> array.</p>
+<p>No guarantee is offered as to the order of the <code>filterIds</code> array.</p>
+<p>The same <code>filterId</code> must not appear more than once in the <code>filterIds</code> array of a given statement item.</p>
+<p>The <code>newStatements</code> event indicates statements that have newly entered the store.</p>
+<h3 id="stop"><a class="header" href="#stop">stop</a></h3>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;stop&quot;
+}
+</code></pre>
+<p>The <code>stop</code> event indicates that the JSON-RPC server can no longer preserve the guarantees of this page. This can happen for example because the subscription consumes an unreasonable amount of memory, because the JSON-RPC client is too slow to pull notifications, or because the server is otherwise overloaded.</p>
+<p>No more event will be generated with this <code>subscription</code>.</p>
+<p>Calling <code>statement_unstable_unsubscribe</code> on a subscription that has produced a <code>stop</code> event is optional.</p>
+<h2 id="delivery-guarantees"><a class="header" href="#delivery-guarantees">Delivery guarantees</a></h2>
+<p>A newly inserted statement is emitted at most once per subscription through <code>newStatements</code>, even if multiple active filters match it.</p>
+<p>Each successful call to <code>statement_unstable_add_filter</code> creates a new replay pass over the statements currently known to the store and matching that filter. Re-adding the same filter creates a new replay pass and can therefore re-emit statements that were already emitted earlier on the same subscription. Statements emitted because of such a replay pass are reported through <code>replayStatements</code> with the corresponding <code>filterId</code>, and the replay completion is reported through <code>replayDone</code> with that same <code>filterId</code>.</p>
+<p>For a given successful <code>statement_unstable_add_filter</code>, all statements that were already present in the store when the server accepted that call and that match its filter must be emitted before the corresponding <code>replayDone</code>.</p>
+<p>Statements that enter the store after a given successful <code>statement_unstable_add_filter</code> has been accepted must never be emitted through the <code>replayStatements</code> of that <code>statement_unstable_add_filter</code>, even if they match its filter.</p>
+<p>If a newly inserted statement matches one or more filters whose replays are still in progress on the same subscription, then this statement must not be emitted through <code>newStatements</code> until all these matching in-progress replays have emitted their corresponding <code>replayDone</code>, have been removed with <code>statement_unstable_remove_filter</code>, or have been interrupted by a <code>stop</code>.</p>
+<p>When such a waiting statement is finally emitted through <code>newStatements</code>, its <code>filterIds</code> must contain the ids of all the filters that are active on the subscription at emission time and that match that statement, including filters that were added after the statement entered the store.</p>
+<p>As a consequence, a statement that is emitted through <code>replayStatements</code> for a given <code>filterId</code> must not later be emitted through <code>newStatements</code> with that same <code>filterId</code>.</p>
+<p>If a subscription emits <code>stop</code> before replay completion, then no <code>replayDone</code> is required for the filters whose replay hasn't completed.</p>
+<p>JSON-RPC servers are allowed to delay live notifications in order to preserve the guarantees above.</p>
+<h2 id="multiple-subscriptions"><a class="header" href="#multiple-subscriptions">Multiple subscriptions</a></h2>
+<p>The JSON-RPC server must accept at least 2 <code>statement_unstable_subscribe</code> subscriptions per JSON-RPC client. Trying to open more might lead to a JSON-RPC error when calling <code>statement_unstable_subscribe</code>. In other words, as long as a JSON-RPC client starts 2 or fewer <code>statement_unstable_subscribe</code> subscriptions, it is guaranteed that this return value will never happen.</p>
+<p>If multiple <code>statement_unstable_subscribe</code> subscriptions exist at the same time, then each of them has its own filters, its own replay state, and its own deduplication state.</p>
+<h2 id="possible-errors"><a class="header" href="#possible-errors">Possible errors</a></h2>
+<ul>
+<li>A JSON-RPC error with error code <code>-32800</code> can be generated if the JSON-RPC client has already opened 2 or more <code>statement_unstable_subscribe</code> subscriptions.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../api/statement.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../api/statement_unstable_add_filter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../api/statement.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../api/statement_unstable_add_filter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
