@@ -19,8 +19,4 @@ If the height passed to `archive_v1_hashByHeight` is strictly superior to the va
 
 ## Transaction location queries
 
-The `archive_unstable_findTransaction` function returns every retained block that contains a given encoded extrinsic, together with the extrinsic index and chain placement status of each occurrence.
-
-The method is a query against the server's database, not a proof of inclusion. Clients that require trustless guarantees must verify a finality proof or re-execute the block themselves. The returned data is runtime-neutral and contains no events, fees, weight, or outcome flags; events for a returned occurrence can be obtained by querying `archive_v1_storage` against the returned block hash.
-
-Implementing this method requires the server to maintain an index over the extrinsic bytes of every block it retains, which Substrate nodes do not do by default. A server that does not maintain such an index must not advertise this method in `rpc_methods`.
+The `archive_unstable_findTransaction` function returns the first block of the best chain after a given block that contains a given transaction, or `null` if there is none.

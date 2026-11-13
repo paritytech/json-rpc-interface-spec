@@ -2,39 +2,38 @@
 
 **Parameters**:
 
-- `transactionBytes`: String containing the hexadecimal-encoded SCALE-encoded bytes of the transaction to locate. The raw bytes are used rather than the transaction hash because transaction hashes are not globally unique.
-- `from`: Optional non-negative integer block height from which to begin searching, inclusive. If omitted, the search starts at the oldest block retained by the server.
-- `count`: Optional positive integer giving the maximum number of results to return. If omitted, a server-defined default applies. Servers must enforce a hard upper bound on this value regardless of the value requested by the caller.
+- `transactionHash`: String containing the hexadecimal-encoded hash of the transaction to locate.
+- `from`: String containing the hexadecimal-encoded hash of a block of the best chain. The search starts at the child of this block, so `from` itself is not searched.
 
-**Return value**: An array of objects, possibly empty, ordered by ascending block height and then by ascending `transactionIndex` within the same block. Each object has the following structure:
+**Return value**: `null` if the transaction is not present in any block of the best chain that descends from `from`. Otherwise, an object describing the first block of the best chain after `from` that contains the transaction:
 
 ```json
 {
     "blockHash": "0x...",
-    "transactionIndex": 0,
-    "status": "finalized"
+    "transactionIndex": 3,
+    "finalized": true
 }
 ```
 
-- `blockHash`: String containing the hexadecimal-encoded hash of a block whose body contains the bytes passed as `transactionBytes` at position `transactionIndex`.
-- `transactionIndex`: Non-negative integer indicating the zero-based index of the extrinsic within the block body, using the same indexing as `archive_v1_body`.
-- `status`: One of `"finalized"`, `"best"`, or `"fork"`, indicating the chain placement of the block at the moment the response is produced. Entries with status `"finalized"` are stable. Entries with status `"best"` or `"fork"` may change status or disappear in subsequent calls.
+- `blockHash`: String containing the hexadecimal-encoded hash of the block whose body contains the transaction.
+- `transactionIndex`: Non-negative integer indicating the zero-based index of the transaction within the block body, using the same indexing as `archive_v1_body`.
+- `finalized`: Boolean indicating whether the block is finalized at the moment the response is produced. If `false`, the block might later leave the best chain.
 
-The same `transactionBytes` may legitimately appear in more than one block (across competing forks, after a reorg, or in distinct finalized blocks), which is why the return value is always an array.
+A natural value for `from` is the latest finalized block known to the JSON-RPC client before it broadcast the transaction.
 
-The response contains location data only. It does not return execution outcome, fees, weight, or dispatched events. Such information is runtime-specific and can be obtained by querying `archive_v1_storage` against the returned `blockHash`.
+A transaction can be included in more than one block. In order to look for later inclusions, the JSON-RPC client can call this method again, passing the returned `blockHash` as `from`. If the transaction is present more than once within the same block, only the lowest `transactionIndex` is returned. The JSON-RPC client can use `archive_v1_body` on that block to find the others.
 
-This method is a query against the server's local database. It is not a proof of inclusion. Callers who require trustless verification must verify a finality proof or re-execute the block themselves.
+Blocks that are not part of the best chain are never searched. JSON-RPC clients interested in forks should use `chainHead` instead.
 
-## Indexing requirement
+The JSON-RPC server might only be able to answer for part of the chain, for example if it only indexes the transactions of its most recent blocks. If it can't search every block of the best chain after `from`, it must return the `-32821` error rather than `null`. A `null` return value always means that the transaction is not in the best chain after `from`, and never that the JSON-RPC server doesn't know.
 
-Implementing this method requires the server to maintain an index over the extrinsic bytes of every block it retains. Substrate nodes do not maintain such an index by default. A server that does not maintain this index must not include `archive_unstable_findTransaction` in the list returned by `rpc_methods`.
+## Trust
 
-## Pagination
-
-When a response is truncated by the server's result cap, callers can continue by repeating the call with `from` set just past the height of the last returned `blockHash`.
+A returned inclusion can be verified cheaply: once the JSON-RPC client trusts the header of `blockHash`, it can fetch the body of the block and check it against the `extrinsics_root` of that header. A `null` return value, however, can't be verified in an efficient and trustless way.
 
 ## Possible errors
 
-- A JSON-RPC error with error code `-32602` is generated if any parameter is of an incorrect type, or if `transactionBytes` is not valid hexadecimal.
-- A JSON-RPC error may be generated if the server has too many concurrent `archive`-prefixed calls in flight.
+- A JSON-RPC error with error code `-32602` is generated if one of the parameters doesn't correspond to the expected type (similarly to a missing parameter or an invalid parameter type).
+- A JSON-RPC error with error code `-32820` is generated if the block hash passed as `from` doesn't correspond to any block known by the JSON-RPC server, or if that block isn't part of the best chain.
+- A JSON-RPC error with error code `-32821` is generated if the JSON-RPC server can't search every block of the best chain after `from`.
+- A JSON-RPC error can be generated if the JSON-RPC client has too many active calls to `archive`-prefixed functions.
