@@ -16,3 +16,7 @@ If the height passed to `archive_v1_hashByHeight` is inferior or equal to the va
 The JSON-RPC client can then call `archive_v1_header`, `archive_v1_body`, `archive_v1_storage`, and `archive_v1_call` in order to obtain details about the block with this hash. It is always guaranteed to return a value.
 
 If the height passed to `archive_v1_hashByHeight` is strictly superior to the value returned by `archive_v1_finalizedHeight`, then `archive_v1_hashByHeight` might return zero, one, or more blocks. Furthermore, the list of blocks being returned can change at any point. It is also possible to call `archive_v1_header`, `archive_v1_body`, `archive_v1_storage`, and `archive_v1_call` on these blocks, but these functions might return `null` even if their hash was previously returned by `archive_v1_hashByHeight`.
+
+## Transaction location queries
+
+The `archive_unstable_findTransaction` function returns the first block of the best chain after a given block that contains a given transaction, or `null` if there is none.

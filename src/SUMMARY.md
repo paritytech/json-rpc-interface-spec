@@ -18,6 +18,7 @@
     - [archive_v1_stopStorageDiff](api/archive_v1_stopStorageDiff.md)
     - [archive_v1_storage](api/archive_v1_storage.md)
     - [archive_v1_storageDiff](api/archive_v1_storageDiff.md)
+    - [archive_unstable_findTransaction](api/archive_unstable_findTransaction.md)
   - [bitswap](api/bitswap.md)
     - [bitswap_unstable_get](api/bitswap_unstable_get.md)
     - [bitswap_unstable_stream](api/bitswap_unstable_stream.md)
